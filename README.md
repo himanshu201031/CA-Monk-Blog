@@ -259,9 +259,7 @@ JSON Server and frontend are on different ports. CORS is handled by default in J
 
 This project is open source and available under the MIT License.
 
-## 👨‍💼 Author
 
-Built by the CA Monk Team
 
 ---
 
