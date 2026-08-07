@@ -1,3 +1,4 @@
+import React from 'react';
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BlogCard } from '../components/BlogCard';
@@ -14,157 +15,81 @@ const createBlog = (overrides = {}) => ({
   ...overrides,
 });
 
-describe('BlogCard', () => {
-  const mockBlog = createBlog();
+// render a BlogCard with the given props
+const renderBlogCard = (props = {}) => {
+  const baseProps = {
+    blog: createBlog(),
+    isActive: false,
+    onClick: () => {},
+    onEdit: () => {},
+    onDelete: () => {},
+    ...props,
+  };
+  return render(React.createElement(BlogCard, baseProps));
+};
 
+describe('BlogCard', () => {
   it('renders the blog title', () => {
-    render(
-      <BlogCard
-        blog={mockBlog}
-        isActive={false}
-        onClick={() => {}}
-        onEdit={() => {}}
-        onDelete={() => {}}
-      />
-    );
-    expect(screen.getByText(mockBlog.title)).toBeInTheDocument();
+    renderBlogCard();
+    expect(screen.getByText('The Future of Fintech')).toBeInTheDocument();
   });
 
   it('renders the blog description', () => {
-    render(
-      <BlogCard
-        blog={mockBlog}
-        isActive={false}
-        onClick={() => {}}
-        onEdit={() => {}}
-        onDelete={() => {}}
-      />
-    );
-    expect(screen.getByText(mockBlog.description)).toBeInTheDocument();
+    renderBlogCard();
+    expect(
+      screen.getByText('Exploring how AI is reshaping financial services.')
+    ).toBeInTheDocument();
   });
 
   it('renders the primary category', () => {
-    render(
-      <BlogCard
-        blog={mockBlog}
-        isActive={false}
-        onClick={() => {}}
-        onEdit={() => {}}
-        onDelete={() => {}}
-      />
-    );
+    renderBlogCard();
     expect(screen.getByText('FINANCE')).toBeInTheDocument();
   });
 
   it('displays GENERAL as fallback when category is empty', () => {
-    const blog = createBlog({ category: [] });
-    render(
-      <BlogCard
-        blog={blog}
-        isActive={false}
-        onClick={() => {}}
-        onEdit={() => {}}
-        onDelete={() => {}}
-      />
-    );
+    renderBlogCard({ blog: createBlog({ category: [] }) });
     expect(screen.getByText('GENERAL')).toBeInTheDocument();
   });
 
   it('calls onClick handler when the card is clicked', () => {
     const onClick = vi.fn();
-    render(
-      <BlogCard
-        blog={mockBlog}
-        isActive={false}
-        onClick={onClick}
-        onEdit={() => {}}
-        onDelete={() => {}}
-      />
-    );
-    fireEvent.click(screen.getByText(mockBlog.title));
+    renderBlogCard({ onClick });
+    fireEvent.click(screen.getByText('The Future of Fintech'));
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
   it('calls onEdit with the blog when edit button is clicked', () => {
     const onEdit = vi.fn();
-    render(
-      <BlogCard
-        blog={mockBlog}
-        isActive={false}
-        onClick={() => {}}
-        onEdit={onEdit}
-        onDelete={() => {}}
-      />
-    );
+    const blog = createBlog();
+    renderBlogCard({ onEdit });
     fireEvent.click(screen.getAllByRole('button')[0]);
     expect(onEdit).toHaveBeenCalledTimes(1);
-    expect(onEdit).toHaveBeenCalledWith(mockBlog);
+    expect(onEdit).toHaveBeenCalledWith(blog);
   });
 
   it('calls onDelete with the blog id when delete button is clicked', () => {
     const onDelete = vi.fn();
-    render(
-      <BlogCard
-        blog={mockBlog}
-        isActive={false}
-        onClick={() => {}}
-        onEdit={() => {}}
-        onDelete={onDelete}
-      />
-    );
+    renderBlogCard({ onDelete });
     fireEvent.click(screen.getAllByRole('button')[1]);
     expect(onDelete).toHaveBeenCalledTimes(1);
-    expect(onDelete).toHaveBeenCalledWith(mockBlog.id);
+    expect(onDelete).toHaveBeenCalledWith(1);
   });
 
-  it('does not trigger onClick when the edit button is clicked', () => {
+  it('does not trigger onClick when the edit button is clicked (stopPropagation)', () => {
     const onClick = vi.fn();
     const onEdit = vi.fn();
-    render(
-      <BlogCard
-        blog={mockBlog}
-        isActive={false}
-        onClick={onClick}
-        onEdit={onEdit}
-        onDelete={() => {}}
-      />
-    );
+    renderBlogCard({ onClick, onEdit });
     fireEvent.click(screen.getAllByRole('button')[0]);
     expect(onClick).not.toHaveBeenCalled();
     expect(onEdit).toHaveBeenCalledTimes(1);
   });
 
-  it('does not trigger onClick when the delete button is clicked', () => {
+  it('does not trigger onClick when the delete button is clicked (stopPropagation)', () => {
     const onClick = vi.fn();
     const onDelete = vi.fn();
-    render(
-      <BlogCard
-        blog={mockBlog}
-        isActive={false}
-        onClick={onClick}
-        onEdit={() => {}}
-        onDelete={onDelete}
-      />
-    );
+    renderBlogCard({ onClick, onDelete });
     fireEvent.click(screen.getAllByRole('button')[1]);
     expect(onClick).not.toHaveBeenCalled();
     expect(onDelete).toHaveBeenCalledTimes(1);
   });
-
-  it('does not call onClick when delete button is clicked, and passes correct id', () => {
-    const onClick = vi.fn();
-    const onDelete = vi.fn();
-    render(
-      <BlogCard
-        blog={mockBlog}
-        isActive={false}
-        onClick={onClick}
-        onEdit={() => {}}
-        onDelete={onDelete}
-      />
-    );
-    fireEvent.click(screen.getAllByRole('button')[1]);
-    expect(onDelete).toHaveBeenCalledWith(mockBlog.id);
-  });
 });
-
