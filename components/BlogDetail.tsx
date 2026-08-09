@@ -1,7 +1,10 @@
 
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 import { fetchBlogById } from '../api';
+import { FadeIn } from '../animations/FadeIn';
+import { WordCount } from '../animations/WordCount';
 
 interface BlogDetailProps {
   id: number | null;
@@ -27,11 +30,26 @@ export const BlogDetail: React.FC<BlogDetailProps> = ({ id }) => {
 
   if (isLoading || !blog) return <div className="p-12 animate-pulse">Loading story...</div>;
 
-  return (
-    <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mb-12">
-      <img src={blog?.coverImage || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200'} className="w-full h-[450px] object-cover" alt="" />
+return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mb-12"
+    >
+      <div className="relative">
+        <img src={blog?.coverImage || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200'} className="w-full h-[450px] object-cover" alt="" />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="absolute top-4 right-4"
+        >
+          <WordCount content={blog?.content} />
+        </motion.div>
+      </div>
       
-      <div className="p-10">
+      <FadeIn className="p-10" delay={0.1}>
         <div className="flex items-center gap-2 mb-4">
           <span className="text-[11px] font-black text-[#4c44d4] uppercase tracking-widest">{blog?.category?.[0] || 'GENERAL'}</span>
           <span className="text-slate-300 text-xs">•</span>
@@ -89,9 +107,9 @@ export const BlogDetail: React.FC<BlogDetailProps> = ({ id }) => {
           <div className="flex gap-4 text-slate-400">
              <button className="hover:text-blue-500"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" /></svg></button>
              <button className="hover:text-blue-500"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" /></svg></button>
-          </div>
+</div>
         </div>
-      </div>
-    </div>
+      </FadeIn>
+    </motion.div>
   );
 };

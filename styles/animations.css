@@ -1,0 +1,134 @@
+/* Global animation utilities for BlogHub */
+
+/* Fade-in / fade-out base */
+.fade-view {
+  opacity: 0;
+}
+
+/* Text reveal */
+.text-reveal-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.text-reveal-word > span {
+  display: inline-block;
+  transform: translateY(110%);
+  will-change: transform;
+}
+
+/* Scroll-triggered reveal */
+.reveal-section {
+  opacity: 0;
+  transform: translateY(40px);
+  will-change: opacity, transform;
+}
+
+/* Page transition overlay */
+.page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background: linear-gradient(135deg, #4c44d4 0%, #3b35a8 100%);
+  transform: translateY(-100%);
+}
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Reading progress bar */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #4c44d4, #7c74eb);
+  z-index: 9998;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* Scroll-to-top button */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9997;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #4c44d4;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(76, 68, 212, 0.35);
+  cursor: pointer;
+  border: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.3s ease;
+}
+
+.scroll-top-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.scroll-top-btn:hover {
+  background: #3b35a8;
+  transform: translateY(-3px);
+}
+
+/* Word count badge */
+.word-count-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #4c44d4;
+  background: rgba(76, 68, 212, 0.08);
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Search input */
+.blog-search {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.blog-search:focus {
+  box-shadow: 0 0 0 4px rgba(76, 68, 212, 0.1);
+  border-color: #4c44d4;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .text-reveal-word > span,
+  .reveal-section,
+  .fade-view {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+}

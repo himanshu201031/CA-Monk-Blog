@@ -1,5 +1,5 @@
-
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Blog } from '../types';
 
 interface BlogCardProps {
@@ -19,7 +19,9 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog, isActive, onClick, onE
   };
 
   return (
-    <div 
+    <motion.div
+      whileHover={{ x: 4 }}
+      transition={{ duration: 0.2 }}
       onClick={onClick}
       className={`group relative p-6 bg-white border-b border-slate-100 cursor-pointer transition-all hover:bg-slate-50/80 ${
         isActive ? 'border-l-4 border-l-[#4c44d4] bg-slate-50/50 shadow-inner' : 'border-l-4 border-l-transparent'
@@ -66,6 +68,6 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog, isActive, onClick, onE
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
