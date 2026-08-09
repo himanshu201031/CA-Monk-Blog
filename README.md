@@ -255,6 +255,47 @@ JSON Server and frontend are on different ports. CORS is handled by default in J
 - [React Query](https://tanstack.com/query/latest)
 - [JSON Server](https://github.com/typicode/json-server)
 
+## 🔄 CI/CD Pipeline
+
+This project uses GitHub Actions for continuous integration and continuous deployment.
+
+### Workflows
+
+**1. Test (`test.yml`)** — Runs on every push and pull request to `main`:
+- Installs dependencies (`npm ci`)
+- Installs Playwright Chromium (`npx playwright install --with-deps chromium`)
+- Runs unit tests with Vitest
+- Runs E2E tests with Playwright
+- Uploads the Playwright HTML report as an artifact on failure
+
+**2. Deploy (`deploy.yml`)** — Runs on every push to `main` (and manual dispatch):
+- Builds the production bundle with the correct GitHub Pages `base` path
+- Uploads the `dist/` folder as a Pages artifact
+- Deploys to GitHub Pages
+
+### Live Site
+
+The app is deployed to GitHub Pages at:
+```
+https://himanshu201031.github.io/CA-Monk-Blog/
+```
+
+> **Note:** The deployed site uses the app's automatic localStorage fallback (no live JSON Server backend), so it works fully standalone in the browser.
+
+### Local E2E Testing
+
+```bash
+npm run test:e2e          # headless Chromium
+npm run test:e2e:headed   # run in a visible browser
+npm run test:e2e:ui       # interactive Playwright UI
+```
+
+### CI Environment
+
+- Node.js v20
+- `ubuntu-latest` runner
+- Test job timeout: 15 minutes
+
 ## 📄 License
 
 This project is open source and available under the MIT License.

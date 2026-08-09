@@ -27,8 +27,8 @@ jobs:
       - name: Run unit tests (Vitest)
         run: npx vitest run
 
-      - name: Run E2E tests (Playwright)
-        run: npx playwright test
+- name: Run E2E tests (Playwright)
+        run: npx playwright test --project=chromium
 
       - name: Upload Playwright report on failure
         if: failure()
