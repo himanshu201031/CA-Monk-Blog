@@ -29,14 +29,16 @@ test.describe('Edit Blog Post', () => {
     await page.addInitScript(() => localStorage.clear());
     await page.addInitScript(seedBlogLocalStorage);
     await page.goto('/');
-    await expect(page.getByText('Original Title To Edit', { exact: true })).toBeVisible();
+    const sidebar = page.getByRole('complementary');
+    await expect(sidebar.getByRole('heading', { name: 'Original Title To Edit' })).toBeVisible();
   });
 
   test('edits the blog title and saves the change', async ({ page }) => {
     // Hover over the blog card to reveal the action buttons and click edit.
-    // Locate the card container (div) that contains the title, then find the
-    // first icon button (the pencil/edit button).
-    const card = page.getByText('Original Title To Edit', { exact: true }).locator('xpath=ancestor::div[contains(@class,"group")][1]');
+    // Locate the card container (div) that contains the title in the sidebar,
+    // then find the first icon button (the pencil/edit button).
+    const heading = page.getByRole('complementary').getByRole('heading', { name: 'Original Title To Edit' });
+    const card = heading.locator('xpath=ancestor::div[contains(@class,"group")][1]');
     await card.hover();
 
     // The BlogCard renders two icon buttons (edit & delete). Click the first (edit).

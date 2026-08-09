@@ -29,14 +29,16 @@ test.describe('Delete Blog Post', () => {
     await page.addInitScript(() => localStorage.clear());
     await page.addInitScript(seedBlogLocalStorage);
     await page.goto('/');
-    await expect(page.getByText('Blog To Delete', { exact: true })).toBeVisible();
+    const sidebar = page.getByRole('complementary');
+    await expect(sidebar.getByRole('heading', { name: 'Blog To Delete' })).toBeVisible();
   });
 
   test('deletes a blog after confirmation', async ({ page }) => {
 // Hover over the blog card to reveal the action buttons and click delete.
-    // Locate the card container (div) that contains the title, then find the
-    // second icon button (the delete button).
-    const card = page.getByText('Blog To Delete', { exact: true }).locator('xpath=ancestor::div[contains(@class,"group")][1]');
+    // Locate the card container (div) that contains the title in the sidebar,
+    // then find the second icon button (the delete button).
+    const heading = page.getByRole('complementary').getByRole('heading', { name: 'Blog To Delete' });
+    const card = heading.locator('xpath=ancestor::div[contains(@class,"group")][1]');
     await card.hover();
 
     // The BlogCard renders two icon buttons (edit & delete). Click the second (delete).

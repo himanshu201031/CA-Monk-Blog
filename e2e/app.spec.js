@@ -18,23 +18,28 @@ test.describe('Blog App - List & Detail', () => {
     // "Latest Articles" sidebar heading renders
     await expect(page.getByText('Latest Articles')).toBeVisible();
 
-    // The default blog (from localStorage fallback seed) appears
-    await expect(page.getByText('Future of Fintech', { exact: true })).toBeVisible();
-    await expect(page.getByText('The Rise of Remote Work', { exact: true })).toBeVisible();
+    // The default blogs (from localStorage fallback seed) appear in the sidebar list.
+    // Scope to the sidebar (aside/complementary) to avoid matching detail view.
+    const sidebar = page.getByRole('complementary');
+    await expect(sidebar.getByRole('heading', { name: 'Future of Fintech' })).toBeVisible();
+    await expect(sidebar.getByRole('heading', { name: 'The Rise of Remote Work' })).toBeVisible();
   });
 
   test('displays the first article details by default', async ({ page }) => {
-    // The detail view should show the first (selected by default) blog content
-    await expect(page.getByText('Exploring how AI and blockchain are reshaping financial services')).toBeVisible();
-    await expect(page.getByText('Share Article')).toBeVisible();
+    // The detail view should show the first (selected by default) blog content.
+    // Scope to the main section to avoid matching the sidebar card preview.
+    const detail = page.locator('section');
+    await expect(detail.getByText('Exploring how AI and blockchain are reshaping financial services')).toBeVisible();
+    await expect(detail.getByText('Share Article')).toBeVisible();
   });
 
-  test('navigates to a blog detail when a card is clicked', async ({ page }) => {
+test('navigates to a blog detail when a card is clicked', async ({ page }) => {
     // Click the second blog card
-    await page.getByText('The Rise of Remote Work', { exact: true }).first().click();
+    await page.getByRole('complementary').getByRole('heading', { name: 'The Rise of Remote Work' }).click();
 
-    // The detail view updates to show the second blog content
-    await expect(page.getByText('How the pandemic accelerated the shift to distributed teams')).toBeVisible();
+    // The detail view updates to show the second blog content (scope to section)
+    const detail = page.locator('section');
+    await expect(detail.getByText('How the pandemic accelerated the shift to distributed teams')).toBeVisible();
   });
 
   test('create post modal opens', async ({ page }) => {
