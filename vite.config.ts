@@ -19,10 +19,12 @@ export default defineConfig(({ mode }) => {
           '@': path.resolve(__dirname, '.'),
         }
       },
-      test: {
+test: {
         globals: true,
         environment: 'jsdom',
         setupFiles: './test/setup.js',
+        include: ['test/**/*.test.{js,ts,jsx,tsx}'],
+        exclude: ['node_modules/**', 'dist/**', 'e2e/**'],
       }
     };
 });

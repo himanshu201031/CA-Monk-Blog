@@ -6,12 +6,17 @@ import { defineConfig, devices } from '@playwright/test';
  * The webServer auto-starts the Vite dev server before running tests
  * and shuts it down afterwards.
  */
+// By default, only run Chromium (which is installed locally).
+// Set PLAYWRIGHT_TEST_ALL=1 to run the full cross-browser matrix
+// (used by `npm run test:e2e:all` and CI).
+const runAll = process.env.PLAYWRIGHT_TEST_ALL === '1';
+
 export default defineConfig({
   testDir: './e2e',
-  fullyParallel: true,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 1 : 2,
   reporter: 'html',
   use: {
     baseURL: 'http://localhost:5173',
@@ -24,22 +29,26 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-    {
-      name: 'mobile-chrome',
-      use: { ...devices['Pixel 7'] },
-    },
-    {
-      name: 'mobile-safari',
-      use: { ...devices['iPhone 13'] },
-    },
+    ...(runAll
+      ? [
+          {
+            name: 'firefox',
+            use: { ...devices['Desktop Firefox'] },
+          },
+          {
+            name: 'webkit',
+            use: { ...devices['Desktop Safari'] },
+          },
+          {
+            name: 'mobile-chrome',
+            use: { ...devices['Pixel 7'] },
+          },
+          {
+            name: 'mobile-safari',
+            use: { ...devices['iPhone 13'] },
+          },
+        ]
+      : []),
   ],
 
   /* Auto-start the Vite dev server for all E2E tests */

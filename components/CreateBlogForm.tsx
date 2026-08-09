@@ -28,12 +28,17 @@ export const CreateBlogForm: React.FC<Props> = ({ onFinish }) => {
     });
   };
 
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const base64 = await toBase64(file);
-      setPreview(base64);
-      setFormData({ ...formData, coverImage: base64 });
+      try {
+        const base64 = await toBase64(file);
+        setPreview(base64);
+        setFormData({ ...formData, coverImage: base64 });
+      } catch {
+        // Ignore file read errors gracefully (no preview is shown).
+        setPreview(null);
+      }
     }
   };
 

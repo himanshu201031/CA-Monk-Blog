@@ -29,11 +29,15 @@ const App: React.FC = () => {
     });
   };
 
-  const handleEditImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+const handleEditImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file && editingBlog) {
-      const base64 = await toBase64(file);
-      setEditingBlog({ ...editingBlog, coverImage: base64 });
+      try {
+        const base64 = await toBase64(file);
+        setEditingBlog({ ...editingBlog, coverImage: base64 });
+      } catch {
+        // Ignore file read errors gracefully; keep the existing cover image.
+      }
     }
   };
 
