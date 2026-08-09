@@ -57,8 +57,10 @@ test.describe('Edit Blog Post', () => {
     // Modal should close
     await expect(page.getByRole('heading', { name: 'Edit Article' })).toBeHidden();
 
-    // Updated title should appear in the list
-    await expect(page.getByText(newTitle, { exact: true })).toBeVisible();
+// Updated title should appear in the sidebar list (BlogCard)
+    await expect(
+      page.getByRole('complementary').getByText(newTitle, { exact: true })
+    ).toBeVisible();
   });
 });
 
