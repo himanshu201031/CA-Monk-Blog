@@ -33,22 +33,21 @@ test.describe('Edit Blog Post', () => {
   });
 
   test('edits the blog title and saves the change', async ({ page }) => {
-    // Hover over the blog card to reveal the action buttons and click edit
-    const card = page.getByText('Original Title To Edit', { exact: true });
+    // Hover over the blog card to reveal the action buttons and click edit.
+    // Locate the card container (div) that contains the title, then find the
+    // first icon button (the pencil/edit button).
+    const card = page.getByText('Original Title To Edit', { exact: true }).locator('xpath=ancestor::div[contains(@class,"group")][1]');
     await card.hover();
 
-    // There are multiple buttons; locate the edit (pencil) button within the card
-    // We target the card container and find the edit button. Simpler approach:
-    // The BlogCard renders two icon buttons (edit & delete). Click the first.
-    // We'll click via the card's parent row after hover.
-    await card.locator('xpath=../../..').getByRole('button').nth(0).click();
+    // The BlogCard renders two icon buttons (edit & delete). Click the first (edit).
+    await card.getByRole('button').nth(0).click();
 
     // Edit modal appears
     await expect(page.getByRole('heading', { name: 'Edit Article' })).toBeVisible();
 
-    // Change the title field (Headline input)
+// Change the title field (Headline input) - it's the first text input in the edit form
     const newTitle = `Edited E2E Title ${Date.now()}`;
-    await page.locator('input').filter({ hasValue: 'Original Title To Edit' }).fill(newTitle);
+    await page.locator('.fixed form input').first().fill(newTitle);
 
     // Save the changes
     await page.getByRole('button', { name: 'Update Post' }).click();

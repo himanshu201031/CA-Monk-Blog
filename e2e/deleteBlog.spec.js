@@ -33,12 +33,14 @@ test.describe('Delete Blog Post', () => {
   });
 
   test('deletes a blog after confirmation', async ({ page }) => {
-    // Hover over the blog card to reveal the action buttons and click delete
-    const card = page.getByText('Blog To Delete', { exact: true });
+// Hover over the blog card to reveal the action buttons and click delete.
+    // Locate the card container (div) that contains the title, then find the
+    // second icon button (the delete button).
+    const card = page.getByText('Blog To Delete', { exact: true }).locator('xpath=ancestor::div[contains(@class,"group")][1]');
     await card.hover();
 
     // The BlogCard renders two icon buttons (edit & delete). Click the second (delete).
-    await card.locator('xpath=../../..').getByRole('button').nth(1).click();
+    await card.getByRole('button').nth(1).click();
 
     // Delete confirmation modal appears
     await expect(page.getByRole('heading', { name: 'Delete article?' })).toBeVisible();
