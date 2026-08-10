@@ -11,19 +11,23 @@ import {
   useTransform,
   type Variants,
 } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { ScrollToTop } from '../animations/ScrollToTop';
 import { Parallax, ParallaxImg } from '../animations/Parallax';
 import { Magnetic } from '../animations/Magnetic';
 import { WordReveal } from '../animations/WordReveal';
-import type { BlogNavOptions } from '../App';
+import { useTheme } from '../lib/theme';
 import { RuixenGradientFooter } from './ui/ruixen-gradient-footer';
+import {
+  CardCurtainReveal,
+  CardCurtainRevealBody,
+  CardCurtainRevealTitle,
+  CardCurtainRevealDescription,
+  CardCurtainRevealFooter,
+  CardCurtain,
+} from './ui/card-curtain-reveal';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
-interface HomeProps {
-  onOpenBlogs?: (opts?: BlogNavOptions) => void;
-  onOpenNotFound?: () => void;
-}
 
 const categories = [
   { label: 'Technology', icon: '💻' },
@@ -188,10 +192,10 @@ const heroWord: Variants = {
 };
 
 const heroWords = [
-  { text: 'Stories', className: 'text-slate-950' },
-  { text: 'that', className: 'text-slate-950' },
+  { text: 'Stories', className: 'text-slate-950 dark:text-white' },
+  { text: 'that', className: 'text-slate-950 dark:text-white' },
   { text: 'inspire', className: 'bg-gradient-to-r from-[#4c44d4] to-[#8363f9] bg-clip-text text-transparent' },
-  { text: 'minds.', className: 'text-slate-950' },
+  { text: 'minds.', className: 'text-slate-950 dark:text-white' },
 ];
 
 const storySegments = [
@@ -214,7 +218,9 @@ const features = [
 
 /* ---------------- page ---------------- */
 
-const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
+const Home: React.FC = () => {
+  const navigate = useNavigate();
+  const { theme, toggle } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
@@ -276,27 +282,40 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
           <div
             className={`relative mx-auto max-w-[1200px] overflow-hidden rounded-2xl border transition-all duration-500 ${
               scrolled
-                ? 'border-slate-200/80 bg-white/85 shadow-[0_14px_44px_rgba(15,23,42,0.1)] backdrop-blur-2xl'
-                : 'border-transparent bg-white/50 backdrop-blur-md'
+                ? 'border-slate-200/80 bg-white/85 shadow-[0_14px_44px_rgba(15,23,42,0.1)] backdrop-blur-2xl dark:border-slate-800 dark:bg-slate-900/85'
+                : 'border-transparent bg-white/50 backdrop-blur-md dark:bg-slate-900/50'
             }`}
           >
             <div className="flex items-center justify-between gap-3 px-3 py-2.5 sm:px-4">
               {/* Brand */}
               <Magnetic strength={0.25}>
-                <a href="#home" onClick={scrollToId('#home')} className="group flex shrink-0 items-center gap-2.5">
+                <a
+                  href="/"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="group flex shrink-0 items-center gap-2.5"
+                >
                   <motion.div
                     whileHover={{ rotate: -10, scale: 1.08 }}
                     transition={{ duration: 0.25 }}
-                    className="relative grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#4c44d4] to-[#8363f9] text-white shadow-lg shadow-[#4c44d4]/30"
+                    className="relative grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#4c44d4] via-[#6d5ef0] to-[#8363f9] text-white shadow-lg shadow-[#4c44d4]/30 ring-1 ring-white/20"
                   >
-                    <span className="text-sm font-black">B</span>
+                    <svg viewBox="0 0 24 24" className="h-[17px] w-[17px]" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z" />
+                      <path d="m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18" />
+                      <path d="m2.3 2.3 7.286 7.286" />
+                      <circle cx="11" cy="11" r="2" />
+                    </svg>
                     <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full border-2 border-white bg-emerald-400" />
                   </motion.div>
                   <div className="leading-none">
                     <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-400 transition-colors group-hover:text-[#4c44d4]">
                       Blogify
                     </p>
-                    <p className="mt-0.5 hidden text-[13px] font-black tracking-tight text-slate-950 sm:block">
+                    <p className="mt-0.5 hidden text-[13px] font-black tracking-tight text-slate-950 dark:text-white sm:block">
                       Stories & insights
                     </p>
                   </div>
@@ -304,7 +323,7 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
               </Magnetic>
 
               {/* Desktop nav */}
-              <nav className="hidden items-center gap-3 text-[13px] font-semibold text-slate-500 md:flex">
+              <nav className="hidden items-center gap-3 text-[13px] font-semibold text-slate-500 dark:text-slate-400 md:flex">
                 {navLinks.map((link) => (
                   <Magnetic key={link.label} strength={0.18}>
                     <a
@@ -312,12 +331,12 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
                       onClick={(e) => {
                         if (link.blog) {
                           e.preventDefault();
-                          onOpenBlogs?.();
+                          navigate('/blogs');
                         } else {
                           scrollToId(link.href)(e);
                         }
                       }}
-                      className="group relative overflow-hidden rounded-full px-3 py-2 transition-colors hover:bg-white/70 hover:text-slate-950"
+                      className="group relative overflow-hidden rounded-full px-3 py-2 transition-colors hover:bg-white/70 hover:text-slate-950 dark:hover:bg-white/10 dark:hover:text-white"
                     >
                       <span className="relative block overflow-hidden">
                         <span className="block transition-transform duration-300 ease-out group-hover:-translate-y-full">
@@ -336,20 +355,27 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
               {/* Actions */}
               <div className="flex items-center gap-2">
                 <motion.button
-                  whileHover={{ scale: 1.08, y: -2, rotate: 20 }}
+                  whileHover={{ scale: 1.08, y: -2, rotate: theme === 'dark' ? 180 : 20 }}
                   whileTap={{ scale: 0.92 }}
-                  aria-label="Toggle theme"
-                  className="hidden h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-500 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#eef2ff] hover:text-[#4c44d4] sm:grid"
+                  onClick={toggle}
+                  aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                  className="hidden h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-500 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#eef2ff] hover:text-[#4c44d4] dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-400 dark:hover:border-[#4c44d4]/40 sm:grid"
                 >
-                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
+                  {theme === 'dark' ? (
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                  ) : (
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                  )}
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.08, y: -2 }}
                   whileTap={{ scale: 0.92 }}
                   aria-label="Search"
-                  onClick={() => onOpenBlogs?.({ searchFocus: true })}
+                  onClick={() => navigate('/blogs?focus=1')}
                   className="hidden h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-500 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#eef2ff] hover:text-[#4c44d4] sm:grid"
                 >
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -394,7 +420,7 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
                 transition={{ duration: 0.34, ease: EASE }}
                 className="overflow-hidden md:hidden"
               >
-                <div className="flex flex-col gap-1 border-t border-slate-100 px-3 pb-3 pt-2 sm:px-4">
+                <div className="flex flex-col gap-1 border-t border-slate-100 px-3 pb-3 pt-2 dark:border-slate-800 sm:px-4">
                   {navLinks.map((link, i) => (
                     <motion.a
                       key={link.label}
@@ -402,7 +428,7 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
                       onClick={(e) => {
                         e.preventDefault();
                         if (link.blog) {
-                          onOpenBlogs?.();
+                          navigate('/blogs');
                         } else {
                           scrollToId(link.href)(e);
                         }
@@ -411,7 +437,7 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
                       initial={{ opacity: 0, x: -16 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.04 * i, duration: 0.32, ease: EASE }}
-                      className="group flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-950"
+                      className="group flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800/60 dark:hover:text-white"
                     >
                       <span className="flex items-center gap-2.5">
                         <span className="h-1.5 w-1.5 rounded-full bg-[#4c44d4] opacity-0 transition-opacity group-hover:opacity-100" />
@@ -464,7 +490,7 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
               variants={heroContainer}
               initial="hidden"
               animate="show"
-              className="relative flex flex-col justify-center overflow-hidden rounded-3xl bg-white px-6 py-8 shadow-[0_24px_60px_rgba(15,23,42,0.07)] sm:px-8 sm:py-10"
+              className="relative flex flex-col justify-center overflow-hidden rounded-3xl bg-white px-6 py-8 shadow-[0_24px_60px_rgba(15,23,42,0.07)] dark:bg-slate-900 sm:px-8 sm:py-10"
             >
               <div
                 className="pointer-events-none absolute inset-0 opacity-60"
@@ -498,7 +524,7 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
                 </span>
               </h2>
 
-              <motion.p variants={heroItem} className="mt-4 max-w-md text-sm leading-7 text-slate-600 sm:text-[15px]">
+              <motion.p variants={heroItem} className="mt-4 max-w-md text-sm leading-7 text-slate-600 dark:text-slate-400 sm:text-[15px]">
                 Discover ideas, insights and stories on technology, lifestyle, productivity and more — curated for
                 curious minds.
               </motion.p>
@@ -507,8 +533,8 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.96 }}
-                  onClick={() => onOpenBlogs?.()}
-                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-5 py-2.5 text-[13px] font-semibold text-white shadow-lg shadow-slate-900/15 transition-colors hover:bg-slate-800"
+                  onClick={() => navigate('/blogs')}
+                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-5 py-2.5 text-[13px] font-semibold text-white shadow-lg shadow-slate-900/15 transition-colors hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700"
                 >
                   Explore Articles
                   <svg className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -518,8 +544,8 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.96 }}
-                  onClick={() => onOpenBlogs?.()}
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-[13px] font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50"
+                  onClick={() => navigate('/blogs')}
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-[13px] font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-800"
                 >
                   Browse Categories
                 </motion.button>
@@ -527,7 +553,7 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
 
               <motion.div
                 variants={heroItem}
-                className="mt-8 flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between"
+                className="mt-8 flex flex-col gap-3 border-t border-slate-100 pt-5 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div className="flex items-center">
                   <div className="flex -space-x-2.5">
@@ -543,14 +569,14 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
                       />
                     ))}
                   </div>
-                  <span className="ml-3 text-xs font-medium text-slate-500">
-                    <CountUp to={10000} suffix="+" className="font-black text-slate-900" /> readers growing daily
+                  <span className="ml-3 text-xs font-medium text-slate-500 dark:text-slate-400">
+                    <CountUp to={10000} suffix="+" className="font-black text-slate-900 dark:text-white" /> readers growing daily
                   </span>
                 </div>
-                <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500">
-                  <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5">✦ 6 topics</span>
-                  <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5">
-                    <CountUp to={12000} suffix="+" className="font-black text-slate-900" /> monthly readers
+                <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                  <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 dark:border-slate-700 dark:bg-slate-800/60">✦ 6 topics</span>
+                  <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 dark:border-slate-700 dark:bg-slate-800/60">
+                    <CountUp to={12000} suffix="+" className="font-black text-slate-900 dark:text-white" /> monthly readers
                   </span>
                 </div>
               </motion.div>
@@ -632,10 +658,10 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
           </section>
 
           {/* ============ MARQUEE ============ */}
-          <Reveal y={16} className="marquee mt-5 overflow-hidden rounded-2xl border border-slate-200/80 bg-white py-2.5 shadow-sm marquee-mask">
+          <Reveal y={16} className="marquee mt-5 overflow-hidden rounded-2xl border border-slate-200/80 bg-white py-2.5 shadow-sm marquee-mask dark:border-slate-800 dark:bg-slate-900">
             <div className="marquee-track flex w-max items-center gap-10 whitespace-nowrap">
               {[...marqueeItems, ...marqueeItems].map((item, i) => (
-                <span key={i} className="flex items-center gap-10 text-[13px] font-bold text-slate-500">
+                <span key={i} className="flex items-center gap-10 text-[13px] font-bold text-slate-500 dark:text-slate-400">
                   {item}
                   <span className="text-[#4c44d4]">✦</span>
                 </span>
@@ -647,7 +673,7 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
           <Parallax speed={14}>
           <section id="categories" className="scroll-mt-24 pt-12 sm:pt-16">
             <Reveal>
-              <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm sm:p-5">
+              <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-5">
                 <div className="mb-3 flex items-center justify-between">
                   <p className="text-[11px] font-black uppercase tracking-[0.3em] text-[#4c44d4]">Browse by topic</p>
                   <span className="hidden text-xs font-medium text-slate-400 sm:block">6 categories</span>
@@ -668,8 +694,8 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
                       }}
                       whileHover={{ y: -2, scale: 1.04 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={() => onOpenBlogs?.({ category: category.label })}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#eef2ff] hover:text-[#4c44d4]"
+                      onClick={() => navigate('/blogs?category=' + encodeURIComponent(category.label))}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#eef2ff] hover:text-[#4c44d4] dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:border-[#4c44d4]/60 dark:hover:bg-slate-800 dark:hover:text-[#a5b4fc]"
                     >
                       <span className="text-sm leading-none">{category.icon}</span>
                       {category.label}
@@ -681,7 +707,7 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
                       show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: EASE } },
                     }}
                     whileHover={{ y: -2 }}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-slate-300 px-3.5 py-2 text-xs font-semibold text-slate-500 transition-colors hover:border-[#4c44d4]/50 hover:text-[#4c44d4]"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-slate-300 px-3.5 py-2 text-xs font-semibold text-slate-500 transition-colors hover:border-[#4c44d4]/50 hover:text-[#4c44d4] dark:border-slate-700 dark:text-slate-400"
                   >
                     <span className="text-base leading-none">⋯</span>
                     More
@@ -710,8 +736,8 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
                 <motion.article
                   whileHover={{ y: -4 }}
                   transition={{ duration: 0.3, ease: EASE }}
-                  onClick={() => onOpenBlogs?.({ query: featuredArticles[0].title })}
-                  className="group cursor-pointer overflow-hidden rounded-3xl border border-slate-200/70 bg-white shadow-[0_16px_40px_rgba(15,23,42,0.06)]"
+                  onClick={() => navigate('/blogs?q=' + encodeURIComponent(featuredArticles[0].title))}
+                  className="group cursor-pointer overflow-hidden rounded-3xl border border-slate-200/70 bg-white shadow-[0_16px_40px_rgba(15,23,42,0.06)] dark:border-slate-800 dark:bg-slate-900"
                 >
                   <ParallaxImg
                     src={featuredArticles[0].image}
@@ -722,13 +748,13 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
                     <span className="inline-flex rounded-full bg-[#eef2ff] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#4c44d4]">
                       {featuredArticles[0].category}
                     </span>
-                    <h3 className="mt-3 text-xl font-black leading-snug text-slate-950 sm:text-2xl">
+                    <h3 className="mt-3 text-xl font-black leading-snug text-slate-950 dark:text-white sm:text-2xl">
                       {featuredArticles[0].title}
                     </h3>
-                    <p className="mt-2 text-[13px] leading-6 text-slate-600">{featuredArticles[0].description}</p>
-                    <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-slate-500">
-                      <span className="font-semibold text-slate-700">By {featuredArticles[0].author}</span>
-                      <span className="text-slate-300">•</span>
+                    <p className="mt-2 text-[13px] leading-6 text-slate-600 dark:text-slate-400">{featuredArticles[0].description}</p>
+                    <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
+                      <span className="font-semibold text-slate-700 dark:text-slate-200">By {featuredArticles[0].author}</span>
+                      <span className="text-slate-300 dark:text-slate-600">•</span>
                       <span>{featuredArticles[0].date}</span>
                       <span className="text-slate-300">•</span>
                       <span>{featuredArticles[0].readTime}</span>
@@ -744,7 +770,7 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
                     <motion.article
                       whileHover={{ y: -4 }}
                       transition={{ duration: 0.3, ease: EASE }}
-                      onClick={() => onOpenBlogs?.({ query: article.title })}
+                      onClick={() => navigate('/blogs?q=' + encodeURIComponent(article.title))}
                       className="group flex cursor-pointer gap-4 overflow-hidden rounded-2xl border border-slate-200/70 bg-white p-3 shadow-sm transition-shadow hover:shadow-[0_12px_32px_rgba(15,23,42,0.08)]"
                     >
                       <div className="h-20 w-24 shrink-0 overflow-hidden rounded-xl sm:h-24 sm:w-32">
@@ -788,30 +814,43 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
               className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
             >
               {trendingNow.map((item) => (
-                <motion.article
+                <motion.div
                   key={item.id}
                   variants={{
                     hidden: { opacity: 0, y: 24 },
                     show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE } },
                   }}
-                  whileHover={{ y: -5 }}
-                  transition={{ duration: 0.3, ease: EASE }}
-                  onClick={() => onOpenBlogs?.({ query: item.title })}
-                  className="group cursor-pointer overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-sm transition-shadow hover:shadow-[0_16px_36px_rgba(15,23,42,0.1)]"
                 >
-                  <div className="relative overflow-hidden">
-                    <ParallaxImg src={item.image} alt={item.title} className="h-32 sm:h-36" amount={10} />
-                    <span className="absolute left-3 top-3 grid h-6 w-6 place-items-center rounded-lg bg-white/85 text-[11px] font-black text-slate-900 shadow-sm backdrop-blur-sm">
-                      {String(item.id).padStart(2, '0')}
-                    </span>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="line-clamp-2 text-sm font-bold leading-snug text-slate-950">{item.title}</h3>
-                    <p className="mt-2 text-[11px] text-slate-500">
-                      By {item.author} • {item.date}
-                    </p>
-                  </div>
-                </motion.article>
+                  <CardCurtainReveal
+                    className="h-64 cursor-pointer rounded-2xl border border-zinc-100 bg-slate-950 text-white shadow-sm transition-shadow hover:shadow-[0_20px_44px_rgba(15,23,42,0.4)]"
+                    onClick={() => navigate('/blogs?q=' + encodeURIComponent(item.title))}
+                  >
+                    <CardCurtainRevealBody className="p-4">
+                      <div className="flex items-start justify-between">
+                        <span className="grid h-7 w-7 place-items-center rounded-lg bg-white/10 text-[11px] font-black text-white backdrop-blur-sm">
+                          {String(item.id).padStart(2, '0')}
+                        </span>
+                        <span className="grid h-8 w-8 place-items-center rounded-full bg-white/10 text-white backdrop-blur-sm">
+                          <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                          </svg>
+                        </span>
+                      </div>
+                      <CardCurtainRevealTitle className="mt-4 text-base font-black leading-snug tracking-tight">
+                        {item.title}
+                      </CardCurtainRevealTitle>
+                      <CardCurtainRevealDescription className="mt-2">
+                        <p className="text-[11px] font-medium text-slate-300">
+                          By {item.author} • {item.date}
+                        </p>
+                      </CardCurtainRevealDescription>
+                      <CardCurtain className="bg-zinc-50" />
+                    </CardCurtainRevealBody>
+                    <CardCurtainRevealFooter className="mt-auto">
+                      <ParallaxImg src={item.image} alt={item.title} className="h-40" amount={6} />
+                    </CardCurtainRevealFooter>
+                  </CardCurtainReveal>
+                </motion.div>
               ))}
             </motion.div>
           </section>
@@ -824,9 +863,7 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
             </Reveal>
 
             <Reveal y={20}>
-              <div className="mt-6 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm sm:p-8">
-                <WordReveal segments={storySegments} scrollLength={185} />
-              </div>
+              <WordReveal segments={storySegments} scrollLength={185} className="mt-6" />
             </Reveal>
 
             <motion.div
@@ -920,9 +957,9 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
                 <div className="grid h-8 w-8 place-items-center rounded-xl bg-slate-950 text-white">
                   <span className="text-sm font-black">B</span>
                 </div>
-                <span className="text-base font-black text-slate-950">Blogify</span>
+                <span className="text-base font-black text-slate-950 dark:text-white">Blogify</span>
               </div>
-              <p className="max-w-xs text-[13px] leading-6 text-slate-500">
+              <p className="max-w-xs text-[13px] leading-6 text-slate-500 dark:text-slate-400">
                 A platform for curious minds. Explore ideas, stories and perspectives that matter.
               </p>
               <div className="flex items-center gap-2 pt-1">
@@ -936,7 +973,7 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
                     href="#contact"
                     whileHover={{ y: -3, color: '#4c44d4' }}
                     aria-label="Social link"
-                    className="grid h-8 w-8 place-items-center rounded-xl border border-slate-200 text-slate-500 transition-colors"
+                    className="grid h-8 w-8 place-items-center rounded-xl border border-slate-200 text-slate-500 transition-colors dark:border-slate-700 dark:text-slate-400"
                   >
                     <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24">
                       <path d={d} />
@@ -958,13 +995,13 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
               title="Legal"
               items={['Privacy Policy', 'Terms of Service', 'Cookie Policy', '404 Page']}
               onClickItem={(item) => {
-                if (item === '404 Page') onOpenNotFound?.();
+                if (item === '404 Page') navigate('/404');
               }}
             />
           </div>
 
-          <div className="border-t border-slate-100">
-            <div className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-2 px-4 py-5 text-center text-xs text-slate-400 sm:flex-row sm:px-6">
+          <div className="border-t border-slate-100 dark:border-slate-800">
+            <div className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-2 px-4 py-5 text-center text-xs text-slate-400 dark:text-slate-500 sm:flex-row sm:px-6">
               <span>© 2025 Blogify. All rights reserved.</span>
               <span className="flex items-center gap-1.5">
                 Made with <span className="text-[#4c44d4]">♥</span> for curious minds
@@ -991,13 +1028,13 @@ const SectionHeading: React.FC<{
         <span className="h-1.5 w-1.5 rounded-full bg-[#4c44d4]" />
         {eyebrow}
       </p>
-      <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950 sm:text-[28px]">{title}</h2>
+      <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950 dark:text-white sm:text-[28px]">{title}</h2>
     </div>
     {link && (
       <a
         href={href}
         onClick={scrollToId(href)}
-        className="group inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-500 transition-colors hover:text-[#4c44d4]"
+        className="group inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-500 transition-colors hover:text-[#4c44d4] dark:text-slate-400"
       >
         {link}
         <svg className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1014,8 +1051,8 @@ const FooterCol: React.FC<{ title: string; items: string[]; onClickItem?: (item:
   onClickItem,
 }) => (
   <div>
-    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{title}</h3>
-    <ul className="mt-4 space-y-2.5 text-[13px] text-slate-600">
+    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500">{title}</h3>
+    <ul className="mt-4 space-y-2.5 text-[13px] text-slate-600 dark:text-slate-400">
       {items.map((item) => (
         <li key={item}>
           <a
@@ -1024,7 +1061,7 @@ const FooterCol: React.FC<{ title: string; items: string[]; onClickItem?: (item:
               e.preventDefault();
               onClickItem?.(item);
             }}
-            className="inline-flex items-center gap-1.5 transition-all hover:translate-x-0.5 hover:text-[#4c44d4]"
+            className="inline-flex items-center gap-1.5 transition-all hover:translate-x-0.5 hover:text-[#4c44d4] dark:hover:text-[#a5b4fc]"
           >
             {item}
           </a>
