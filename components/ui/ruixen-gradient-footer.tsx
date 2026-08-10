@@ -1,12 +1,6 @@
 "use client";
 
-// Ruixen Gradient Footer — a normal footer that sits at the bottom of the page.
-// Its content reads first; the blurred rainbow is pinned to the bottom of the
-// viewport and stretches up from the floor over the last stretch of scroll,
-// hitting full height exactly when you reach the end of the page.
-// One inline <svg> — no canvas, no giant scroll spacer.
-//
-// Gradient design inspired by Dia Browser — https://www.diabrowser.com
+
 
 import {
   useEffect,
@@ -132,8 +126,7 @@ export function RuixenGradientFooter({
     >
       {children}
 
-      {/* ponytail: fixed to the viewport — a transformed/filtered ancestor
-          would capture it. Give the footer a plain containing block. */}
+
       <div
         ref={bandRef}
         aria-hidden
