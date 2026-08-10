@@ -95,8 +95,8 @@ export const WordReveal: React.FC<WordRevealProps> = ({
                   const cls = wordClassName
                     ? wordClassName(isRevealed)
                     : isRevealed
-                      ? 'text-slate-900'
-                      : 'text-slate-300';
+                      ? 'text-slate-900 dark:text-white'
+                      : 'text-slate-300 dark:text-slate-600';
                   return (
                     <span
                       key={i}

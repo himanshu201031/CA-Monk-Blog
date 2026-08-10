@@ -1,14 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import './NotFound.css';
 import { Magnetic } from '../animations/Magnetic';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
-interface NotFoundProps {
-  onHome?: () => void;
-  onBlogs?: () => void;
-}
 
 /** The animated face — eyes drop in, blink, pupils scan, mouth draws on. */
 const Face: React.FC = () => (
@@ -40,7 +36,9 @@ const Face: React.FC = () => (
   </svg>
 );
 
-const NotFound: React.FC<NotFoundProps> = ({ onHome, onBlogs }) => (
+const NotFound: React.FC = () => {
+  const navigate = useNavigate();
+  return (
   <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-slate-950 px-6 py-20 text-center">
     {/* Ambient orbs */}
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -86,7 +84,7 @@ const NotFound: React.FC<NotFoundProps> = ({ onHome, onBlogs }) => (
           <motion.button
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.95 }}
-            onClick={onHome}
+            onClick={() => navigate('/')}
             className="group relative overflow-hidden rounded-full bg-gradient-to-r from-[#4c44d4] to-[#8363f9] px-6 py-2.5 text-[13px] font-semibold text-white shadow-lg shadow-[#4c44d4]/30 transition-shadow hover:shadow-[#4c44d4]/45"
           >
             <span className="relative z-10">Back to Home</span>
@@ -97,7 +95,7 @@ const NotFound: React.FC<NotFoundProps> = ({ onHome, onBlogs }) => (
           <motion.button
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.95 }}
-            onClick={onBlogs}
+            onClick={() => navigate('/blogs')}
             className="rounded-full border border-slate-700 bg-white/5 px-6 py-2.5 text-[13px] font-semibold text-slate-200 backdrop-blur-sm transition-colors hover:border-slate-500 hover:bg-white/10"
           >
             Explore the Blog
@@ -108,6 +106,7 @@ const NotFound: React.FC<NotFoundProps> = ({ onHome, onBlogs }) => (
       <p className="mt-12 font-mono text-[11px] tracking-[0.3em] text-slate-600">HTTP 404 · NOT_FOUND</p>
     </motion.main>
   </div>
-);
+  );
+};
 
 export default NotFound;

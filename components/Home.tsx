@@ -771,7 +771,7 @@ const Home: React.FC = () => {
                       whileHover={{ y: -4 }}
                       transition={{ duration: 0.3, ease: EASE }}
                       onClick={() => navigate('/blogs?q=' + encodeURIComponent(article.title))}
-                      className="group flex cursor-pointer gap-4 overflow-hidden rounded-2xl border border-slate-200/70 bg-white p-3 shadow-sm transition-shadow hover:shadow-[0_12px_32px_rgba(15,23,42,0.08)]"
+                      className="group flex cursor-pointer gap-4 overflow-hidden rounded-2xl border border-slate-200/70 bg-white p-3 shadow-sm transition-shadow hover:shadow-[0_12px_32px_rgba(15,23,42,0.08)] dark:border-slate-800 dark:bg-slate-900"
                     >
                       <div className="h-20 w-24 shrink-0 overflow-hidden rounded-xl sm:h-24 sm:w-32">
                         <img
@@ -784,10 +784,10 @@ const Home: React.FC = () => {
                         <span className="inline-flex w-fit rounded-full bg-[#f7f0ff] px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.2em] text-[#7b56fd]">
                           {article.category}
                         </span>
-                        <h4 className="mt-1.5 line-clamp-2 text-sm font-black leading-snug text-slate-950 sm:text-[15px]">
+                        <h4 className="mt-1.5 line-clamp-2 text-sm font-black leading-snug text-slate-950 dark:text-white sm:text-[15px]">
                           {article.title}
                         </h4>
-                        <p className="mt-1.5 text-[11px] text-slate-500">
+                        <p className="mt-1.5 text-[11px] text-slate-500 dark:text-slate-400">
                           By {article.author} • {article.readTime}
                         </p>
                       </div>
@@ -881,13 +881,13 @@ const Home: React.FC = () => {
                     show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } },
                   }}
                   whileHover={{ y: -4 }}
-                  className="group rounded-2xl border border-slate-200/70 bg-white p-5 shadow-sm transition-shadow hover:shadow-[0_16px_36px_rgba(15,23,42,0.1)]"
+                  className="group rounded-2xl border border-slate-200/70 bg-white p-5 shadow-sm transition-shadow hover:shadow-[0_16px_36px_rgba(15,23,42,0.1)] dark:border-slate-800 dark:bg-slate-900"
                 >
                   <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#4c44d4]/10 to-[#8363f9]/15 text-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110">
                     {f.icon}
                   </div>
-                  <h3 className="mt-3.5 text-sm font-black text-slate-950">{f.title}</h3>
-                  <p className="mt-1.5 text-[12px] leading-5 text-slate-500">{f.text}</p>
+                  <h3 className="mt-3.5 text-sm font-black text-slate-950 dark:text-white">{f.title}</h3>
+                  <p className="mt-1.5 text-[12px] leading-5 text-slate-500 dark:text-slate-400">{f.text}</p>
                 </motion.div>
               ))}
             </motion.div>

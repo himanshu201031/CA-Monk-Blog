@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import "./BlogEditor.css";
+import { useTheme } from "../lib/theme";
 import {
   DEFAULT_CATEGORIES,
   DEFAULT_IMAGE,
@@ -37,14 +39,6 @@ type MainView =
   | "settings"
   | "editor";
 
-interface BlogEditorProps {
-  onBack?: () => void;
-  initialCategory?: string;
-  initialSearch?: string;
-  searchFocus?: boolean;
-  initialPostId?: number;
-}
-
 const navItems = [
   { icon: "⌂", label: "Dashboard", view: "dashboard" as MainView },
   { icon: "▤", label: "All Posts", view: "posts" as MainView },
@@ -71,13 +65,17 @@ const viewTitles: Record<Exclude<MainView, "editor">, { title: string; sub: stri
   settings: { title: "Settings", sub: "Site preferences and defaults" },
 };
 
-export default function BlogEditor({
-  onBack,
-  initialCategory,
-  initialSearch,
-  searchFocus,
-  initialPostId,
-}: BlogEditorProps) {
+export default function BlogEditor() {
+  const navigate = useNavigate();
+  const params = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
+  const { theme, toggle } = useTheme();
+
+  const initialPostId = params.id ? Number(params.id) : undefined;
+  const initialCategory = searchParams.get("category") ?? undefined;
+  const initialSearch = searchParams.get("q") ?? undefined;
+  const searchFocus = searchParams.get("focus") === "1";
+
   const [posts, setPosts] = useState<StoredPost[]>(() => loadPosts());
   const [post, setPost] = useState<StoredPost>(() => blankPost());
   const [view, setView] = useState<MainView>("editor");
@@ -515,7 +513,7 @@ export default function BlogEditor({
             <button className="menu-toggle" aria-label="Toggle sidebar" onClick={() => setSidebarOpen((o) => !o)}>
               ☰
             </button>
-            <button className="back-button" onClick={onBack}>
+            <button className="back-button" onClick={() => navigate("/blogs")}>
               ←<span>Back to Blogs</span>
             </button>
           </div>
@@ -525,7 +523,9 @@ export default function BlogEditor({
               <span className="save-dot" />
               {saved ? "Saved just now" : "Saving..."}
             </span>
-            <button className="top-icon" aria-label="Toggle theme">☼</button>
+            <button className="top-icon" aria-label="Toggle theme" onClick={toggle}>
+              {theme === "dark" ? "☾" : "☼"}
+            </button>
             <button className="top-icon" aria-label="Notifications">♧</button>
             <div className="profile">
               <div className="avatar">H</div>
