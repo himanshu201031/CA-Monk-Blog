@@ -3,9 +3,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Home from './components/Home';
 import BlogsPage from './components/BlogsPage';
 import BlogEditor from './components/BlogEditor';
+import NotFound from './components/NotFound';
 import UserCursor from './components/ui/user-cursor';
 import Loader from './components/Loader';
 import { CurtainTransition } from './animations/CurtainTransition';
+import { loadPosts } from './lib/blogStore';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -16,7 +18,7 @@ export interface BlogNavOptions {
   editingId?: number;
 }
 
-type View = 'home' | 'blogs' | 'editor';
+type View = 'home' | 'blogs' | 'editor' | 'notfound';
 type CurtainPhase = 'idle' | 'cover' | 'reveal';
 
 const viewMotion = {
@@ -48,8 +50,17 @@ const App: React.FC = () => {
   const handleCovered = () => {
     const pending = pendingRef.current;
     if (pending) {
+      // Opening a post that no longer exists is a real 404 — show the page.
+      let next: View = pending.view;
+      if (
+        next === 'editor' &&
+        pending.options.editingId &&
+        !loadPosts().some((p) => p.id === pending.options.editingId)
+      ) {
+        next = 'notfound';
+      }
       setOptions(pending.options);
-      setView(pending.view);
+      setView(next);
       window.scrollTo({ top: 0 });
     }
     setCurtain('reveal');
@@ -72,7 +83,12 @@ const App: React.FC = () => {
       <AnimatePresence mode="wait">
       {view === 'home' && (
         <motion.div key="home" {...viewMotion}>
-          <Home onOpenBlogs={openBlogs} />
+          <Home onOpenBlogs={openBlogs} onOpenNotFound={() => navigate('notfound')} />
+        </motion.div>
+      )}
+      {view === 'notfound' && (
+        <motion.div key="notfound" {...viewMotion}>
+          <NotFound onHome={openHome} onBlogs={openBlogs} />
         </motion.div>
       )}
       {view === 'blogs' && (

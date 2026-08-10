@@ -14,6 +14,7 @@ import {
 import { ScrollToTop } from '../animations/ScrollToTop';
 import { Parallax, ParallaxImg } from '../animations/Parallax';
 import { Magnetic } from '../animations/Magnetic';
+import { WordReveal } from '../animations/WordReveal';
 import type { BlogNavOptions } from '../App';
 import { RuixenGradientFooter } from './ui/ruixen-gradient-footer';
 
@@ -21,6 +22,7 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 interface HomeProps {
   onOpenBlogs?: (opts?: BlogNavOptions) => void;
+  onOpenNotFound?: () => void;
 }
 
 const categories = [
@@ -192,9 +194,27 @@ const heroWords = [
   { text: 'minds.', className: 'text-slate-950' },
 ];
 
+const storySegments = [
+  'Blogify started with a simple frustration: publishing a beautiful blog post online should not take a design team.',
+  'We wanted a place where writers, makers, and curious minds could focus on the words — not the plumbing.',
+  'So we built a writing experience that feels like a calm, focused studio. No distractions, no clutter.',
+  'Every story gets a clean reader view, smart search, and instant publishing to a page that loads in the blink of an eye.',
+  'Categories and tags keep your ideas organized, while built-in analytics show what your readers actually love.',
+  'Ideas deserve to travel, so every post can be scheduled, shared, and sent straight to your subscribers\' inbox.',
+  'Thousands of writers now call Blogify home — publishing stories, building audiences, and shipping their best work.',
+  'This is more than a blog. It\'s a home for ideas worth sharing.',
+];
+
+const features = [
+  { icon: '⚡', title: 'Fast by design', text: 'Sub-second loads and a distraction-free editor, so the words always come first.' },
+  { icon: '🎨', title: 'Beautiful editor', text: 'A focused writing studio with live preview, autosave, and one-click publishing.' },
+  { icon: '📊', title: 'Built-in analytics', text: 'See what resonates — reads, word counts, and category trends at a glance.' },
+  { icon: '🌍', title: 'Community driven', text: 'Categories, tags, and comments that bring writers and readers together.' },
+];
+
 /* ---------------- page ---------------- */
 
-const Home: React.FC<HomeProps> = ({ onOpenBlogs }) => {
+const Home: React.FC<HomeProps> = ({ onOpenBlogs, onOpenNotFound }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
@@ -797,6 +817,45 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs }) => {
           </section>
           </Parallax>
 
+          {/* ============ STORY ============ */}
+          <section id="story" className="scroll-mt-24 pt-12 sm:pt-16">
+            <Reveal>
+              <SectionHeading eyebrow="Our story" title="More than a blog — a home for ideas" />
+            </Reveal>
+
+            <Reveal y={20}>
+              <div className="mt-6 rounded-3xl border border-slate-200/80 bg-white p-5 shadow-sm sm:p-8">
+                <WordReveal segments={storySegments} scrollLength={185} />
+              </div>
+            </Reveal>
+
+            <motion.div
+              variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.2 }}
+              className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+            >
+              {features.map((f) => (
+                <motion.div
+                  key={f.title}
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } },
+                  }}
+                  whileHover={{ y: -4 }}
+                  className="group rounded-2xl border border-slate-200/70 bg-white p-5 shadow-sm transition-shadow hover:shadow-[0_16px_36px_rgba(15,23,42,0.1)]"
+                >
+                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#4c44d4]/10 to-[#8363f9]/15 text-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110">
+                    {f.icon}
+                  </div>
+                  <h3 className="mt-3.5 text-sm font-black text-slate-950">{f.title}</h3>
+                  <p className="mt-1.5 text-[12px] leading-5 text-slate-500">{f.text}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </section>
+
           {/* ============ NEWSLETTER ============ */}
           <Parallax speed={16}>
           <section id="about" className="scroll-mt-24 pt-12 sm:pt-16">
@@ -895,7 +954,13 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs }) => {
               title="Categories"
               items={categories.map((c) => c.label)}
             />
-            <FooterCol title="Legal" items={['Privacy Policy', 'Terms of Service', 'Cookie Policy']} />
+            <FooterCol
+              title="Legal"
+              items={['Privacy Policy', 'Terms of Service', 'Cookie Policy', '404 Page']}
+              onClickItem={(item) => {
+                if (item === '404 Page') onOpenNotFound?.();
+              }}
+            />
           </div>
 
           <div className="border-t border-slate-100">
@@ -943,7 +1008,11 @@ const SectionHeading: React.FC<{
   </div>
 );
 
-const FooterCol: React.FC<{ title: string; items: string[] }> = ({ title, items }) => (
+const FooterCol: React.FC<{ title: string; items: string[]; onClickItem?: (item: string) => void }> = ({
+  title,
+  items,
+  onClickItem,
+}) => (
   <div>
     <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{title}</h3>
     <ul className="mt-4 space-y-2.5 text-[13px] text-slate-600">
@@ -951,7 +1020,10 @@ const FooterCol: React.FC<{ title: string; items: string[] }> = ({ title, items 
         <li key={item}>
           <a
             href="#contact"
-            onClick={(e) => e.preventDefault()}
+            onClick={(e) => {
+              e.preventDefault();
+              onClickItem?.(item);
+            }}
             className="inline-flex items-center gap-1.5 transition-all hover:translate-x-0.5 hover:text-[#4c44d4]"
           >
             {item}
