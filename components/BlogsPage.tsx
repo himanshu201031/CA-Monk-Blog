@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   DEFAULT_CATEGORIES,
+  DEFAULT_IMAGE,
   formatDate,
   getCategories,
   loadPosts,
@@ -23,8 +24,8 @@ interface BlogsPageProps {
   searchFocus?: boolean;
 }
 
-const navLinks = [
-  { label: 'Home', href: '#top' },
+const navLinks: { label: string; href: string; home?: boolean }[] = [
+  { label: 'Home', href: '#top', home: true },
   { label: 'Categories', href: '#filters' },
   { label: 'Trending', href: '#posts' },
 ];
@@ -112,12 +113,19 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
             </a>
           </Magnetic>
 
-          <nav className="hidden items-center gap-1.5 text-[13px] font-semibold text-slate-500 md:flex">
+          <nav className="hidden items-center gap-3 text-[13px] font-semibold text-slate-500 md:flex">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                onClick={scrollToId(link.href)}
+                onClick={(e) => {
+                  if (link.home) {
+                    e.preventDefault();
+                    onBack?.();
+                  } else {
+                    scrollToId(link.href)(e);
+                  }
+                }}
                 className="group relative overflow-hidden rounded-full px-3 py-2 transition-colors hover:bg-white/70 hover:text-slate-950"
               >
                 <span className="relative block overflow-hidden">
@@ -169,20 +177,69 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: EASE }}
+          className="grid items-center gap-6 lg:grid-cols-[1.05fr_0.95fr]"
         >
-          <span className="inline-flex items-center gap-2 rounded-full border border-[#4c44d4]/15 bg-[#eef2ff] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-[#4c44d4]">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4c44d4] opacity-60" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#4c44d4]" />
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#4c44d4]/15 bg-[#eef2ff] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-[#4c44d4]">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4c44d4] opacity-60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#4c44d4]" />
+              </span>
+              {published.length} live stories
             </span>
-            {published.length} live stories
-          </span>
-          <h1 className="mt-4 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl lg:text-[44px]">
-            All our <span className="bg-gradient-to-r from-[#4c44d4] to-[#8363f9] bg-clip-text text-transparent">stories</span>, in one place.
-          </h1>
-          <p className="mt-3 max-w-lg text-sm leading-7 text-slate-600 sm:text-[15px]">
-            Explore everything we've published — search, filter by topic, or jump straight into writing your own.
-          </p>
+            <h1 className="mt-4 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl lg:text-[44px]">
+              All our <span className="bg-gradient-to-r from-[#4c44d4] to-[#8363f9] bg-clip-text text-transparent">stories</span>, in one place.
+            </h1>
+            <p className="mt-3 max-w-lg text-sm leading-7 text-slate-600 sm:text-[15px]">
+              Explore everything we've published — search, filter by topic, or jump straight into writing your own.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500">
+              <span className="rounded-full border border-slate-200 bg-white px-3 py-1.5 shadow-sm">
+                {published.length} <span className="text-slate-400">stories</span>
+              </span>
+              <span className="rounded-full border border-slate-200 bg-white px-3 py-1.5 shadow-sm">
+                {categories.length} <span className="text-slate-400">topics</span>
+              </span>
+              <span className="rounded-full border border-slate-200 bg-white px-3 py-1.5 shadow-sm">
+                {published.reduce((n, p) => n + p.content.trim().split(/\s+/).length, 0).toLocaleString()}{' '}
+                <span className="text-slate-400">words</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Latest story spotlight */}
+          {published[0] && (
+            <motion.button
+              type="button"
+              initial={{ opacity: 0, scale: 0.96, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.7, ease: EASE }}
+              onClick={() => onOpenEditor?.(published[0].id)}
+              className="group relative hidden h-56 w-full cursor-pointer overflow-hidden rounded-3xl bg-slate-950 text-left shadow-[0_24px_60px_rgba(15,23,42,0.25)] sm:block lg:h-64"
+            >
+              <ParallaxImg
+                src={published[0].featuredImage ?? DEFAULT_IMAGE}
+                alt=""
+                className="h-full w-full"
+                amount={6}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/40 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
+                <span className="inline-flex rounded-full bg-white/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-200 backdrop-blur-sm">
+                  Latest
+                </span>
+                <p className="mt-2.5 text-[10px] font-bold uppercase tracking-[0.3em] text-[#a5b4fc]">{published[0].category}</p>
+                <h3 className="mt-1 line-clamp-1 text-lg font-black leading-tight text-white sm:text-xl">
+                  {published[0].title}
+                </h3>
+                <div className="mt-2 flex items-center gap-3 text-xs text-slate-300">
+                  <span>{formatDate(published[0].date)}</span>
+                  <span className="text-slate-500">•</span>
+                  <span>{readTime(published[0].content)}</span>
+                </div>
+              </div>
+            </motion.button>
+          )}
         </motion.div>
 
         {/* Search + filters */}

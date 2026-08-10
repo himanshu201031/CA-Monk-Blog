@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Home from './components/Home';
 import BlogsPage from './components/BlogsPage';
 import BlogEditor from './components/BlogEditor';
 import UserCursor from './components/ui/user-cursor';
 import Loader from './components/Loader';
+import { CurtainTransition } from './animations/CurtainTransition';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -16,6 +17,7 @@ export interface BlogNavOptions {
 }
 
 type View = 'home' | 'blogs' | 'editor';
+type CurtainPhase = 'idle' | 'cover' | 'reveal';
 
 const viewMotion = {
   initial: { opacity: 0, y: 16 },
@@ -28,22 +30,34 @@ const App: React.FC = () => {
   const [view, setView] = useState<View>('home');
   const [options, setOptions] = useState<BlogNavOptions>({});
   const [loading, setLoading] = useState(true);
+  const [curtain, setCurtain] = useState<CurtainPhase>('idle');
+  const pendingRef = useRef<{ view: View; options: BlogNavOptions } | null>(null);
 
-  const openBlogs = (opts: BlogNavOptions = {}) => {
-    setOptions(opts);
-    setView('blogs');
-    window.scrollTo({ top: 0 });
+  // Any view change goes through the curtain: cover the screen, swap the
+  // view underneath, then sweep the curtain away to reveal it.
+  const navigate = (next: View, opts: BlogNavOptions = {}) => {
+    if (curtain !== 'idle') return; // ignore clicks mid-transition
+    pendingRef.current = { view: next, options: opts };
+    setCurtain('cover');
   };
 
-  const openEditor = (opts: BlogNavOptions = {}) => {
-    setOptions(opts);
-    setView('editor');
-    window.scrollTo({ top: 0 });
+  const openBlogs = (opts: BlogNavOptions = {}) => navigate('blogs', opts);
+  const openEditor = (opts: BlogNavOptions = {}) => navigate('editor', opts);
+  const openHome = () => navigate('home');
+
+  const handleCovered = () => {
+    const pending = pendingRef.current;
+    if (pending) {
+      setOptions(pending.options);
+      setView(pending.view);
+      window.scrollTo({ top: 0 });
+    }
+    setCurtain('reveal');
   };
 
-  const openHome = () => {
-    setView('home');
-    window.scrollTo({ top: 0 });
+  const handleRevealed = () => {
+    pendingRef.current = null;
+    setCurtain('idle');
   };
 
   return (
@@ -52,6 +66,9 @@ const App: React.FC = () => {
       <AnimatePresence>
         {loading && <Loader key="loader" onDone={() => setLoading(false)} />}
       </AnimatePresence>
+      {curtain !== 'idle' && (
+        <CurtainTransition key={curtain} phase={curtain} onCovered={handleCovered} onRevealed={handleRevealed} />
+      )}
       <AnimatePresence mode="wait">
       {view === 'home' && (
         <motion.div key="home" {...viewMotion}>

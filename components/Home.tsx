@@ -284,7 +284,7 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs }) => {
               </Magnetic>
 
               {/* Desktop nav */}
-              <nav className="hidden items-center gap-1.5 text-[13px] font-semibold text-slate-500 md:flex">
+              <nav className="hidden items-center gap-3 text-[13px] font-semibold text-slate-500 md:flex">
                 {navLinks.map((link) => (
                   <Magnetic key={link.label} strength={0.18}>
                     <a
@@ -433,10 +433,12 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs }) => {
               <motion.div style={{ y: blobY2 }}>
                 <div className="absolute -right-20 top-40 h-64 w-64 rounded-full bg-[#8363f9]/10 blur-3xl animate-float-slower" />
               </motion.div>
+              <div className="absolute -right-16 top-8 h-64 w-64 rounded-full bg-[#8363f9]/20 blur-3xl" />
+              <div className="absolute -left-16 top-72 h-56 w-56 rounded-full bg-[#4c44d4]/15 blur-3xl" />
             </div>
 
           {/* Hero grid */}
-          <section className="grid items-stretch gap-5 pt-10 sm:pt-14 lg:grid-cols-[1.1fr_0.9fr]">
+          <section className="relative grid items-stretch gap-5 pt-10 sm:pt-14 lg:grid-cols-[1.1fr_0.9fr]">
             {/* Copy */}
             <motion.div
               variants={heroContainer}
@@ -444,6 +446,13 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs }) => {
               animate="show"
               className="relative flex flex-col justify-center overflow-hidden rounded-3xl bg-white px-6 py-8 shadow-[0_24px_60px_rgba(15,23,42,0.07)] sm:px-8 sm:py-10"
             >
+              <div
+                className="pointer-events-none absolute inset-0 opacity-60"
+                style={{
+                  backgroundImage: 'radial-gradient(circle, #d6d8f2 1px, transparent 1px)',
+                  backgroundSize: '24px 24px',
+                }}
+              />
               <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-br from-[#4c44d4]/10 to-[#8363f9]/15 blur-2xl" />
 
               <motion.span
@@ -518,6 +527,12 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs }) => {
                     <CountUp to={10000} suffix="+" className="font-black text-slate-900" /> readers growing daily
                   </span>
                 </div>
+                <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500">
+                  <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5">✦ 6 topics</span>
+                  <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5">
+                    <CountUp to={12000} suffix="+" className="font-black text-slate-900" /> monthly readers
+                  </span>
+                </div>
               </motion.div>
             </motion.div>
 
@@ -536,6 +551,21 @@ const Home: React.FC<HomeProps> = ({ onOpenBlogs }) => {
                 className="absolute inset-0 h-[calc(100%+80px)] w-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-[1.04]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/30 to-transparent" />
+
+              {/* New badge */}
+              <motion.div
+                initial={{ scale: 0, rotate: -20 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.9, type: 'spring', stiffness: 260, damping: 18 }}
+                className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full bg-white text-[#4c44d4] shadow-lg shadow-slate-950/40"
+              >
+                <motion.span
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 9, repeat: Infinity, ease: 'linear' }}
+                  className="absolute inset-0 rounded-full border border-dashed border-[#4c44d4]/40"
+                />
+                <span className="text-base leading-none">✦</span>
+              </motion.div>
 
               {/* Floating chips */}
               <motion.div style={{ y: chipY1 }} className="absolute left-4 top-4">
