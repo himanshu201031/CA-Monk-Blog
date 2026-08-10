@@ -1,9 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+type TextRevealTag = keyof React.JSX.IntrinsicElements;
 
 interface TextRevealProps {
   text: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: TextRevealTag;
   className?: string;
   stagger?: number;
   delay?: number;
@@ -15,12 +19,13 @@ interface TextRevealProps {
  */
 export const TextReveal: React.FC<TextRevealProps> = ({
   text,
-  as: Tag = 'h1',
+  as = 'h1',
   className,
   stagger = 0.04,
   delay = 0,
 }) => {
   const ref = useRef<HTMLElement>(null);
+  const Tag = as as React.ElementType;
 
   useEffect(() => {
     const el = ref.current;
