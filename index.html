@@ -12,9 +12,20 @@
       body { 
         font-family: 'Sora', sans-serif; 
         background-color: #f8f9fb;
+        background-image:
+          radial-gradient(ellipse 60% 40% at 15% 0%, rgba(76, 68, 212, 0.06), transparent),
+          radial-gradient(ellipse 50% 35% at 85% 10%, rgba(131, 99, 249, 0.07), transparent);
+        background-attachment: fixed;
       }
       .font-display {
         font-family: 'Space Grotesk', sans-serif;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      ::selection {
+        background: rgba(76, 68, 212, 0.18);
+        color: #1a1a1a;
       }
       .custom-scrollbar::-webkit-scrollbar { width: 5px; }
       .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
