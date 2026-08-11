@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import './NotFound.css';
 import { Magnetic } from '../animations/Magnetic';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -9,7 +8,7 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 /** The animated face — eyes drop in, blink, pupils scan, mouth draws on. */
 const Face: React.FC = () => (
   <svg
-    className="nf-face"
+    className="w-[200px]"
     viewBox="0 0 320 380"
     fill="none"
     stroke="currentColor"
@@ -18,20 +17,20 @@ const Face: React.FC = () => (
     strokeWidth={25}
     aria-hidden
   >
-    <g className="face__eyes" transform="translate(0,112.5)">
+    <g className="animate-nf-eyes" transform="translate(0,112.5)">
       <g transform="translate(15,0)">
-        <polyline className="face__eye-lid" points="37,0 0,120 75,120" />
-        <polyline className="face__pupil" points="55,120 55,155" strokeDasharray="35 35" />
+        <polyline className="animate-nf-eye-lid" points="37,0 0,120 75,120" />
+        <polyline className="animate-nf-pupil" points="55,120 55,155" strokeDasharray="35 35" />
       </g>
       <g transform="translate(230,0)">
-        <polyline className="face__eye-lid" points="37,0 0,120 75,120" />
-        <polyline className="face__pupil" points="55,120 55,155" strokeDasharray="35 35" />
+        <polyline className="animate-nf-eye-lid" points="37,0 0,120 75,120" />
+        <polyline className="animate-nf-pupil" points="55,120 55,155" strokeDasharray="35 35" />
       </g>
     </g>
-    <rect className="face__nose" x="132.5" y="112.5" width={55} height={155} rx={4} ry={4} />
+    <rect className="animate-nf-nose" x="132.5" y="112.5" width={55} height={155} rx={4} ry={4} />
     <g transform="translate(65,334)" strokeDasharray="102 102">
-      <path className="face__mouth-left" d="M 0 30 C 0 30 40 0 95 0" />
-      <path className="face__mouth-right" d="M 95 0 C 150 0 190 30 190 30" />
+      <path className="animate-nf-mouth-left" d="M 0 30 C 0 30 40 0 95 0" />
+      <path className="animate-nf-mouth-right" d="M 95 0 C 150 0 190 30 190 30" />
     </g>
   </svg>
 );

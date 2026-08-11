@@ -50,6 +50,15 @@
   --animate-slide-out: slide-out 0.3s ease-in;
   --animate-dialog-in: dialog-fade-in 0.2s ease-out;
   --animate-dialog-out: dialog-fade-out 0.15s ease-in;
+  --animate-float-slow: float-slow 12s ease-in-out infinite;
+  --animate-float-slower: float-slower 16s ease-in-out infinite;
+  --animate-marquee: marquee 34s linear infinite;
+  --animate-nf-eyes: nf-eyes 1s 0.3s forwards;
+  --animate-nf-eye-lid: nf-eye-lid 4s 1.3s infinite;
+  --animate-nf-pupil: nf-pupil 4s 1.3s infinite;
+  --animate-nf-mouth-left: nf-mouth-left 1s 0.3s forwards;
+  --animate-nf-mouth-right: nf-mouth-right 1s 0.3s forwards;
+  --animate-nf-nose: nf-nose 1s 0.3s forwards;
 
   @keyframes fade-in {
     from { opacity: 0; }
@@ -75,6 +84,43 @@
     from { opacity: 1; transform: scale(1) translateY(0); }
     to { opacity: 0; transform: scale(0.95) translateY(-0.5rem); }
   }
+  @keyframes float-slow {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(24px, -28px) scale(1.12); }
+  }
+  @keyframes float-slower {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-20px, 24px) scale(0.94); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes nf-eye-lid {
+    0%, 40%, 45%, 100% { transform: translateY(0); }
+    42.5% { transform: translateY(17.5px); }
+  }
+  @keyframes nf-eyes {
+    from { transform: translateY(112.5px); }
+    to { transform: translateY(15px); }
+  }
+  @keyframes nf-pupil {
+    0%, 37.5%, 40%, 45%, 87.5%, 100% { stroke-dashoffset: 0; transform: translate(0, 0); }
+    12.5%, 25%, 62.5%, 75% { transform: translate(-35px, 0); }
+    42.5% { stroke-dashoffset: 35; transform: translate(0, 17.5px); }
+  }
+  @keyframes nf-mouth-left {
+    from, 50% { stroke-dashoffset: -102; }
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes nf-mouth-right {
+    from, 50% { stroke-dashoffset: 102; }
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes nf-nose {
+    from { transform: translate(0, 0); }
+    to { transform: translate(0, 22.5px); }
+  }
 }
 
 /* Class-based dark variant — declared for shadcn compatibility; the project
@@ -90,3 +136,55 @@
     @apply bg-background text-foreground antialiased;
   }
 }
+
+/* ---------- Global html/body-level helpers (cannot be Tailwind utilities) ---------- */
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Custom cursor (fine pointers only) — the UserCursor component adds
+   `uc-active` to <body> while mounted. */
+body.uc-active,
+body.uc-active * {
+  cursor: none !important;
+}
+
+/* Never hide the native cursor on touch / hybrid devices. */
+@media (pointer: coarse) {
+  body.uc-active,
+  body.uc-active * {
+    cursor: auto !important;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-slow,
+  .animate-float-slower,
+  .animate-marquee,
+  .animate-nf-eyes,
+  .animate-nf-eye-lid,
+  .animate-nf-pupil,
+  .animate-nf-mouth-left,
+  .animate-nf-mouth-right,
+  .animate-nf-nose {
+    animation: none;
+  }
+}
+
+
