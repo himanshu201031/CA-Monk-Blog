@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import "./BlogEditor.css";
-import { useTheme } from "../lib/theme";
 import {
   DEFAULT_CATEGORIES,
   DEFAULT_IMAGE,
@@ -69,7 +68,6 @@ export default function BlogEditor() {
   const navigate = useNavigate();
   const params = useParams<{ id: string }>();
   const [searchParams] = useSearchParams();
-  const { theme, toggle } = useTheme();
 
   const initialPostId = params.id ? Number(params.id) : undefined;
   const initialCategory = searchParams.get("category") ?? undefined;
@@ -523,9 +521,6 @@ export default function BlogEditor() {
               <span className="save-dot" />
               {saved ? "Saved just now" : "Saving..."}
             </span>
-            <button className="top-icon" aria-label="Toggle theme" onClick={toggle}>
-              {theme === "dark" ? "☾" : "☼"}
-            </button>
             <button className="top-icon" aria-label="Notifications">♧</button>
             <div className="profile">
               <div className="avatar">H</div>

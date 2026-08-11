@@ -5,20 +5,20 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const BRAND = "BLOGIFY";
 
 interface LoaderProps {
-  /** Called once the loader has finished its show, just before it exits. */
+  /** Called once the loader has finished counting, just before it exits. */
   onDone?: () => void;
   /** Total load time in ms (shorter when the user prefers reduced motion). */
   duration?: number;
 }
 
 /**
- * Loader — a branded full-screen entrance: gradient brand tile with a
- * spinning ring, staggered wordmark, and an eased 0→100% progress counter.
- * Slides up out of the way when removed via AnimatePresence.
+ * Loader — a branded full-screen entrance: staggered wordmark, a large
+ * percentage counter, and a glowing progress bar. Slides up out of
+ * the way when removed via AnimatePresence.
  */
-const Loader: React.FC<LoaderProps> = ({ onDone, duration = 1100 }) => {
+const Loader: React.FC<LoaderProps> = ({ onDone, duration = 1300 }) => {
   const reduced = useReducedMotion();
-  const total = reduced ? 650 : duration;
+  const total = reduced ? 700 : duration;
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const Loader: React.FC<LoaderProps> = ({ onDone, duration = 1100 }) => {
       aria-label="Loading"
       role="status"
       exit={{ y: "-100%", transition: { duration: 0.7, ease: EASE } }}
-      className="fixed inset-0 z-[300] flex flex-col items-center justify-center overflow-hidden bg-[#0b0d16]"
+      className="fixed inset-0 z-[300] flex flex-col items-center justify-center overflow-hidden bg-[#f8f9fb]"
     >
       {/* Ambient orbs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -51,48 +51,57 @@ const Loader: React.FC<LoaderProps> = ({ onDone, duration = 1100 }) => {
         <div className="absolute -bottom-24 -right-16 h-72 w-72 rounded-full bg-[#8363f9]/20 blur-3xl animate-float-slower" />
       </div>
 
-      {/* Brand tile */}
-      <motion.div
-        initial={{ scale: 0.6, opacity: 0, rotate: -12 }}
-        animate={{ scale: 1, opacity: 1, rotate: 0 }}
-        transition={{ duration: 0.6, ease: EASE }}
-        className="relative grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-[#4c44d4] to-[#8363f9] text-2xl font-black text-white shadow-[0_20px_60px_rgba(76,68,212,0.5)]"
-      >
-        <span>B</span>
-        {!reduced && (
-          <motion.span
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1.1, repeat: Infinity, ease: "linear" }}
-            className="pointer-events-none absolute -inset-2 rounded-[1.4rem] border-2 border-transparent border-t-[#a5b4fc]/90 border-r-[#8363f9]/40"
-          />
-        )}
-      </motion.div>
-
       {/* Wordmark */}
-      <div className="mt-6 flex gap-1.5 overflow-hidden">
+      <div className="flex gap-1.5 overflow-hidden">
         {BRAND.split("").map((ch, i) => (
           <motion.span
             key={i}
             initial={{ y: "110%", opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.22 + i * 0.045, duration: 0.5, ease: EASE }}
-            className="text-sm font-black tracking-[0.35em] text-white"
+            transition={{ delay: 0.18 + i * 0.04, duration: 0.5, ease: EASE }}
+            className="text-sm font-black tracking-[0.35em] text-slate-900"
           >
             {ch}
           </motion.span>
         ))}
       </div>
 
-      {/* Progress */}
-      <div className="mt-6 h-[2px] w-44 overflow-hidden rounded-full bg-white/10">
-        <motion.div
-          className="h-full rounded-full bg-gradient-to-r from-[#4c44d4] to-[#8363f9]"
+      {/* Large percentage counter */}
+      <div className="mt-8 flex items-baseline">
+        <motion.span
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: EASE }}
+          className="font-display text-6xl font-black leading-none tabular-nums text-[#4c44d4] sm:text-7xl"
+        >
+          {progress}
+        </motion.span>
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="ml-1 text-3xl font-black leading-none text-[#4c44d4] sm:text-4xl"
+        >
+          %
+        </motion.span>
+      </div>
+
+      {/* Glowing progress bar */}
+      <div className="mt-6 h-[3px] w-52 overflow-hidden rounded-full bg-slate-200 sm:w-64">
+        <div
+          className="h-full rounded-full bg-[#4c44d4] shadow-[0_0_18px_rgba(76,68,212,0.45)] transition-[width] duration-150 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>
-      <span className="mt-3 font-mono text-[11px] tabular-nums tracking-[0.35em] text-slate-500">
-        {progress}%
-      </span>
+
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.45, duration: 0.5 }}
+        className="mt-5 text-[10px] font-bold uppercase tracking-[0.4em] text-slate-500"
+      >
+        Preparing your stories
+      </motion.span>
     </motion.div>
   );
 };

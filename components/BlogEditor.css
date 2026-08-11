@@ -94,7 +94,7 @@
   width: 34px;
   height: 34px;
   border-radius: 11px;
-  background: linear-gradient(135deg, var(--primary), #8363f9);
+  background: var(--primary);
   color: #fff;
   display: grid;
   place-items: center;
@@ -117,7 +117,7 @@
   padding: 11px 14px;
   border: none;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, var(--primary), #6d5df0);
+  background: var(--primary);
   color: #fff;
   font-size: 13px;
   font-weight: 700;
@@ -392,7 +392,7 @@
 
 .ai-card {
   margin-top: auto;
-  background: linear-gradient(150deg, #f3f1ff 0%, #f8f9fc 100%);
+  background: #f3f1ff;
   border: 1px solid rgba(76, 68, 212, 0.12);
   border-radius: var(--radius-sm);
   padding: 14px;
@@ -566,7 +566,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), #8363f9);
+  background: var(--primary);
   color: #fff;
   display: grid;
   place-items: center;
@@ -638,7 +638,7 @@
 .publish-button,
 .publish-arrow {
   border: none;
-  background: linear-gradient(135deg, var(--primary), #6d5df0);
+  background: var(--primary);
   color: #fff;
   font-size: 12.5px;
   font-weight: 700;
@@ -1440,7 +1440,7 @@
 
 .bottom-publish {
   border: none;
-  background: linear-gradient(135deg, var(--primary), #6d5df0);
+  background: var(--primary);
   color: #fff;
 }
 
@@ -2218,11 +2218,11 @@
 .bar-fill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #10b981, #34d399);
+  background: #10b981;
 }
 
 .bar-fill-purple {
-  background: linear-gradient(90deg, var(--primary), #8363f9);
+  background: var(--primary);
 }
 
 .bar-value {
@@ -2283,7 +2283,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), #8363f9);
+  background: var(--primary);
   color: #fff;
   display: grid;
   place-items: center;
@@ -2434,44 +2434,3 @@
   }
 }
 
-/* ============================================================
-   DARK MODE — variables are overridden, plus a few hardcoded
-   surfaces are remapped so the whole dashboard reads correctly.
-   ============================================================ */
-.dark .blog-app {
-  --bg: #0b0d16;
-  --surface: #131624;
-  --border: #232838;
-  --border-strong: #2e3447;
-  --text: #e2e8f0;
-  --muted: #94a3b8;
-  --muted-2: #64748b;
-  --primary-soft: rgba(76, 68, 212, 0.18);
-  --shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.35);
-}
-
-.dark .blog-app .editor,
-.dark .blog-app .posts-search input,
-.dark .blog-app .posts-search input:focus,
-.dark .blog-app .field select,
-.dark .blog-app .field input[type='text'],
-.dark .blog-app .field textarea,
-.dark .blog-app .seo-box input,
-.dark .blog-app .seo-box textarea,
-.dark .blog-app .radio {
-  background: var(--surface);
-}
-
-.dark .blog-app .toolbar {
-  background: #0f1120;
-  border-color: var(--border);
-}
-
-.dark .blog-app .toolbar select {
-  background: var(--surface);
-}
-
-.dark .blog-app .editor textarea {
-  color: var(--text);
-}

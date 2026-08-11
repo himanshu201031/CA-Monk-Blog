@@ -3,21 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CA Monk - Blog App</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = { darkMode: 'class' };
-    </script>
-    <script>
-      (function () {
-        try {
-          var t = localStorage.getItem('blogify_theme');
-          if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-          }
-        } catch (e) {}
-      })();
-    </script>
+    <title>BlogHUb</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -25,17 +11,6 @@
       body { 
         font-family: 'Sora', sans-serif; 
         background-color: #f8f9fb;
-        background-image:
-          radial-gradient(ellipse 60% 40% at 15% 0%, rgba(76, 68, 212, 0.06), transparent),
-          radial-gradient(ellipse 50% 35% at 85% 10%, rgba(131, 99, 249, 0.07), transparent);
-        background-attachment: fixed;
-      }
-      .dark body {
-        background-color: #0b0d16;
-        background-image:
-          radial-gradient(ellipse 60% 40% at 15% 0%, rgba(76, 68, 212, 0.12), transparent),
-          radial-gradient(ellipse 50% 35% at 85% 10%, rgba(131, 99, 249, 0.14), transparent);
-        color: #e2e8f0;
       }
       .font-display {
         font-family: 'Space Grotesk', sans-serif;

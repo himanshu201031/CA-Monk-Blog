@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useTheme } from '../lib/theme';
 import {
   DEFAULT_CATEGORIES,
   DEFAULT_IMAGE,
@@ -12,7 +11,6 @@ import {
   readTime,
   type StoredPost,
 } from '../lib/blogStore';
-import { RuixenGradientFooter } from './ui/ruixen-gradient-footer';
 import { Parallax, ParallaxImg } from '../animations/Parallax';
 import { Magnetic } from '../animations/Magnetic';
 
@@ -27,7 +25,6 @@ const navLinks: { label: string; href: string; home?: boolean }[] = [
 export const BlogsPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { theme, toggle } = useTheme();
   const posts = useMemo(() => loadPosts(), []);
   const published = useMemo(
     () =>
@@ -86,14 +83,14 @@ export const BlogsPage: React.FC = () => {
   };
 
   return (
-    <div id="top" className="min-h-screen bg-[#f8f9fb] text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
+    <div id="top" className="min-h-screen bg-[#f8f9fb] text-slate-900 antialiased">
       {/* Header */}
       <header className="sticky top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4">
         <div
           className={`mx-auto flex max-w-[1200px] items-center justify-between gap-3 rounded-2xl border px-3 py-2.5 transition-all duration-500 sm:px-4 ${
             scrolled
-              ? 'border-slate-200/80 bg-white/85 shadow-[0_14px_44px_rgba(15,23,42,0.1)] backdrop-blur-2xl dark:border-slate-800 dark:bg-slate-900/85'
-              : 'border-transparent bg-white/50 backdrop-blur-md dark:bg-slate-900/50'
+              ? 'border-slate-200/80 bg-white/85 shadow-[0_14px_44px_rgba(15,23,42,0.1)] backdrop-blur-2xl'
+              : 'border-transparent bg-white/50 backdrop-blur-md'
           }`}
         >
           <Magnetic strength={0.25}>
@@ -106,7 +103,7 @@ export const BlogsPage: React.FC = () => {
               }}
               className="group flex shrink-0 items-center gap-2.5"
             >
-              <div className="relative grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#4c44d4] via-[#6d5ef0] to-[#8363f9] text-white shadow-lg shadow-[#4c44d4]/30 ring-1 ring-white/20">
+              <div className="relative grid h-9 w-9 place-items-center rounded-xl bg-[#4c44d4] text-white shadow-lg shadow-[#4c44d4]/30 ring-1 ring-white/20">
                 <svg viewBox="0 0 24 24" className="h-[17px] w-[17px]" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z" />
                   <path d="m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18" />
@@ -119,14 +116,14 @@ export const BlogsPage: React.FC = () => {
                 <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-400 transition-colors group-hover:text-[#4c44d4]">
                   {settings.siteName}
                 </p>
-                <p className="mt-0.5 hidden text-[13px] font-black tracking-tight text-slate-950 dark:text-white sm:block">
+                <p className="mt-0.5 hidden text-[13px] font-black tracking-tight text-slate-950 sm:block">
                   {settings.tagline}
                 </p>
               </div>
             </a>
           </Magnetic>
 
-          <nav className="hidden items-center gap-3 text-[13px] font-semibold text-slate-500 dark:text-slate-400 md:flex">
+          <nav className="hidden items-center gap-3 text-[13px] font-semibold text-slate-500 md:flex">
             {navLinks.map((link) => (
               <a
                 key={link.label}
@@ -139,7 +136,7 @@ export const BlogsPage: React.FC = () => {
                     scrollToId(link.href)(e);
                   }
                 }}
-                className="group relative overflow-hidden rounded-full px-3 py-2 transition-colors hover:bg-white/70 hover:text-slate-950 dark:hover:bg-white/10 dark:hover:text-white"
+                className="group relative overflow-hidden rounded-full px-3 py-2 transition-colors hover:bg-white/70 hover:text-slate-950"
               >
                 <span className="relative block overflow-hidden">
                   <span className="block transition-transform duration-300 ease-out group-hover:-translate-y-full">{link.label}</span>
@@ -147,30 +144,15 @@ export const BlogsPage: React.FC = () => {
                     {link.label}
                   </span>
                 </span>
-                <span className="absolute inset-x-3 -bottom-0.5 h-px origin-left scale-x-0 bg-gradient-to-r from-[#4c44d4] to-[#8363f9] transition-transform duration-300 group-hover:scale-x-100" />
+                <span className="absolute inset-x-3 -bottom-0.5 h-px origin-left scale-x-0 bg-[#4c44d4] transition-transform duration-300 group-hover:scale-x-100" />
               </a>
             ))}
           </nav>
 
           <div className="flex items-center gap-2">
             <button
-              onClick={toggle}
-              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-              className="hidden h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-500 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#eef2ff] hover:text-[#4c44d4] dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-400 sm:grid"
-            >
-              {theme === 'dark' ? (
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                </svg>
-              ) : (
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              )}
-            </button>
-            <button
               onClick={() => navigate('/')}
-              className="hidden rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-[13px] font-semibold text-slate-600 backdrop-blur-sm transition-colors hover:border-slate-300 hover:bg-white hover:text-slate-900 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:bg-slate-800 dark:hover:text-white sm:block"
+              className="hidden rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-[13px] font-semibold text-slate-600 backdrop-blur-sm transition-colors hover:border-slate-300 hover:bg-white hover:text-slate-900 sm:block"
             >
               ← Home
             </button>
@@ -179,10 +161,9 @@ export const BlogsPage: React.FC = () => {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/blogs/new')}
-                className="group relative overflow-hidden rounded-full bg-gradient-to-r from-[#4c44d4] to-[#8363f9] px-4 py-2 text-[13px] font-semibold text-white shadow-lg shadow-[#4c44d4]/30 transition-shadow hover:shadow-[#4c44d4]/45"
+                className="group relative overflow-hidden rounded-full bg-[#4c44d4] px-4 py-2 text-[13px] font-semibold text-white shadow-lg shadow-[#4c44d4]/30 transition-colors hover:bg-[#3b35a8]"
               >
                 <span className="relative z-10">＋ Create Post</span>
-                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
               </motion.button>
             </Magnetic>
           </div>
@@ -215,22 +196,22 @@ export const BlogsPage: React.FC = () => {
               </span>
               {published.length} live stories
             </span>
-            <h1 className="mt-4 text-3xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl lg:text-[44px]">
-              All our <span className="bg-gradient-to-r from-[#4c44d4] to-[#8363f9] bg-clip-text text-transparent">stories</span>, in one place.
+            <h1 className="mt-4 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl lg:text-[44px]">
+              All our <span className="text-[#4c44d4]">stories</span>, in one place.
             </h1>
-            <p className="mt-3 max-w-lg text-sm leading-7 text-slate-600 dark:text-slate-400 sm:text-[15px]">
+            <p className="mt-3 max-w-lg text-sm leading-7 text-slate-600 sm:text-[15px]">
               Explore everything we've published — search, filter by topic, or jump straight into writing your own.
             </p>
-            <div className="mt-6 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
-              <span className="rounded-full border border-slate-200 bg-white px-3 py-1.5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                {published.length} <span className="text-slate-400 dark:text-slate-500">stories</span>
+            <div className="mt-6 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500">
+              <span className="rounded-full border border-slate-200 bg-white px-3 py-1.5 shadow-sm">
+                {published.length} <span className="text-slate-400">stories</span>
               </span>
-              <span className="rounded-full border border-slate-200 bg-white px-3 py-1.5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                {categories.length} <span className="text-slate-400 dark:text-slate-500">topics</span>
+              <span className="rounded-full border border-slate-200 bg-white px-3 py-1.5 shadow-sm">
+                {categories.length} <span className="text-slate-400">topics</span>
               </span>
-              <span className="rounded-full border border-slate-200 bg-white px-3 py-1.5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+              <span className="rounded-full border border-slate-200 bg-white px-3 py-1.5 shadow-sm">
                 {published.reduce((n, p) => n + p.content.trim().split(/\s+/).length, 0).toLocaleString()}{' '}
-                <span className="text-slate-400 dark:text-slate-500">words</span>
+                <span className="text-slate-400">words</span>
               </span>
             </div>
           </div>
@@ -243,7 +224,7 @@ export const BlogsPage: React.FC = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ delay: 0.15, duration: 0.7, ease: EASE }}
               onClick={() => navigate('/blogs/' + published[0].id + '/edit')}
-              className="group relative hidden h-56 w-full cursor-pointer overflow-hidden rounded-3xl bg-slate-950 text-left shadow-[0_24px_60px_rgba(15,23,42,0.25)] sm:block lg:h-64"
+              className="group relative hidden h-56 w-full cursor-pointer overflow-hidden rounded-3xl bg-white text-left shadow-[0_24px_60px_rgba(15,23,42,0.12)] sm:block lg:h-64"
             >
               <ParallaxImg
                 src={published[0].featuredImage ?? DEFAULT_IMAGE}
@@ -251,18 +232,18 @@ export const BlogsPage: React.FC = () => {
                 className="h-full w-full"
                 amount={6}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
-                <span className="inline-flex rounded-full bg-white/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-200 backdrop-blur-sm">
+                <span className="inline-flex rounded-full bg-slate-900/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-700 backdrop-blur-sm">
                   Latest
                 </span>
-                <p className="mt-2.5 text-[10px] font-bold uppercase tracking-[0.3em] text-[#a5b4fc]">{published[0].category}</p>
-                <h3 className="mt-1 line-clamp-1 text-lg font-black leading-tight text-white sm:text-xl">
+                <p className="mt-2.5 text-[10px] font-bold uppercase tracking-[0.3em] text-[#4c44d4]">{published[0].category}</p>
+                <h3 className="mt-1 line-clamp-1 text-lg font-black leading-tight text-slate-950 sm:text-xl">
                   {published[0].title}
                 </h3>
-                <div className="mt-2 flex items-center gap-3 text-xs text-slate-300">
+                <div className="mt-2 flex items-center gap-3 text-xs text-slate-500">
                   <span>{formatDate(published[0].date)}</span>
-                  <span className="text-slate-500">•</span>
+                  <span className="text-slate-300">•</span>
                   <span>{readTime(published[0].content)}</span>
                 </div>
               </div>
@@ -289,7 +270,7 @@ export const BlogsPage: React.FC = () => {
               placeholder="Search stories, tags, topics…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm font-medium text-slate-700 shadow-sm outline-none transition-all placeholder:text-slate-400 focus:border-[#4c44d4] focus:ring-4 focus:ring-[#4c44d4]/10 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:placeholder:text-slate-500 dark:focus:ring-[#4c44d4]/20"
+              className="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm font-medium text-slate-700 shadow-sm outline-none transition-all placeholder:text-slate-400 focus:border-[#4c44d4] focus:ring-4 focus:ring-[#4c44d4]/10"
             />
           </div>
 
@@ -303,7 +284,7 @@ export const BlogsPage: React.FC = () => {
                 className={`rounded-full border px-3.5 py-2 text-xs font-semibold transition-colors ${
                   category === c
                     ? 'border-[#4c44d4] bg-[#4c44d4] text-white shadow-lg shadow-[#4c44d4]/25'
-                    : 'border-slate-200 bg-white text-slate-600 hover:border-[#4c44d4]/40 hover:text-[#4c44d4] dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300'
+                    : 'border-slate-200 bg-white text-slate-600 hover:border-[#4c44d4]/40 hover:text-[#4c44d4]'
                 }`}
               >
                 {c}
@@ -318,16 +299,16 @@ export const BlogsPage: React.FC = () => {
       <Parallax speed={20}>
       <main id="posts" className="mx-auto max-w-[1200px] scroll-mt-24 px-4 pb-4 sm:px-6">
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-xl font-black tracking-tight text-slate-950 dark:text-white sm:text-2xl">
+          <h2 className="text-xl font-black tracking-tight text-slate-950 sm:text-2xl">
             {category === 'All' ? 'Latest stories' : category}
             <span className="ml-2 text-sm font-semibold text-slate-400">{filtered.length}</span>
           </h2>
         </div>
 
         {filtered.length === 0 ? (
-          <div className="rounded-3xl border border-slate-200/70 bg-white px-6 py-16 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="rounded-3xl border border-slate-200/70 bg-white px-6 py-16 text-center shadow-sm">
             <p className="text-3xl">📭</p>
-            <p className="mt-3 text-sm font-semibold text-slate-600 dark:text-slate-300">
+            <p className="mt-3 text-sm font-semibold text-slate-600">
               {query.trim() ? 'No stories match your search.' : 'Nothing here yet.'}
             </p>
             <p className="mt-1 text-[13px] text-slate-400">
@@ -335,7 +316,7 @@ export const BlogsPage: React.FC = () => {
             </p>
             <button
               onClick={() => navigate('/blogs/new')}
-              className="mt-6 rounded-full bg-slate-950 px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700"
+              className="mt-6 rounded-full bg-[#4c44d4] px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#3b35a8]"
             >
               ＋ Create Post
             </button>
@@ -357,7 +338,7 @@ export const BlogsPage: React.FC = () => {
                 whileHover={{ y: -5 }}
                 transition={{ duration: 0.3, ease: EASE }}
                 onClick={() => navigate('/blogs/' + p.id + '/edit')}
-                className="group cursor-pointer overflow-hidden rounded-3xl border border-slate-200/70 bg-white shadow-sm transition-shadow hover:shadow-[0_20px_44px_rgba(15,23,42,0.12)] dark:border-slate-800 dark:bg-slate-900"
+                className="group cursor-pointer overflow-hidden rounded-3xl border border-slate-200/70 bg-white shadow-sm transition-shadow hover:shadow-[0_20px_44px_rgba(15,23,42,0.12)]"
               >
                 <div className="relative h-40 overflow-hidden sm:h-44">
                   <ParallaxImg
@@ -376,11 +357,11 @@ export const BlogsPage: React.FC = () => {
                   )}
                 </div>
                 <div className="p-5">
-                  <h3 className="line-clamp-2 text-base font-black leading-snug text-slate-950 group-hover:text-[#4c44d4] dark:text-white dark:group-hover:text-[#a5b4fc]">
+                  <h3 className="line-clamp-2 text-base font-black leading-snug text-slate-950 group-hover:text-[#4c44d4]">
                     {p.title}
                   </h3>
-                  <p className="mt-2 line-clamp-2 text-[13px] leading-6 text-slate-600 dark:text-slate-400">{p.excerpt}</p>
-                  <div className="mt-4 flex items-center justify-between text-[11px] font-semibold text-slate-400 dark:text-slate-500">
+                  <p className="mt-2 line-clamp-2 text-[13px] leading-6 text-slate-600">{p.excerpt}</p>
+                  <div className="mt-4 flex items-center justify-between text-[11px] font-semibold text-slate-400">
                     <span>{formatDate(p.date)}</span>
                     <span>{readTime(p.content)} min read</span>
                   </div>
@@ -393,21 +374,17 @@ export const BlogsPage: React.FC = () => {
       </Parallax>
 
       {/* Gradient footer */}
-      <RuixenGradientFooter
-        gradientHeight="48vh"
-        minReveal={0.03}
-        className="mt-12"
-      >
+      <footer className="mt-12 border-t border-slate-200/70 bg-white">
         <div className="mx-auto w-full max-w-[1200px] px-4 pt-12 sm:px-6">
           <div className="grid gap-10 pb-10 sm:grid-cols-2 lg:grid-cols-6">
             <div className="lg:col-span-2">
               <div className="flex items-center gap-2.5">
-                <div className="grid h-8 w-8 place-items-center rounded-xl bg-slate-950 text-white">
+                <div className="grid h-8 w-8 place-items-center rounded-xl bg-[#4c44d4] text-white">
                   <span className="text-sm font-black">B</span>
                 </div>
-                <span className="text-base font-black text-slate-950 dark:text-white">{settings.siteName}</span>
+                <span className="text-base font-black text-slate-950">{settings.siteName}</span>
               </div>
-              <p className="mt-4 max-w-xs text-[13px] leading-6 text-slate-500 dark:text-slate-400">
+              <p className="mt-4 max-w-xs text-[13px] leading-6 text-slate-500">
                 {settings.tagline}. Explore ideas, stories and perspectives that matter.
               </p>
               <div className="mt-6 flex max-w-xs gap-2">
@@ -415,18 +392,18 @@ export const BlogsPage: React.FC = () => {
                   type="email"
                   aria-label="Email address"
                   placeholder="you@example.com"
-                  className="h-9 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none transition-all placeholder:text-slate-400 focus:border-[#4c44d4] focus:ring-2 focus:ring-[#4c44d4]/15 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:placeholder:text-slate-500"
+                  className="h-9 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none transition-all placeholder:text-slate-400 focus:border-[#4c44d4] focus:ring-2 focus:ring-[#4c44d4]/15"
                 />
                 <button
                   type="button"
-                  className="h-9 shrink-0 rounded-xl bg-slate-950 px-4 text-xs font-bold text-white transition-colors hover:bg-slate-800"
+                  className="h-9 shrink-0 rounded-xl bg-[#4c44d4] px-4 text-xs font-bold text-white transition-colors hover:bg-[#3b35a8]"
                 >
                   Join
                 </button>
               </div>
             </div>
 
-            <nav className="grid grid-cols-2 gap-8 text-[13px] font-semibold text-slate-600 dark:text-slate-400 sm:grid-cols-4 lg:col-span-4">
+            <nav className="grid grid-cols-2 gap-8 text-[13px] font-semibold text-slate-600 sm:grid-cols-4 lg:col-span-4">
               {[
                 { title: 'Product', links: ['Overview', 'Features', 'Integrations', 'Pricing', 'Changelog'] },
                 { title: 'Resources', links: ['Docs', 'Guides', 'API reference', 'Support', 'Status'] },
@@ -434,7 +411,7 @@ export const BlogsPage: React.FC = () => {
                 { title: 'Legal', links: ['Privacy', 'Terms', 'Security', 'Cookies'] },
               ].map((col) => (
                 <div key={col.title}>
-                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500">{col.title}</h3>
+                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{col.title}</h3>
                   <ul className="mt-4 flex flex-col gap-2.5">
                     {col.links.map((link) => (
                       <li key={link}>
@@ -449,7 +426,7 @@ export const BlogsPage: React.FC = () => {
             </nav>
           </div>
 
-          <div className="flex flex-col items-center justify-between gap-3 border-t border-slate-200/80 pb-2 pt-6 text-[11px] font-semibold text-slate-400 dark:border-slate-800 dark:text-slate-500 sm:flex-row">
+          <div className="flex flex-col items-center justify-between gap-3 border-t border-slate-200/80 pb-2 pt-6 text-[11px] font-semibold text-slate-400 sm:flex-row">
             <span>© 2026 {settings.siteName}. All rights reserved.</span>
             <span className="flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
@@ -458,7 +435,7 @@ export const BlogsPage: React.FC = () => {
             <button onClick={() => navigate('/')} className="transition-colors hover:text-[#4c44d4]">← Back to Home</button>
           </div>
         </div>
-      </RuixenGradientFooter>
+      </footer>
     </div>
   );
 };

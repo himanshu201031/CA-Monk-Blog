@@ -31,7 +31,15 @@ const bannerVariants: Variants = {
   }),
 };
 
-export const Curtain = () => (
+/**
+ * Curtain — a full-screen wipe of `COLS` vertical columns (horizontal bands
+ * on mobile). When `playing` is true the panels sweep down to reveal the page
+ * underneath (used for normal navigation). When false they hold at full cover
+ * — the first page mounts hidden behind the curtain, and it only sweeps away
+ * once `playing` flips true (after the entrance loader has fully exited), so
+ * the loader never overlaps the reveal.
+ */
+export const Curtain = ({ playing = true }: { playing?: boolean }) => (
   <div aria-hidden className="pointer-events-none fixed inset-0 z-[250] flex flex-col lg:flex-row">
     {Array.from({ length: COLS }).map((_, i) => (
       <motion.div
@@ -39,9 +47,9 @@ export const Curtain = () => (
         custom={i}
         variants={bannerVariants}
         initial="initial"
-        animate="animate"
+        animate={playing ? "animate" : "initial"}
         exit="exit"
-        className="h-full w-full border-white/10 bg-[#0b0d16] last:border-r-0 lg:h-screen lg:w-1/5 lg:border-r"
+        className="h-full w-full border-white/10 bg-slate-900 last:border-r-0 lg:h-screen lg:w-1/5 lg:border-r"
       />
     ))}
   </div>

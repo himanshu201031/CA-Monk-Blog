@@ -16,8 +16,6 @@ import { ScrollToTop } from '../animations/ScrollToTop';
 import { Parallax, ParallaxImg } from '../animations/Parallax';
 import { Magnetic } from '../animations/Magnetic';
 import { WordReveal } from '../animations/WordReveal';
-import { useTheme } from '../lib/theme';
-import { RuixenGradientFooter } from './ui/ruixen-gradient-footer';
 import {
   CardCurtainReveal,
   CardCurtainRevealBody,
@@ -192,10 +190,10 @@ const heroWord: Variants = {
 };
 
 const heroWords = [
-  { text: 'Stories', className: 'text-slate-950 dark:text-white' },
-  { text: 'that', className: 'text-slate-950 dark:text-white' },
-  { text: 'inspire', className: 'bg-gradient-to-r from-[#4c44d4] to-[#8363f9] bg-clip-text text-transparent' },
-  { text: 'minds.', className: 'text-slate-950 dark:text-white' },
+  { text: 'Stories', className: 'text-slate-950' },
+  { text: 'that', className: 'text-slate-950' },
+  { text: 'inspire', className: 'text-[#4c44d4]' },
+  { text: 'minds.', className: 'text-slate-950' },
 ];
 
 const storySegments = [
@@ -220,13 +218,16 @@ const features = [
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const { theme, toggle } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showTop, setShowTop] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
 
   const { scrollY } = useScroll();
-  useMotionValueEvent(scrollY, 'change', (y) => setScrolled(y > 24));
+  useMotionValueEvent(scrollY, 'change', (y) => {
+    setScrolled(y > 24);
+    setShowTop(y > 520);
+  });
 
   // Header progress bar (spring-smoothed)
   const progress = useSpring(scrollY, { stiffness: 120, damping: 30, restDelta: 0.001 });
@@ -242,6 +243,19 @@ const Home: React.FC = () => {
   const blobY2 = useTransform(scrollYProgress, [0, 1], [0, 190]);
   const chipY1 = useTransform(scrollYProgress, [0, 1], [0, 64]);
   const chipY2 = useTransform(scrollYProgress, [0, 1], [0, 40]);
+
+  // Hero featured-visual mouse tilt (spring-smoothed 3D lean)
+  const tiltX = useSpring(0, { stiffness: 160, damping: 18 });
+  const tiltY = useSpring(0, { stiffness: 160, damping: 18 });
+  const onTilt = (e: React.MouseEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    tiltY.set(((e.clientX - r.left) / r.width - 0.5) * 10);
+    tiltX.set(-((e.clientY - r.top) / r.height - 0.5) * 10);
+  };
+  const resetTilt = () => {
+    tiltX.set(0);
+    tiltY.set(0);
+  };
 
   useEffect(() => {
     if (!subscribed) return;
@@ -264,7 +278,7 @@ const Home: React.FC = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 24, scale: 0.95 }}
               transition={{ duration: 0.3, ease: EASE }}
-              className="fixed bottom-6 left-1/2 z-[120] flex -translate-x-1/2 items-center gap-2.5 whitespace-nowrap rounded-full bg-slate-950 px-5 py-3 text-[13px] font-semibold text-white shadow-[0_20px_50px_rgba(15,23,42,0.35)]"
+              className="fixed bottom-6 left-1/2 z-[120] flex -translate-x-1/2 items-center gap-2.5 whitespace-nowrap rounded-full bg-[#4c44d4] px-5 py-3 text-[13px] font-semibold text-white shadow-[0_20px_50px_rgba(76,68,212,0.35)]"
             >
               <span className="grid h-5 w-5 place-items-center rounded-full bg-emerald-500 text-[10px] text-white">✓</span>
               You're subscribed! Check your inbox soon.
@@ -282,8 +296,8 @@ const Home: React.FC = () => {
           <div
             className={`relative mx-auto max-w-[1200px] overflow-hidden rounded-2xl border transition-all duration-500 ${
               scrolled
-                ? 'border-slate-200/80 bg-white/85 shadow-[0_14px_44px_rgba(15,23,42,0.1)] backdrop-blur-2xl dark:border-slate-800 dark:bg-slate-900/85'
-                : 'border-transparent bg-white/50 backdrop-blur-md dark:bg-slate-900/50'
+                ? 'border-slate-200/80 bg-white/85 shadow-[0_14px_44px_rgba(15,23,42,0.1)] backdrop-blur-2xl'
+                : 'border-transparent bg-white/50 backdrop-blur-md'
             }`}
           >
             <div className="flex items-center justify-between gap-3 px-3 py-2.5 sm:px-4">
@@ -301,7 +315,7 @@ const Home: React.FC = () => {
                   <motion.div
                     whileHover={{ rotate: -10, scale: 1.08 }}
                     transition={{ duration: 0.25 }}
-                    className="relative grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#4c44d4] via-[#6d5ef0] to-[#8363f9] text-white shadow-lg shadow-[#4c44d4]/30 ring-1 ring-white/20"
+                    className="relative grid h-9 w-9 place-items-center rounded-xl bg-[#4c44d4] text-white shadow-lg shadow-[#4c44d4]/30 ring-1 ring-white/20"
                   >
                     <svg viewBox="0 0 24 24" className="h-[17px] w-[17px]" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
                       <path d="M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z" />
@@ -315,7 +329,7 @@ const Home: React.FC = () => {
                     <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-400 transition-colors group-hover:text-[#4c44d4]">
                       Blogify
                     </p>
-                    <p className="mt-0.5 hidden text-[13px] font-black tracking-tight text-slate-950 dark:text-white sm:block">
+                    <p className="mt-0.5 hidden text-[13px] font-black tracking-tight text-slate-950 sm:block">
                       Stories & insights
                     </p>
                   </div>
@@ -323,7 +337,7 @@ const Home: React.FC = () => {
               </Magnetic>
 
               {/* Desktop nav */}
-              <nav className="hidden items-center gap-3 text-[13px] font-semibold text-slate-500 dark:text-slate-400 md:flex">
+              <nav className="hidden items-center gap-3 text-[13px] font-semibold text-slate-500 md:flex">
                 {navLinks.map((link) => (
                   <Magnetic key={link.label} strength={0.18}>
                     <a
@@ -336,7 +350,7 @@ const Home: React.FC = () => {
                           scrollToId(link.href)(e);
                         }
                       }}
-                      className="group relative overflow-hidden rounded-full px-3 py-2 transition-colors hover:bg-white/70 hover:text-slate-950 dark:hover:bg-white/10 dark:hover:text-white"
+                      className="group relative overflow-hidden rounded-full px-3 py-2 transition-colors hover:bg-white/70 hover:text-slate-950"
                     >
                       <span className="relative block overflow-hidden">
                         <span className="block transition-transform duration-300 ease-out group-hover:-translate-y-full">
@@ -346,7 +360,7 @@ const Home: React.FC = () => {
                           {link.label}
                         </span>
                       </span>
-                      <span className="absolute inset-x-3 -bottom-0.5 h-px origin-left scale-x-0 bg-gradient-to-r from-[#4c44d4] to-[#8363f9] transition-transform duration-300 group-hover:scale-x-100" />
+                      <span className="absolute inset-x-3 -bottom-0.5 h-px origin-left scale-x-0 bg-[#4c44d4] transition-transform duration-300 group-hover:scale-x-100" />
                     </a>
                   </Magnetic>
                 ))}
@@ -354,23 +368,7 @@ const Home: React.FC = () => {
 
               {/* Actions */}
               <div className="flex items-center gap-2">
-                <motion.button
-                  whileHover={{ scale: 1.08, y: -2, rotate: theme === 'dark' ? 180 : 20 }}
-                  whileTap={{ scale: 0.92 }}
-                  onClick={toggle}
-                  aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-                  className="hidden h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-500 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#eef2ff] hover:text-[#4c44d4] dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-400 dark:hover:border-[#4c44d4]/40 sm:grid"
-                >
-                  {theme === 'dark' ? (
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                    </svg>
-                  ) : (
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                  )}
-                </motion.button>
+
                 <motion.button
                   whileHover={{ scale: 1.08, y: -2 }}
                   whileTap={{ scale: 0.92 }}
@@ -387,10 +385,9 @@ const Home: React.FC = () => {
                     whileHover={{ scale: 1.04 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={subscribe}
-                    className="group relative overflow-hidden rounded-full bg-gradient-to-r from-[#4c44d4] to-[#8363f9] px-4 py-2 text-[13px] font-semibold text-white shadow-lg shadow-[#4c44d4]/30 transition-shadow hover:shadow-[#4c44d4]/45"
+                    className="group relative overflow-hidden rounded-full bg-[#4c44d4] px-4 py-2 text-[13px] font-semibold text-white shadow-lg shadow-[#4c44d4]/30 transition-shadow hover:bg-[#3b35a8] hover:shadow-[#4c44d4]/45"
                   >
                     <span className="relative z-10">Subscribe</span>
-                    <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
                   </motion.button>
                 </Magnetic>
 
@@ -420,7 +417,7 @@ const Home: React.FC = () => {
                 transition={{ duration: 0.34, ease: EASE }}
                 className="overflow-hidden md:hidden"
               >
-                <div className="flex flex-col gap-1 border-t border-slate-100 px-3 pb-3 pt-2 dark:border-slate-800 sm:px-4">
+                <div className="flex flex-col gap-1 border-t border-slate-100 px-3 pb-3 pt-2 sm:px-4">
                   {navLinks.map((link, i) => (
                     <motion.a
                       key={link.label}
@@ -437,7 +434,7 @@ const Home: React.FC = () => {
                       initial={{ opacity: 0, x: -16 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.04 * i, duration: 0.32, ease: EASE }}
-                      className="group flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800/60 dark:hover:text-white"
+                      className="group flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-950"
                     >
                       <span className="flex items-center gap-2.5">
                         <span className="h-1.5 w-1.5 rounded-full bg-[#4c44d4] opacity-0 transition-opacity group-hover:opacity-100" />
@@ -453,10 +450,9 @@ const Home: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.26, duration: 0.32, ease: EASE }}
                     onClick={subscribe}
-                    className="group relative mt-1 overflow-hidden rounded-xl bg-gradient-to-r from-[#4c44d4] to-[#8363f9] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-[#4c44d4]/25"
+                    className="group relative mt-1 overflow-hidden rounded-xl bg-[#4c44d4] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-[#4c44d4]/25 transition-colors hover:bg-[#3b35a8]"
                   >
                     Subscribe
-                    <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
                   </motion.button>
                 </div>
               </motion.nav>
@@ -467,7 +463,7 @@ const Home: React.FC = () => {
           {/* Reading progress */}
           <motion.div
             style={{ scaleX }}
-            className="absolute inset-x-0 bottom-0 h-[2px] origin-left bg-gradient-to-r from-[#4c44d4] to-[#8363f9]"
+            className="absolute inset-x-0 bottom-0 h-[2px] origin-left bg-[#4c44d4]"
           />
         </motion.header>
 
@@ -490,7 +486,7 @@ const Home: React.FC = () => {
               variants={heroContainer}
               initial="hidden"
               animate="show"
-              className="relative flex flex-col justify-center overflow-hidden rounded-3xl bg-white px-6 py-8 shadow-[0_24px_60px_rgba(15,23,42,0.07)] dark:bg-slate-900 sm:px-8 sm:py-10"
+              className="relative flex flex-col justify-center overflow-hidden rounded-3xl bg-white px-6 py-8 shadow-[0_24px_60px_rgba(15,23,42,0.07)] sm:px-8 sm:py-10"
             >
               <div
                 className="pointer-events-none absolute inset-0 opacity-60"
@@ -499,7 +495,7 @@ const Home: React.FC = () => {
                   backgroundSize: '24px 24px',
                 }}
               />
-              <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gradient-to-br from-[#4c44d4]/10 to-[#8363f9]/15 blur-2xl" />
+              <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#4c44d4]/10 blur-2xl" />
 
               <motion.span
                 variants={heroItem}
@@ -524,7 +520,7 @@ const Home: React.FC = () => {
                 </span>
               </h2>
 
-              <motion.p variants={heroItem} className="mt-4 max-w-md text-sm leading-7 text-slate-600 dark:text-slate-400 sm:text-[15px]">
+              <motion.p variants={heroItem} className="mt-4 max-w-md text-sm leading-7 text-slate-600 sm:text-[15px]">
                 Discover ideas, insights and stories on technology, lifestyle, productivity and more — curated for
                 curious minds.
               </motion.p>
@@ -534,7 +530,7 @@ const Home: React.FC = () => {
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.96 }}
                   onClick={() => navigate('/blogs')}
-                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-5 py-2.5 text-[13px] font-semibold text-white shadow-lg shadow-slate-900/15 transition-colors hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700"
+                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-[#4c44d4] px-5 py-2.5 text-[13px] font-semibold text-white shadow-lg shadow-[#4c44d4]/25 transition-colors hover:bg-[#3b35a8]"
                 >
                   Explore Articles
                   <svg className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -545,7 +541,7 @@ const Home: React.FC = () => {
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.96 }}
                   onClick={() => navigate('/blogs')}
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-[13px] font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-800"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-[13px] font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50"
                 >
                   Browse Categories
                 </motion.button>
@@ -553,7 +549,7 @@ const Home: React.FC = () => {
 
               <motion.div
                 variants={heroItem}
-                className="mt-8 flex flex-col gap-3 border-t border-slate-100 pt-5 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between"
+                className="mt-8 flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div className="flex items-center">
                   <div className="flex -space-x-2.5">
@@ -569,14 +565,14 @@ const Home: React.FC = () => {
                       />
                     ))}
                   </div>
-                  <span className="ml-3 text-xs font-medium text-slate-500 dark:text-slate-400">
-                    <CountUp to={10000} suffix="+" className="font-black text-slate-900 dark:text-white" /> readers growing daily
+                  <span className="ml-3 text-xs font-medium text-slate-500">
+                    <CountUp to={10000} suffix="+" className="font-black text-slate-900" /> readers growing daily
                   </span>
                 </div>
-                <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
-                  <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 dark:border-slate-700 dark:bg-slate-800/60">✦ 6 topics</span>
-                  <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 dark:border-slate-700 dark:bg-slate-800/60">
-                    <CountUp to={12000} suffix="+" className="font-black text-slate-900 dark:text-white" /> monthly readers
+                <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-500">
+                  <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5">✦ 6 topics</span>
+                  <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5">
+                    <CountUp to={12000} suffix="+" className="font-black text-slate-900" /> monthly readers
                   </span>
                 </div>
               </motion.div>
@@ -588,7 +584,10 @@ const Home: React.FC = () => {
               initial={{ opacity: 0, scale: 0.96, y: 24 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
-              className="group relative min-h-[320px] overflow-hidden rounded-3xl bg-slate-950 shadow-[0_24px_60px_rgba(15,23,42,0.25)] sm:min-h-[400px]"
+              onMouseMove={onTilt}
+              onMouseLeave={resetTilt}
+              style={{ rotateX: tiltX, rotateY: tiltY, transformPerspective: 900 }}
+              className="group relative min-h-[320px] overflow-hidden rounded-3xl bg-white shadow-[0_24px_60px_rgba(15,23,42,0.12)] sm:min-h-[400px]"
             >
               <motion.img
                 style={{ y: imgY }}
@@ -596,14 +595,14 @@ const Home: React.FC = () => {
                 alt="Featured travel story"
                 className="absolute inset-0 h-[calc(100%+80px)] w-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-[1.04]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent" />
 
               {/* New badge */}
               <motion.div
                 initial={{ scale: 0, rotate: -20 }}
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ delay: 0.9, type: 'spring', stiffness: 260, damping: 18 }}
-                className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full bg-white text-[#4c44d4] shadow-lg shadow-slate-950/40"
+                className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full bg-white text-[#4c44d4] shadow-lg shadow-slate-200"
               >
                 <motion.span
                   animate={{ rotate: 360 }}
@@ -619,7 +618,7 @@ const Home: React.FC = () => {
                   initial={{ opacity: 0, y: -12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6, duration: 0.5, ease: EASE }}
-                  className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold text-white backdrop-blur-md"
+                  className="flex items-center gap-1.5 rounded-full border border-slate-200/80 bg-white/85 px-3 py-1.5 text-[11px] font-bold text-slate-800 backdrop-blur-md"
                 >
                   <span className="text-xs">🔥</span> Trending now
                 </motion.div>
@@ -629,26 +628,26 @@ const Home: React.FC = () => {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.75, duration: 0.5, ease: EASE }}
-                  className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-bold text-white backdrop-blur-md"
+                  className="flex items-center gap-1.5 rounded-full border border-slate-200/80 bg-white/85 px-3 py-1.5 text-[11px] font-bold text-slate-800 backdrop-blur-md"
                 >
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" /> 10k+ readers
                 </motion.div>
               </motion.div>
 
               <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-                <span className="inline-flex rounded-full bg-white/10 px-2.5 py-1 text-[10px] uppercase tracking-[0.3em] text-slate-200 backdrop-blur-sm">
+                <span className="inline-flex rounded-full bg-slate-900/10 px-2.5 py-1 text-[10px] uppercase tracking-[0.3em] text-slate-700 backdrop-blur-sm">
                   Featured
                 </span>
-                <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-300">Travel</p>
-                <h3 className="mt-1.5 text-xl font-black leading-tight text-white sm:text-2xl">
+                <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-500">Travel</p>
+                <h3 className="mt-1.5 text-xl font-black leading-tight text-slate-950 sm:text-2xl">
                   The Art of Slow Travel
                 </h3>
-                <p className="mt-2 hidden max-w-sm text-[13px] leading-6 text-slate-300 sm:block">
+                <p className="mt-2 hidden max-w-sm text-[13px] leading-6 text-slate-600 sm:block">
                   Why slowing down while traveling can transform the way you experience the world.
                 </p>
-                <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-300">
+                <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
                   <span>By John Doe</span>
-                  <span className="text-slate-500">•</span>
+                  <span className="text-slate-300">•</span>
                   <span>Jul 28, 2025</span>
                   <span className="text-slate-500">•</span>
                   <span>6 min read</span>
@@ -657,11 +656,29 @@ const Home: React.FC = () => {
             </motion.div>
           </section>
 
+          {/* Scroll hint */}
+          <motion.div
+            animate={{ opacity: scrolled ? 0 : 1, y: scrolled ? -12 : 0 }}
+            transition={{ duration: 0.4 }}
+            className="pointer-events-none relative mx-auto mt-7 flex w-fit flex-col items-center gap-1.5"
+          >
+            <span className="text-[9px] font-bold uppercase tracking-[0.35em] text-slate-400">Scroll to explore</span>
+            <motion.span
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+              className="text-[#4c44d4]"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+              </svg>
+            </motion.span>
+          </motion.div>
+
           {/* ============ MARQUEE ============ */}
-          <Reveal y={16} className="marquee mt-5 overflow-hidden rounded-2xl border border-slate-200/80 bg-white py-2.5 shadow-sm marquee-mask dark:border-slate-800 dark:bg-slate-900">
+          <Reveal y={16} className="marquee mt-5 overflow-hidden rounded-2xl border border-slate-200/80 bg-white py-2.5 shadow-sm marquee-mask">
             <div className="marquee-track flex w-max items-center gap-10 whitespace-nowrap">
               {[...marqueeItems, ...marqueeItems].map((item, i) => (
-                <span key={i} className="flex items-center gap-10 text-[13px] font-bold text-slate-500 dark:text-slate-400">
+                <span key={i} className="flex items-center gap-10 text-[13px] font-bold text-slate-500">
                   {item}
                   <span className="text-[#4c44d4]">✦</span>
                 </span>
@@ -673,7 +690,7 @@ const Home: React.FC = () => {
           <Parallax speed={14}>
           <section id="categories" className="scroll-mt-24 pt-12 sm:pt-16">
             <Reveal>
-              <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-5">
+              <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm sm:p-5">
                 <div className="mb-3 flex items-center justify-between">
                   <p className="text-[11px] font-black uppercase tracking-[0.3em] text-[#4c44d4]">Browse by topic</p>
                   <span className="hidden text-xs font-medium text-slate-400 sm:block">6 categories</span>
@@ -695,7 +712,7 @@ const Home: React.FC = () => {
                       whileHover={{ y: -2, scale: 1.04 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => navigate('/blogs?category=' + encodeURIComponent(category.label))}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#eef2ff] hover:text-[#4c44d4] dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:border-[#4c44d4]/60 dark:hover:bg-slate-800 dark:hover:text-[#a5b4fc]"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#eef2ff] hover:text-[#4c44d4]"
                     >
                       <span className="text-sm leading-none">{category.icon}</span>
                       {category.label}
@@ -707,7 +724,7 @@ const Home: React.FC = () => {
                       show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: EASE } },
                     }}
                     whileHover={{ y: -2 }}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-slate-300 px-3.5 py-2 text-xs font-semibold text-slate-500 transition-colors hover:border-[#4c44d4]/50 hover:text-[#4c44d4] dark:border-slate-700 dark:text-slate-400"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-slate-300 px-3.5 py-2 text-xs font-semibold text-slate-500 transition-colors hover:border-[#4c44d4]/50 hover:text-[#4c44d4]"
                   >
                     <span className="text-base leading-none">⋯</span>
                     More
@@ -737,7 +754,7 @@ const Home: React.FC = () => {
                   whileHover={{ y: -4 }}
                   transition={{ duration: 0.3, ease: EASE }}
                   onClick={() => navigate('/blogs?q=' + encodeURIComponent(featuredArticles[0].title))}
-                  className="group cursor-pointer overflow-hidden rounded-3xl border border-slate-200/70 bg-white shadow-[0_16px_40px_rgba(15,23,42,0.06)] dark:border-slate-800 dark:bg-slate-900"
+                  className="group cursor-pointer overflow-hidden rounded-3xl border border-slate-200/70 bg-white shadow-[0_16px_40px_rgba(15,23,42,0.06)]"
                 >
                   <ParallaxImg
                     src={featuredArticles[0].image}
@@ -748,13 +765,13 @@ const Home: React.FC = () => {
                     <span className="inline-flex rounded-full bg-[#eef2ff] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#4c44d4]">
                       {featuredArticles[0].category}
                     </span>
-                    <h3 className="mt-3 text-xl font-black leading-snug text-slate-950 dark:text-white sm:text-2xl">
+                    <h3 className="mt-3 text-xl font-black leading-snug text-slate-950 sm:text-2xl">
                       {featuredArticles[0].title}
                     </h3>
-                    <p className="mt-2 text-[13px] leading-6 text-slate-600 dark:text-slate-400">{featuredArticles[0].description}</p>
-                    <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
-                      <span className="font-semibold text-slate-700 dark:text-slate-200">By {featuredArticles[0].author}</span>
-                      <span className="text-slate-300 dark:text-slate-600">•</span>
+                    <p className="mt-2 text-[13px] leading-6 text-slate-600">{featuredArticles[0].description}</p>
+                    <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-slate-500">
+                      <span className="font-semibold text-slate-700">By {featuredArticles[0].author}</span>
+                      <span className="text-slate-300">•</span>
                       <span>{featuredArticles[0].date}</span>
                       <span className="text-slate-300">•</span>
                       <span>{featuredArticles[0].readTime}</span>
@@ -771,7 +788,7 @@ const Home: React.FC = () => {
                       whileHover={{ y: -4 }}
                       transition={{ duration: 0.3, ease: EASE }}
                       onClick={() => navigate('/blogs?q=' + encodeURIComponent(article.title))}
-                      className="group flex cursor-pointer gap-4 overflow-hidden rounded-2xl border border-slate-200/70 bg-white p-3 shadow-sm transition-shadow hover:shadow-[0_12px_32px_rgba(15,23,42,0.08)] dark:border-slate-800 dark:bg-slate-900"
+                      className="group flex cursor-pointer gap-4 overflow-hidden rounded-2xl border border-slate-200/70 bg-white p-3 shadow-sm transition-shadow hover:shadow-[0_12px_32px_rgba(15,23,42,0.08)]"
                     >
                       <div className="h-20 w-24 shrink-0 overflow-hidden rounded-xl sm:h-24 sm:w-32">
                         <img
@@ -784,10 +801,10 @@ const Home: React.FC = () => {
                         <span className="inline-flex w-fit rounded-full bg-[#f7f0ff] px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.2em] text-[#7b56fd]">
                           {article.category}
                         </span>
-                        <h4 className="mt-1.5 line-clamp-2 text-sm font-black leading-snug text-slate-950 dark:text-white sm:text-[15px]">
+                        <h4 className="mt-1.5 line-clamp-2 text-sm font-black leading-snug text-slate-950 sm:text-[15px]">
                           {article.title}
                         </h4>
-                        <p className="mt-1.5 text-[11px] text-slate-500 dark:text-slate-400">
+                        <p className="mt-1.5 text-[11px] text-slate-500">
                           By {article.author} • {article.readTime}
                         </p>
                       </div>
@@ -822,15 +839,15 @@ const Home: React.FC = () => {
                   }}
                 >
                   <CardCurtainReveal
-                    className="h-64 cursor-pointer rounded-2xl border border-zinc-100 bg-slate-950 text-white shadow-sm transition-shadow hover:shadow-[0_20px_44px_rgba(15,23,42,0.4)]"
+                    className="h-64 cursor-pointer rounded-2xl border border-slate-200/70 bg-white text-slate-900 shadow-sm transition-shadow hover:shadow-[0_20px_44px_rgba(15,23,42,0.12)]"
                     onClick={() => navigate('/blogs?q=' + encodeURIComponent(item.title))}
                   >
                     <CardCurtainRevealBody className="p-4">
                       <div className="flex items-start justify-between">
-                        <span className="grid h-7 w-7 place-items-center rounded-lg bg-white/10 text-[11px] font-black text-white backdrop-blur-sm">
+                        <span className="grid h-7 w-7 place-items-center rounded-lg bg-slate-100 text-[11px] font-black text-slate-700">
                           {String(item.id).padStart(2, '0')}
                         </span>
-                        <span className="grid h-8 w-8 place-items-center rounded-full bg-white/10 text-white backdrop-blur-sm">
+                        <span className="grid h-8 w-8 place-items-center rounded-full bg-slate-100 text-slate-700">
                           <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                           </svg>
@@ -840,7 +857,7 @@ const Home: React.FC = () => {
                         {item.title}
                       </CardCurtainRevealTitle>
                       <CardCurtainRevealDescription className="mt-2">
-                        <p className="text-[11px] font-medium text-slate-300">
+                        <p className="text-[11px] font-medium text-slate-500">
                           By {item.author} • {item.date}
                         </p>
                       </CardCurtainRevealDescription>
@@ -881,13 +898,13 @@ const Home: React.FC = () => {
                     show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } },
                   }}
                   whileHover={{ y: -4 }}
-                  className="group rounded-2xl border border-slate-200/70 bg-white p-5 shadow-sm transition-shadow hover:shadow-[0_16px_36px_rgba(15,23,42,0.1)] dark:border-slate-800 dark:bg-slate-900"
+                  className="group rounded-2xl border border-slate-200/70 bg-white p-5 shadow-sm transition-shadow hover:shadow-[0_16px_36px_rgba(15,23,42,0.1)]"
                 >
-                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#4c44d4]/10 to-[#8363f9]/15 text-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110">
+                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#4c44d4]/10 text-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110">
                     {f.icon}
                   </div>
-                  <h3 className="mt-3.5 text-sm font-black text-slate-950 dark:text-white">{f.title}</h3>
-                  <p className="mt-1.5 text-[12px] leading-5 text-slate-500 dark:text-slate-400">{f.text}</p>
+                  <h3 className="mt-3.5 text-sm font-black text-slate-950">{f.title}</h3>
+                  <p className="mt-1.5 text-[12px] leading-5 text-slate-500">{f.text}</p>
                 </motion.div>
               ))}
             </motion.div>
@@ -897,20 +914,19 @@ const Home: React.FC = () => {
           <Parallax speed={16}>
           <section id="about" className="scroll-mt-24 pt-12 sm:pt-16">
             <Reveal y={32}>
-              <div className="rounded-3xl bg-gradient-to-r from-[#4c44d4] via-[#8363f9] to-[#4c44d4] p-[1.5px] shadow-[0_24px_60px_rgba(76,68,212,0.3)] animate-gradient-x">
-                <div className="relative overflow-hidden rounded-[calc(1.5rem-1.5px)] bg-slate-950 px-6 py-8 sm:px-10 sm:py-10">
-                  <div className="pointer-events-none absolute -left-16 -top-16 h-56 w-56 rounded-full bg-[#4c44d4]/20 blur-3xl animate-float-slow" />
-                  <div className="pointer-events-none absolute -bottom-16 -right-10 h-56 w-56 rounded-full bg-[#8363f9]/20 blur-3xl animate-float-slower" />
+              <div className="relative overflow-hidden rounded-3xl border border-[#4c44d4]/15 bg-white px-6 py-8 shadow-[0_24px_60px_rgba(76,68,212,0.08)] sm:px-10 sm:py-10">
+                  <div className="pointer-events-none absolute -left-16 -top-16 h-56 w-56 rounded-full bg-[#4c44d4]/10 blur-3xl animate-float-slow" />
+                  <div className="pointer-events-none absolute -bottom-16 -right-10 h-56 w-56 rounded-full bg-[#8363f9]/10 blur-3xl animate-float-slower" />
 
                   <div className="relative grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
                     <div>
-                      <p className="text-[10px] font-black uppercase tracking-[0.35em] text-[#a5b4fc]">
+                      <p className="text-[10px] font-black uppercase tracking-[0.35em] text-[#4c44d4]">
                         Don't miss a story.
                       </p>
-                      <h2 className="mt-3 text-2xl font-black leading-tight tracking-tight text-white sm:text-3xl lg:text-4xl">
+                      <h2 className="mt-3 text-2xl font-black leading-tight tracking-tight text-slate-950 sm:text-3xl lg:text-4xl">
                         Get the best articles delivered to your inbox every week.
                       </h2>
-                      <p className="mt-3 max-w-lg text-[13px] leading-6 text-slate-300">
+                      <p className="mt-3 max-w-lg text-[13px] leading-6 text-slate-600">
                         Join a curated newsletter that helps you stay inspired, productive, and ahead of your next big
                         idea.
                       </p>
@@ -926,7 +942,7 @@ const Home: React.FC = () => {
                         type="email"
                         required
                         placeholder="Enter your email address"
-                        className="min-w-0 rounded-full border border-slate-800 bg-slate-900/80 px-5 py-2.5 text-sm text-white outline-none transition-all placeholder:text-slate-500 focus:border-[#4c44d4] focus:ring-2 focus:ring-[#4c44d4]/25"
+                        className="min-w-0 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm text-slate-700 outline-none transition-all placeholder:text-slate-400 focus:border-[#4c44d4] focus:ring-2 focus:ring-[#4c44d4]/25"
                       />
                       <motion.button
                         whileHover={{ scale: 1.03 }}
@@ -938,7 +954,6 @@ const Home: React.FC = () => {
                       </motion.button>
                     </form>
                   </div>
-                </div>
               </div>
             </Reveal>
           </section>
@@ -946,20 +961,16 @@ const Home: React.FC = () => {
         </main>
 
         {/* ============ FOOTER ============ */}
-        <RuixenGradientFooter
-          gradientHeight="48vh"
-          minReveal={0.03}
-          className="mt-14 scroll-mt-24 sm:mt-20"
-        >
+        <footer className="mt-14 scroll-mt-24 border-t border-slate-200/70 bg-white sm:mt-20">
           <div id="contact" className="mx-auto grid max-w-[1200px] scroll-mt-24 gap-8 px-4 py-10 sm:px-6 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
             <div className="space-y-3">
               <div className="flex items-center gap-2.5">
-                <div className="grid h-8 w-8 place-items-center rounded-xl bg-slate-950 text-white">
+                <div className="grid h-8 w-8 place-items-center rounded-xl bg-[#4c44d4] text-white">
                   <span className="text-sm font-black">B</span>
                 </div>
-                <span className="text-base font-black text-slate-950 dark:text-white">Blogify</span>
+                <span className="text-base font-black text-slate-950">Blogify</span>
               </div>
-              <p className="max-w-xs text-[13px] leading-6 text-slate-500 dark:text-slate-400">
+              <p className="max-w-xs text-[13px] leading-6 text-slate-500">
                 A platform for curious minds. Explore ideas, stories and perspectives that matter.
               </p>
               <div className="flex items-center gap-2 pt-1">
@@ -973,7 +984,7 @@ const Home: React.FC = () => {
                     href="#contact"
                     whileHover={{ y: -3, color: '#4c44d4' }}
                     aria-label="Social link"
-                    className="grid h-8 w-8 place-items-center rounded-xl border border-slate-200 text-slate-500 transition-colors dark:border-slate-700 dark:text-slate-400"
+                    className="grid h-8 w-8 place-items-center rounded-xl border border-slate-200 text-slate-500 transition-colors"
                   >
                     <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24">
                       <path d={d} />
@@ -1000,15 +1011,34 @@ const Home: React.FC = () => {
             />
           </div>
 
-          <div className="border-t border-slate-100 dark:border-slate-800">
-            <div className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-2 px-4 py-5 text-center text-xs text-slate-400 dark:text-slate-500 sm:flex-row sm:px-6">
+          <div className="border-t border-slate-100">
+            <div className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-2 px-4 py-5 text-center text-xs text-slate-400 sm:flex-row sm:px-6">
               <span>© 2025 Blogify. All rights reserved.</span>
               <span className="flex items-center gap-1.5">
                 Made with <span className="text-[#4c44d4]">♥</span> for curious minds
               </span>
             </div>
           </div>
-        </RuixenGradientFooter>
+        </footer>
+
+        {/* Back to top */}
+        <AnimatePresence>
+          {showTop && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: 12 }}
+              transition={{ duration: 0.3, ease: EASE }}
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              aria-label="Back to top"
+              className="fixed bottom-6 right-6 z-[150] grid h-11 w-11 place-items-center rounded-full bg-[#4c44d4] text-white shadow-xl shadow-[#4c44d4]/30 transition-colors hover:bg-[#3b35a8]"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
+              </svg>
+            </motion.button>
+          )}
+        </AnimatePresence>
       </div>
     </MotionConfig>
   );
@@ -1028,13 +1058,13 @@ const SectionHeading: React.FC<{
         <span className="h-1.5 w-1.5 rounded-full bg-[#4c44d4]" />
         {eyebrow}
       </p>
-      <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950 dark:text-white sm:text-[28px]">{title}</h2>
+      <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950 sm:text-[28px]">{title}</h2>
     </div>
     {link && (
       <a
         href={href}
         onClick={scrollToId(href)}
-        className="group inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-500 transition-colors hover:text-[#4c44d4] dark:text-slate-400"
+        className="group inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-500 transition-colors hover:text-[#4c44d4]"
       >
         {link}
         <svg className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1051,8 +1081,8 @@ const FooterCol: React.FC<{ title: string; items: string[]; onClickItem?: (item:
   onClickItem,
 }) => (
   <div>
-    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500">{title}</h3>
-    <ul className="mt-4 space-y-2.5 text-[13px] text-slate-600 dark:text-slate-400">
+    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{title}</h3>
+    <ul className="mt-4 space-y-2.5 text-[13px] text-slate-600">
       {items.map((item) => (
         <li key={item}>
           <a
@@ -1061,7 +1091,7 @@ const FooterCol: React.FC<{ title: string; items: string[]; onClickItem?: (item:
               e.preventDefault();
               onClickItem?.(item);
             }}
-            className="inline-flex items-center gap-1.5 transition-all hover:translate-x-0.5 hover:text-[#4c44d4] dark:hover:text-[#a5b4fc]"
+            className="inline-flex items-center gap-1.5 transition-all hover:translate-x-0.5 hover:text-[#4c44d4]"
           >
             {item}
           </a>
