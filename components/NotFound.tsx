@@ -50,7 +50,7 @@ const NotFound: React.FC = () => {
     <div
       className="pointer-events-none absolute inset-0 opacity-40"
       style={{
-        backgroundImage: 'radial-gradient(circle, rgba(76,68,212,0.12) 1px, transparent 1px)',
+        backgroundImage: 'radial-gradient(circle, color-mix(in srgb, var(--brand) 12%, transparent) 1px, transparent 1px)',
         backgroundSize: '26px 26px',
       }}
     />

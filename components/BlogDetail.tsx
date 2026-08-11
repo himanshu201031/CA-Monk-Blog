@@ -85,7 +85,7 @@ return (
             {blog?.description || 'No description available'}
           </p>
           
-          <div className="pl-6 border-l-4 border-l-[#eef2ff] bg-[#f8faff] py-6 px-8 rounded-r-xl mb-10">
+          <div className="pl-6 border-l-4 border-l-(--brand)/15 bg-(--brand)/5 py-6 px-8 rounded-r-xl mb-10">
             <p className="text-[#312e81] font-medium italic leading-relaxed">
               "The accountant of the future will be a data scientist, a storyteller, and a strategic partner, all rolled into one."
             </p>

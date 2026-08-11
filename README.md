@@ -215,7 +215,7 @@ If JSON Server is not available, the app automatically uses localStorage as a fa
 
 ## 🎨 Color Scheme
 
-- **Primary**: #4c44d4 (Purple)
+- **Primary**: #25D366 (Green)
 - **Dark**: #1a1a1a (Almost Black)
 - **Light**: #f8f9fb (Off-white)
 - **Border**: #e2e8f0 (Light Gray)

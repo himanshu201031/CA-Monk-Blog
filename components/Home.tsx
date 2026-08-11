@@ -30,16 +30,16 @@ import {
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-/* Animated footer glow — brand-tinted ramp (light violet → indigo → soft
-   purple), so the scroll-reveal colour animation fits the light theme. */
+/* Animated footer glow — brand-tinted ramp (light mint → green → soft
+   green), so the scroll-reveal colour animation fits the light theme. */
 const BLOGIFY_STOPS = [
-  { offset: 0, color: '#eef2ff' },
-  { offset: 0.22, color: '#c7d2fe' },
-  { offset: 0.4, color: '#a5b4fc' },
-  { offset: 0.58, color: '#818cf8' },
+  { offset: 0, color: '#ecfdf5' },
+  { offset: 0.22, color: '#a7f3d0' },
+  { offset: 0.4, color: '#6ee7b7' },
+  { offset: 0.58, color: '#34d399' },
   { offset: 0.74, color: 'var(--brand)' },
   { offset: 0.88, color: 'var(--brand-soft)' },
-  { offset: 1, color: '#c4b5fd00' },
+  { offset: 1, color: '#25d36600' },
 ];
 
 const categories = [
@@ -297,7 +297,7 @@ const Home: React.FC = () => {
             className={`relative mx-auto max-w-[1200px] overflow-hidden rounded-2xl border transition-all duration-500 ${
               scrolled
                 ? 'border-slate-200/80 bg-white/85 shadow-[0_14px_44px_rgba(15,23,42,0.1)] backdrop-blur-2xl'
-                : 'border-transparent bg-white/50 backdrop-blur-md'
+                : 'border-transparent bg-transparent'
             }`}
           >
             <div className="flex items-center justify-between gap-3 px-3 py-2.5 sm:px-4">
@@ -416,7 +416,7 @@ const Home: React.FC = () => {
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.34, ease: EASE }}
-                className="overflow-hidden md:hidden"
+                className="overflow-hidden bg-white/90 backdrop-blur-xl md:hidden"
               >
                 <div className="flex flex-col gap-1 border-t border-slate-100 px-3 pb-3 pt-2 sm:px-4">
                   {navLinks.map((link, i) => (
@@ -469,7 +469,9 @@ const Home: React.FC = () => {
         </motion.header>
 
         {/* ============ HERO ============ */}
-        <main id="home" className="relative scroll-mt-24">
+        {/* Pulled up under the transparent navbar so the image runs edge-to-edge
+            behind it; the navbar gains its card only once the page scrolls. */}
+        <main id="home" className="relative -mt-16 scroll-mt-24">
           {/* Full-bleed background-image hero */}
           <section className="relative overflow-hidden">
             <img
@@ -479,6 +481,7 @@ const Home: React.FC = () => {
               className="absolute inset-0 h-full w-full scale-[1.05] object-cover"
             />
             {/* Readability scrims — kept subtle in light so the photo shows through */}
+            <div className="absolute inset-x-0 top-0 h-24 bg-linear-to-b from-white/85 via-white/40 to-transparent dark:from-[#09090b]/85 dark:via-[#09090b]/40 dark:to-transparent" />
             <div className="absolute inset-0 bg-linear-to-r from-white/75 via-white/40 to-transparent dark:from-[#09090b]/95 dark:via-[#09090b]/80 dark:to-transparent" />
             <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-background to-transparent" />
 
@@ -594,7 +597,7 @@ const Home: React.FC = () => {
           {/* Content below the hero — constrained to the reading width */}
           <div className="relative mx-auto max-w-[1200px] px-4 sm:px-6">
           {/* ============ MARQUEE ============ */}
-          <Reveal y={16} className="group mt-5 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm">
+          <Reveal y={16} className="group mt-5 overflow-hidden">
             <div className="flex flex-col overflow-hidden py-3.5 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
               {/* Row 1 — categories, drifting left */}
               <div className="animate-marquee flex w-max items-center gap-10 whitespace-nowrap group-hover:[animation-play-state:paused]">
@@ -744,7 +747,7 @@ const Home: React.FC = () => {
                         />
                       </div>
                       <div className="flex min-w-0 flex-col justify-center">
-                        <span className="inline-flex w-fit rounded-full bg-[#f7f0ff] px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.2em] text-[#7b56fd]">
+                        <span className="inline-flex w-fit rounded-full bg-(--brand)/10 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.2em] text-(--brand)">
                           {article.category}
                         </span>
                         <h4 className="mt-1.5 line-clamp-2 text-sm font-black leading-snug text-slate-950 sm:text-[15px]">

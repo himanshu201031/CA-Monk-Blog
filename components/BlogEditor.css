@@ -1,6 +1,6 @@
 /* ============================================================
    Blogify — Blog Editor / Dashboard
-   Design language: Sora, slate, #4c44d4 primary, compact radii
+   Design language: Sora, slate, #25D366 primary, compact radii
    All styles expressed as Tailwind v4 utilities via @apply.
    ============================================================ */
 
@@ -17,7 +17,7 @@
   --muted-2: #94a3b8;
   --primary: var(--brand);
   --primary-dark: var(--brand-strong);
-  --primary-soft: #eef2ff;
+  --primary-soft: #dcfce7;
   --danger: #ef4444;
   --danger-soft: #fef2f2;
   --success: #10b981;
@@ -95,7 +95,7 @@
 
 .brand-icon {
   @apply grid h-[34px] w-[34px] place-items-center rounded-[11px] bg-(--primary) text-base text-white;
-  box-shadow: 0 8px 20px rgba(76, 68, 212, 0.35);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--brand) 35%, transparent);
 }
 
 .brand span {
@@ -104,14 +104,14 @@
 
 .new-post-btn {
   @apply flex w-full items-center justify-center gap-2 rounded-(--radius-sm) border-0 bg-(--primary) px-3.5 py-[11px] text-[13px] font-bold text-white;
-  box-shadow: 0 10px 24px rgba(76, 68, 212, 0.3);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--brand) 30%, transparent);
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
 .new-post-btn:hover {
   transform: translateY(-1px);
   filter: brightness(1.05);
-  box-shadow: 0 14px 30px rgba(76, 68, 212, 0.38);
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--brand) 38%, transparent);
 }
 
 .new-post-btn:active {
@@ -190,7 +190,7 @@
 
 .posts-search input:focus {
   @apply border-(--primary) bg-white;
-  box-shadow: 0 0 0 3px rgba(76, 68, 212, 0.12);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 12%, transparent);
 }
 
 .posts-list {
@@ -699,7 +699,7 @@
 .field input[type='text']:focus,
 .field textarea:focus {
   @apply border-(--primary) bg-white;
-  box-shadow: 0 0 0 3px rgba(76, 68, 212, 0.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 10%, transparent);
 }
 
 .field small {
@@ -1261,7 +1261,7 @@
 
 .add-category-row input:focus {
   @apply border-(--primary) bg-white;
-  box-shadow: 0 0 0 3px rgba(76, 68, 212, 0.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 10%, transparent);
 }
 
 .chip-grid {
