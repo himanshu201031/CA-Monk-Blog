@@ -16,6 +16,9 @@ import { ScrollToTop } from '../animations/ScrollToTop';
 import { Parallax, ParallaxImg } from '../animations/Parallax';
 import { Magnetic } from '../animations/Magnetic';
 import { WordReveal } from '../animations/WordReveal';
+import { Typewriter } from '../animations/Typewriter';
+import { StaggerTestimonials } from './ui/stagger-testimonials';
+import { RuixenGradientFooter } from './ui/ruixen-gradient-footer';
 import {
   CardCurtainReveal,
   CardCurtainRevealBody,
@@ -26,6 +29,18 @@ import {
 } from './ui/card-curtain-reveal';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+/* Animated footer glow — brand-tinted ramp (light violet → indigo → soft
+   purple), so the scroll-reveal colour animation fits the light theme. */
+const BLOGIFY_STOPS = [
+  { offset: 0, color: '#eef2ff' },
+  { offset: 0.22, color: '#c7d2fe' },
+  { offset: 0.4, color: '#a5b4fc' },
+  { offset: 0.58, color: '#818cf8' },
+  { offset: 0.74, color: '#4c44d4' },
+  { offset: 0.88, color: '#8363f9' },
+  { offset: 1, color: '#c4b5fd00' },
+];
 
 const categories = [
   { label: 'Technology', icon: '💻' },
@@ -486,16 +501,8 @@ const Home: React.FC = () => {
               variants={heroContainer}
               initial="hidden"
               animate="show"
-              className="relative flex flex-col justify-center overflow-hidden rounded-3xl bg-white px-6 py-8 shadow-[0_24px_60px_rgba(15,23,42,0.07)] sm:px-8 sm:py-10"
+              className="relative flex flex-col justify-center px-6 py-8 sm:px-8 sm:py-10"
             >
-              <div
-                className="pointer-events-none absolute inset-0 opacity-60"
-                style={{
-                  backgroundImage: 'radial-gradient(circle, #d6d8f2 1px, transparent 1px)',
-                  backgroundSize: '24px 24px',
-                }}
-              />
-              <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#4c44d4]/10 blur-2xl" />
 
               <motion.span
                 variants={heroItem}
@@ -521,8 +528,8 @@ const Home: React.FC = () => {
               </h2>
 
               <motion.p variants={heroItem} className="mt-4 max-w-md text-sm leading-7 text-slate-600 sm:text-[15px]">
-                Discover ideas, insights and stories on technology, lifestyle, productivity and more — curated for
-                curious minds.
+                Write without friction. Read without noise. Stories on technology, lifestyle, productivity and more —
+                curated for curious minds.
               </motion.p>
 
               <motion.div variants={heroItem} className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -530,7 +537,7 @@ const Home: React.FC = () => {
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.96 }}
                   onClick={() => navigate('/blogs')}
-                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-[#4c44d4] px-5 py-2.5 text-[13px] font-semibold text-white shadow-lg shadow-[#4c44d4]/25 transition-colors hover:bg-[#3b35a8]"
+                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-[#4c44d4] px-5 py-2.5 text-[13px] font-semibold text-white shadow-lg shadow-[#4c44d4]/25 transition-colors hover:bg-[#3b35a8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4c44d4]"
                 >
                   Explore Articles
                   <svg className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -541,7 +548,7 @@ const Home: React.FC = () => {
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.96 }}
                   onClick={() => navigate('/blogs')}
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-[13px] font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-[13px] font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4c44d4]"
                 >
                   Browse Categories
                 </motion.button>
@@ -578,7 +585,8 @@ const Home: React.FC = () => {
               </motion.div>
             </motion.div>
 
-            {/* Featured visual */}
+            {/* Featured visual — a live article drafting in Blogify's own reading
+                view. The product, not a stock photo: this is the signature. */}
             <motion.div
               ref={heroRef}
               initial={{ opacity: 0, scale: 0.96, y: 24 }}
@@ -587,30 +595,62 @@ const Home: React.FC = () => {
               onMouseMove={onTilt}
               onMouseLeave={resetTilt}
               style={{ rotateX: tiltX, rotateY: tiltY, transformPerspective: 900 }}
-              className="group relative min-h-[320px] overflow-hidden rounded-3xl bg-white shadow-[0_24px_60px_rgba(15,23,42,0.12)] sm:min-h-[400px]"
+              className="group relative flex min-h-[320px] flex-col overflow-hidden rounded-3xl border border-slate-200/70 bg-white shadow-[0_24px_60px_rgba(15,23,42,0.12)] sm:min-h-[400px]"
             >
-              <motion.img
-                style={{ y: imgY }}
-                src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80"
-                alt="Featured travel story"
-                className="absolute inset-0 h-[calc(100%+80px)] w-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-[1.04]"
-              />
-              <div className="absolute inset-0 bg-linear-to-t from-white via-white/40 to-transparent" />
-
-              {/* New badge */}
-              <motion.div
-                initial={{ scale: 0, rotate: -20 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ delay: 0.9, type: 'spring', stiffness: 260, damping: 18 }}
-                className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full bg-white text-[#4c44d4] shadow-lg shadow-slate-200"
-              >
-                <motion.span
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 9, repeat: Infinity, ease: 'linear' }}
-                  className="absolute inset-0 rounded-full border border-dashed border-[#4c44d4]/40"
-                />
-                <span className="text-base leading-none">✦</span>
+              {/* Decorative depth layer (drifts on scroll) */}
+              <motion.div style={{ y: imgY }} className="pointer-events-none absolute inset-0">
+                <div className="absolute inset-0 opacity-70 [background-image:radial-gradient(circle,rgba(76,68,212,0.10)_1px,transparent_1px)] [background-size:22px_22px]" />
+                <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[#4c44d4]/[0.07] blur-3xl" />
+                <div className="absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-[#8363f9]/10 blur-3xl" />
               </motion.div>
+
+              {/* Wordmark bar */}
+              <div className="relative flex items-center justify-between border-b border-slate-100 px-5 py-3 sm:px-6">
+                <div className="flex items-center gap-2">
+                  <span className="grid h-6 w-6 place-items-center rounded-lg bg-[#4c44d4] text-[10px] text-white">✦</span>
+                  <span className="text-[12px] font-black tracking-tight text-slate-950">Blogify</span>
+                </div>
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Issue 048</span>
+              </div>
+
+              {/* Article body */}
+              <div className="relative flex flex-1 flex-col justify-center px-5 py-6 sm:px-6">
+                <div className="flex items-center gap-2">
+                  <span className="rounded-full bg-[#eef2ff] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.2em] text-[#4c44d4]">
+                    Writing
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">4 min read</span>
+                </div>
+                <h3 className="mt-3 text-[22px] font-black leading-[1.15] tracking-tight text-slate-950 sm:text-[26px]">
+                  Write first. <span className="text-[#4c44d4]">Polish later.</span>
+                </h3>
+                <div className="mt-3 flex items-center gap-2.5">
+                  <img
+                    src="https://i.pravatar.cc/40?img=47"
+                    alt="Maya Chen"
+                    className="h-7 w-7 rounded-full border-2 border-white shadow-sm"
+                  />
+                  <span className="text-[11px] font-semibold text-slate-500">
+                    Maya Chen <span className="text-slate-300">·</span>{' '}
+                    <span className="text-slate-400">Writer</span>
+                  </span>
+                </div>
+                <Typewriter
+                  text="Ideas don't need a perfect first draft — they need a door: a blank page you're willing to open."
+                  delay={1400}
+                  className="mt-4 max-w-sm text-[13px] leading-6 text-slate-600"
+                />
+              </div>
+
+              {/* Reading progress — the story is 62% drafted */}
+              <div className="relative h-[3px] w-full bg-slate-100">
+                <motion.div
+                  initial={{ width: '0%' }}
+                  animate={{ width: '62%' }}
+                  transition={{ delay: 1.6, duration: 2.2, ease: EASE }}
+                  className="h-full bg-[#4c44d4]"
+                />
+              </div>
 
               {/* Floating chips */}
               <motion.div style={{ y: chipY1 }} className="absolute left-4 top-4">
@@ -620,7 +660,11 @@ const Home: React.FC = () => {
                   transition={{ delay: 0.6, duration: 0.5, ease: EASE }}
                   className="flex items-center gap-1.5 rounded-full border border-slate-200/80 bg-white/85 px-3 py-1.5 text-[11px] font-bold text-slate-800 backdrop-blur-md"
                 >
-                  <span className="text-xs">🔥</span> Trending now
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4c44d4] opacity-60" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#4c44d4]" />
+                  </span>
+                  Drafting live
                 </motion.div>
               </motion.div>
               <motion.div style={{ y: chipY2 }} className="absolute bottom-4 right-4">
@@ -630,29 +674,9 @@ const Home: React.FC = () => {
                   transition={{ delay: 0.75, duration: 0.5, ease: EASE }}
                   className="flex items-center gap-1.5 rounded-full border border-slate-200/80 bg-white/85 px-3 py-1.5 text-[11px] font-bold text-slate-800 backdrop-blur-md"
                 >
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" /> 10k+ readers
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" /> Saved automatically
                 </motion.div>
               </motion.div>
-
-              <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-                <span className="inline-flex rounded-full bg-slate-900/10 px-2.5 py-1 text-[10px] uppercase tracking-[0.3em] text-slate-700 backdrop-blur-sm">
-                  Featured
-                </span>
-                <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-500">Travel</p>
-                <h3 className="mt-1.5 text-xl font-black leading-tight text-slate-950 sm:text-2xl">
-                  The Art of Slow Travel
-                </h3>
-                <p className="mt-2 hidden max-w-sm text-[13px] leading-6 text-slate-600 sm:block">
-                  Why slowing down while traveling can transform the way you experience the world.
-                </p>
-                <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
-                  <span>By John Doe</span>
-                  <span className="text-slate-300">•</span>
-                  <span>Jul 28, 2025</span>
-                  <span className="text-slate-500">•</span>
-                  <span>6 min read</span>
-                </div>
-              </div>
             </motion.div>
           </section>
 
@@ -675,8 +699,8 @@ const Home: React.FC = () => {
           </motion.div>
 
           {/* ============ MARQUEE ============ */}
-          <Reveal y={16} className="marquee mt-5 overflow-hidden rounded-2xl border border-slate-200/80 bg-white py-2.5 shadow-sm marquee-mask">
-            <div className="marquee-track flex w-max items-center gap-10 whitespace-nowrap">
+          <Reveal y={16} className="group marquee mt-5 overflow-hidden rounded-2xl border border-slate-200/80 bg-white py-2.5 shadow-sm [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+            <div className="animate-marquee flex w-max items-center gap-10 whitespace-nowrap group-hover:[animation-play-state:paused]">
               {[...marqueeItems, ...marqueeItems].map((item, i) => (
                 <span key={i} className="flex items-center gap-10 text-[13px] font-bold text-slate-500">
                   {item}
@@ -880,7 +904,9 @@ const Home: React.FC = () => {
             </Reveal>
 
             <Reveal y={20}>
-              <WordReveal segments={storySegments} scrollLength={185} className="mt-6" />
+              <div className="flex justify-center">
+                <WordReveal segments={storySegments} scrollLength={185} className="mt-6 w-full max-w-3xl text-center" />
+              </div>
             </Reveal>
 
             <motion.div
@@ -908,6 +934,22 @@ const Home: React.FC = () => {
                 </motion.div>
               ))}
             </motion.div>
+          </section>
+
+          {/* ============ TESTIMONIALS ============ */}
+          <section id="testimonials" className="scroll-mt-24 pt-12 sm:pt-16">
+            <Reveal>
+              <SectionHeading
+                eyebrow="Testimonials"
+                title="Loved by readers & writers"
+                link=""
+              />
+            </Reveal>
+            <Reveal y={20}>
+              <div className="mt-8 overflow-hidden rounded-3xl">
+                <StaggerTestimonials />
+              </div>
+            </Reveal>
           </section>
 
           {/* ============ NEWSLETTER ============ */}
@@ -961,7 +1003,13 @@ const Home: React.FC = () => {
         </main>
 
         {/* ============ FOOTER ============ */}
-        <footer className="mt-14 scroll-mt-24 border-t border-slate-200/70 bg-white sm:mt-20">
+        <RuixenGradientFooter
+          gradientHeight="50vh"
+          minReveal={0.04}
+          stops={BLOGIFY_STOPS}
+          className="mt-14 scroll-mt-24 border-t border-slate-200/70 sm:mt-20"
+        >
+          <div className="relative z-10 bg-white">
           <div id="contact" className="mx-auto grid max-w-[1200px] scroll-mt-24 gap-8 px-4 py-10 sm:px-6 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
             <div className="space-y-3">
               <div className="flex items-center gap-2.5">
@@ -1019,7 +1067,8 @@ const Home: React.FC = () => {
               </span>
             </div>
           </div>
-        </footer>
+          </div>
+        </RuixenGradientFooter>
 
         {/* Back to top */}
         <AnimatePresence>
