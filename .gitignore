@@ -28,3 +28,4 @@ playwright/.cache/
 *.njsproj
 *.sln
 *.sw?
+dist

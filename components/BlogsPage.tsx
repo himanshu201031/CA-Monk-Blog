@@ -13,6 +13,7 @@ import {
 } from '../lib/blogStore';
 import { Parallax, ParallaxImg } from '../animations/Parallax';
 import { Magnetic } from '../animations/Magnetic';
+import { ThemeToggle } from './ui/theme-toggle';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -83,7 +84,7 @@ export const BlogsPage: React.FC = () => {
   };
 
   return (
-    <div id="top" className="min-h-screen bg-[#f8f9fb] text-slate-900 antialiased">
+    <div id="top" className="min-h-screen bg-background text-slate-900 antialiased">
       {/* Header */}
       <header className="sticky top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4">
         <div
@@ -103,7 +104,7 @@ export const BlogsPage: React.FC = () => {
               }}
               className="group flex shrink-0 items-center gap-2.5"
             >
-              <div className="relative grid h-9 w-9 place-items-center rounded-xl bg-[#4c44d4] text-white shadow-lg shadow-[#4c44d4]/30 ring-1 ring-white/20">
+              <div className="relative grid h-9 w-9 place-items-center rounded-xl bg-(--brand) text-white shadow-lg shadow-(--brand)/30 ring-1 ring-white/20">
                 <svg viewBox="0 0 24 24" className="h-[17px] w-[17px]" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z" />
                   <path d="m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18" />
@@ -113,7 +114,7 @@ export const BlogsPage: React.FC = () => {
                 <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full border-2 border-white bg-emerald-400" />
               </div>
               <div className="leading-none">
-                <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-400 transition-colors group-hover:text-[#4c44d4]">
+                <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-400 transition-colors group-hover:text-(--brand)">
                   {settings.siteName}
                 </p>
                 <p className="mt-0.5 hidden text-[13px] font-black tracking-tight text-slate-950 sm:block">
@@ -140,16 +141,17 @@ export const BlogsPage: React.FC = () => {
               >
                 <span className="relative block overflow-hidden">
                   <span className="block transition-transform duration-300 ease-out group-hover:-translate-y-full">{link.label}</span>
-                  <span className="absolute inset-0 block translate-y-full text-[#4c44d4] transition-transform duration-300 ease-out group-hover:translate-y-0">
+                  <span className="absolute inset-0 block translate-y-full text-(--brand) transition-transform duration-300 ease-out group-hover:translate-y-0">
                     {link.label}
                   </span>
                 </span>
-                <span className="absolute inset-x-3 -bottom-0.5 h-px origin-left scale-x-0 bg-[#4c44d4] transition-transform duration-300 group-hover:scale-x-100" />
+                <span className="absolute inset-x-3 -bottom-0.5 h-px origin-left scale-x-0 bg-(--brand) transition-transform duration-300 group-hover:scale-x-100" />
               </a>
             ))}
           </nav>
 
           <div className="flex items-center gap-2">
+            <ThemeToggle className="hidden h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-500 transition-colors hover:border-(--brand)/40 hover:bg-(--brand)/10 hover:text-(--brand) sm:grid" />
             <button
               onClick={() => navigate('/')}
               className="hidden rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-[13px] font-semibold text-slate-600 backdrop-blur-sm transition-colors hover:border-slate-300 hover:bg-white hover:text-slate-900 sm:block"
@@ -161,7 +163,7 @@ export const BlogsPage: React.FC = () => {
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/blogs/new')}
-                className="group relative overflow-hidden rounded-full bg-[#4c44d4] px-4 py-2 text-[13px] font-semibold text-white shadow-lg shadow-[#4c44d4]/30 transition-colors hover:bg-[#3b35a8]"
+                className="group relative overflow-hidden rounded-full bg-(--brand) px-4 py-2 text-[13px] font-semibold text-white shadow-lg shadow-(--brand)/30 transition-colors hover:bg-(--brand-strong)"
               >
                 <span className="relative z-10">＋ Create Post</span>
               </motion.button>
@@ -175,10 +177,10 @@ export const BlogsPage: React.FC = () => {
       <section className="relative mx-auto max-w-[1200px] px-4 pb-6 pt-10 sm:px-6 sm:pt-14">
         <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
           <Parallax speed={55}>
-            <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#4c44d4]/10 blur-3xl animate-float-slow" />
+            <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-(--brand)/10 blur-3xl animate-float-slow" />
           </Parallax>
           <Parallax speed={90}>
-            <div className="absolute -right-20 top-24 h-64 w-64 rounded-full bg-[#8363f9]/10 blur-3xl animate-float-slower" />
+            <div className="absolute -right-20 top-24 h-64 w-64 rounded-full bg-(--brand-soft)/10 blur-3xl animate-float-slower" />
           </Parallax>
         </div>
 
@@ -189,15 +191,15 @@ export const BlogsPage: React.FC = () => {
           className="grid items-center gap-6 lg:grid-cols-[1.05fr_0.95fr]"
         >
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#4c44d4]/15 bg-[#eef2ff] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-[#4c44d4]">
+            <span className="inline-flex items-center gap-2 rounded-full border border-(--brand)/15 bg-(--brand)/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-(--brand)">
               <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4c44d4] opacity-60" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#4c44d4]" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--brand) opacity-60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-(--brand)" />
               </span>
               {published.length} live stories
             </span>
             <h1 className="mt-4 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl lg:text-[44px]">
-              All our <span className="text-[#4c44d4]">stories</span>, in one place.
+              All our <span className="text-(--brand)">stories</span>, in one place.
             </h1>
             <p className="mt-3 max-w-lg text-sm leading-7 text-slate-600 sm:text-[15px]">
               Explore everything we've published — search, filter by topic, or jump straight into writing your own.
@@ -237,7 +239,7 @@ export const BlogsPage: React.FC = () => {
                 <span className="inline-flex rounded-full bg-slate-900/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-700 backdrop-blur-sm">
                   Latest
                 </span>
-                <p className="mt-2.5 text-[10px] font-bold uppercase tracking-[0.3em] text-[#4c44d4]">{published[0].category}</p>
+                <p className="mt-2.5 text-[10px] font-bold uppercase tracking-[0.3em] text-(--brand)">{published[0].category}</p>
                 <h3 className="mt-1 line-clamp-1 text-lg font-black leading-tight text-slate-950 sm:text-xl">
                   {published[0].title}
                 </h3>
@@ -270,7 +272,7 @@ export const BlogsPage: React.FC = () => {
               placeholder="Search stories, tags, topics…"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm font-medium text-slate-700 shadow-sm outline-none transition-all placeholder:text-slate-400 focus:border-[#4c44d4] focus:ring-4 focus:ring-[#4c44d4]/10"
+              className="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm font-medium text-slate-700 shadow-sm outline-none transition-all placeholder:text-slate-400 focus:border-(--brand) focus:ring-4 focus:ring-(--brand)/10"
             />
           </div>
 
@@ -283,8 +285,8 @@ export const BlogsPage: React.FC = () => {
                 onClick={() => setCategory(c)}
                 className={`rounded-full border px-3.5 py-2 text-xs font-semibold transition-colors ${
                   category === c
-                    ? 'border-[#4c44d4] bg-[#4c44d4] text-white shadow-lg shadow-[#4c44d4]/25'
-                    : 'border-slate-200 bg-white text-slate-600 hover:border-[#4c44d4]/40 hover:text-[#4c44d4]'
+                    ? 'border-(--brand) bg-(--brand) text-white shadow-lg shadow-(--brand)/25'
+                    : 'border-slate-200 bg-white text-slate-600 hover:border-(--brand)/40 hover:text-(--brand)'
                 }`}
               >
                 {c}
@@ -316,7 +318,7 @@ export const BlogsPage: React.FC = () => {
             </p>
             <button
               onClick={() => navigate('/blogs/new')}
-              className="mt-6 rounded-full bg-[#4c44d4] px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#3b35a8]"
+              className="mt-6 rounded-full bg-(--brand) px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-(--brand-strong)"
             >
               ＋ Create Post
             </button>
@@ -351,13 +353,13 @@ export const BlogsPage: React.FC = () => {
                     }}
                   />
                   {p.category && (
-                    <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#4c44d4] shadow-sm backdrop-blur-sm">
+                    <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-(--brand) shadow-sm backdrop-blur-sm">
                       {p.category}
                     </span>
                   )}
                 </div>
                 <div className="p-5">
-                  <h3 className="line-clamp-2 text-base font-black leading-snug text-slate-950 group-hover:text-[#4c44d4]">
+                  <h3 className="line-clamp-2 text-base font-black leading-snug text-slate-950 group-hover:text-(--brand)">
                     {p.title}
                   </h3>
                   <p className="mt-2 line-clamp-2 text-[13px] leading-6 text-slate-600">{p.excerpt}</p>
@@ -379,7 +381,7 @@ export const BlogsPage: React.FC = () => {
           <div className="grid gap-10 pb-10 sm:grid-cols-2 lg:grid-cols-6">
             <div className="lg:col-span-2">
               <div className="flex items-center gap-2.5">
-                <div className="grid h-8 w-8 place-items-center rounded-xl bg-[#4c44d4] text-white">
+                <div className="grid h-8 w-8 place-items-center rounded-xl bg-(--brand) text-white">
                   <span className="text-sm font-black">B</span>
                 </div>
                 <span className="text-base font-black text-slate-950">{settings.siteName}</span>
@@ -392,11 +394,11 @@ export const BlogsPage: React.FC = () => {
                   type="email"
                   aria-label="Email address"
                   placeholder="you@example.com"
-                  className="h-9 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none transition-all placeholder:text-slate-400 focus:border-[#4c44d4] focus:ring-2 focus:ring-[#4c44d4]/15"
+                  className="h-9 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none transition-all placeholder:text-slate-400 focus:border-(--brand) focus:ring-2 focus:ring-(--brand)/15"
                 />
                 <button
                   type="button"
-                  className="h-9 shrink-0 rounded-xl bg-[#4c44d4] px-4 text-xs font-bold text-white transition-colors hover:bg-[#3b35a8]"
+                  className="h-9 shrink-0 rounded-xl bg-(--brand) px-4 text-xs font-bold text-white transition-colors hover:bg-(--brand-strong)"
                 >
                   Join
                 </button>
@@ -415,7 +417,7 @@ export const BlogsPage: React.FC = () => {
                   <ul className="mt-4 flex flex-col gap-2.5">
                     {col.links.map((link) => (
                       <li key={link}>
-                        <a href="#" onClick={(e) => e.preventDefault()} className="transition-colors hover:text-[#4c44d4]">
+                        <a href="#" onClick={(e) => e.preventDefault()} className="transition-colors hover:text-(--brand)">
                           {link}
                         </a>
                       </li>
@@ -432,7 +434,7 @@ export const BlogsPage: React.FC = () => {
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
               All systems normal
             </span>
-            <button onClick={() => navigate('/')} className="transition-colors hover:text-[#4c44d4]">← Back to Home</button>
+            <button onClick={() => navigate('/')} className="transition-colors hover:text-(--brand)">← Back to Home</button>
           </div>
         </div>
       </footer>
