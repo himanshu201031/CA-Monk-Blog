@@ -51,7 +51,7 @@ return (
       
       <FadeIn className="p-10" delay={0.1}>
         <div className="flex items-center gap-2 mb-4">
-          <span className="text-[11px] font-black text-[#4c44d4] uppercase tracking-widest">{blog?.category?.[0] || 'GENERAL'}</span>
+          <span className="text-[11px] font-black text-(--brand) uppercase tracking-widest">{blog?.category?.[0] || 'GENERAL'}</span>
           <span className="text-slate-300 text-xs">•</span>
           <span className="text-[11px] font-bold text-slate-400">5 min read</span>
         </div>
@@ -60,7 +60,7 @@ return (
           {blog?.title || 'Untitled'}
         </h1>
 
-        <button className="flex items-center gap-2 bg-[#4c44d4] text-white px-4 py-2 rounded-lg text-xs font-bold mb-8 hover:bg-[#3b35a8] transition-colors">
+        <button className="flex items-center gap-2 bg-(--brand) text-white px-4 py-2 rounded-lg text-xs font-bold mb-8 hover:bg-(--brand-strong) transition-colors">
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" /></svg>
           Share Article
         </button>

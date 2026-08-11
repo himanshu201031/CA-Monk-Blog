@@ -43,9 +43,21 @@ const AnimatedRoutes: React.FC<{ playing: boolean }> = ({ playing }) => {
   );
 };
 
+const LOADER_SEEN_KEY = 'blogify:loader:seen';
+
 const App: React.FC = () => {
-  const [loading, setLoading] = useState(true);
-  const [revealed, setRevealed] = useState(false);
+  // The loader plays only once per browser session — after the first load it
+  // is skipped so the app (and its dark curtain) never appear again on
+  // reloads or back/forward navigation.
+  const [loaderSeen] = useState(() => {
+    try {
+      return sessionStorage.getItem(LOADER_SEEN_KEY) === '1';
+    } catch {
+      return false;
+    }
+  });
+  const [loading, setLoading] = useState(!loaderSeen);
+  const [revealed, setRevealed] = useState(loaderSeen);
 
   return (
     <ThemeProvider>
@@ -53,7 +65,19 @@ const App: React.FC = () => {
       {/* onExitComplete fires after the loader has fully slid away; only then
           do we let the first page's curtain sweep down and reveal it. */}
       <AnimatePresence onExitComplete={() => setRevealed(true)}>
-        {loading && <Loader key="loader" onDone={() => setLoading(false)} />}
+        {loading && (
+          <Loader
+            key="loader"
+            onDone={() => {
+              try {
+                sessionStorage.setItem(LOADER_SEEN_KEY, '1');
+              } catch {
+                /* ignore */
+              }
+              setLoading(false);
+            }}
+          />
+        )}
       </AnimatePresence>
       {/* The routes mount as soon as the loader's counter finishes, so the
           first page is already hidden behind its dark curtain while the white

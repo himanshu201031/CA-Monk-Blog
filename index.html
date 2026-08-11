@@ -12,6 +12,9 @@
         font-family: 'Sora', sans-serif; 
         background-color: #f8f9fb;
       }
+      html.dark body {
+        background-color: #09090b;
+      }
       .font-display {
         font-family: 'Space Grotesk', sans-serif;
       }
@@ -22,12 +25,27 @@
         background: rgba(76, 68, 212, 0.18);
         color: #1a1a1a;
       }
+      html.dark ::selection {
+        color: #fafafa;
+      }
       .custom-scrollbar::-webkit-scrollbar { width: 5px; }
       .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
       .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+      html.dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #27272a; }
     </style>
+    <script>
+      // Apply the saved theme before first paint to avoid a flash.
+      (function () {
+        try {
+          var t = localStorage.getItem('blogify-theme');
+          if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body class="text-[#1a1a1a]">
+  <body class="text-foreground">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>
