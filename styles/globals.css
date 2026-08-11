@@ -1,31 +1,87 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/*
+ * BlogHub design system — Tailwind v4 CSS-first configuration.
+ *
+ * Token hierarchy: brand → semantic → component. All colors are derived from
+ * the brand violet #4c44d4 (converted to OKLCH for perceptual uniformity).
+ * Light-only theme — no `.dark` overrides per the project's design directive;
+ * `@custom-variant dark` is declared so `dark:` utilities stay inert-but-valid
+ * for shadcn components.
+ */
+
+@theme {
+  /* ---- Brand & semantic color tokens (light) ---- */
+  --color-background: oklch(98.2% 0.003 264.5);   /* #f8f9fb */
+  --color-foreground: oklch(21.8% 0 89.9);        /* #1a1a1a */
+  --color-card: oklch(100% 0 0);                  /* #ffffff */
+  --color-card-foreground: oklch(21.8% 0 89.9);
+  --color-popover: oklch(100% 0 0);
+  --color-popover-foreground: oklch(21.8% 0 89.9);
+  --color-primary: oklch(49% 0.212 277.6);        /* #4c44d4 brand violet */
+  --color-primary-foreground: oklch(100% 0 0);
+  --color-secondary: oklch(96.2% 0.018 272.3);    /* #eef2ff violet tint */
+  --color-secondary-foreground: oklch(41.4% 0.177 277.6); /* #3b35a8 */
+  --color-muted: oklch(96% 0.005 264.5);
+  --color-muted-foreground: oklch(46% 0.02 264.5);
+  --color-accent: oklch(96.2% 0.018 272.3);
+  --color-accent-foreground: oklch(41.4% 0.177 277.6);
+  --color-destructive: oklch(53% 0.22 27);
+  --color-destructive-foreground: oklch(98% 0.01 264);
+  --color-border: oklch(91% 0.01 264);
+  --color-input: oklch(91% 0.01 264);
+  --color-ring: oklch(49% 0.212 277.6);
+
+  /* ---- Radius tokens ---- */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+
+  /* ---- Typography (mirrors the Google-font setup in index.html) ---- */
+  --font-sans: "Sora", system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+
+  /* ---- Animation tokens: keyframes inside @theme are emitted only when the
+         matching --animate-* variable is used ---- */
+  --animate-fade-in: fade-in 0.2s ease-out;
+  --animate-fade-out: fade-out 0.2s ease-in;
+  --animate-slide-in: slide-in 0.3s ease-out;
+  --animate-slide-out: slide-out 0.3s ease-in;
+  --animate-dialog-in: dialog-fade-in 0.2s ease-out;
+  --animate-dialog-out: dialog-fade-out 0.15s ease-in;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  @keyframes slide-in {
+    from { transform: translateY(-0.5rem); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes slide-out {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-0.5rem); opacity: 0; }
+  }
+  @keyframes dialog-fade-in {
+    from { opacity: 0; transform: scale(0.95) translateY(-0.5rem); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @keyframes dialog-fade-out {
+    from { opacity: 1; transform: scale(1) translateY(0); }
+    to { opacity: 0; transform: scale(0.95) translateY(-0.5rem); }
+  }
+}
+
+/* Class-based dark variant — declared for shadcn compatibility; the project
+   ships light-only, so nothing applies it today. */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
-  :root {
-    --background: 220 27% 98%;
-    --foreground: 240 10% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 10%;
-    --primary: 243 63% 55%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 240 20% 96%;
-    --secondary-foreground: 240 10% 12%;
-    --muted: 240 20% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 243 63% 96%;
-    --accent-foreground: 243 63% 40%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 243 63% 55%;
-    --radius: 0.75rem;
-  }
-
   * {
     @apply border-border;
   }

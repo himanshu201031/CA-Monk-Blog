@@ -595,7 +595,7 @@ const Home: React.FC = () => {
                 alt="Featured travel story"
                 className="absolute inset-0 h-[calc(100%+80px)] w-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-[1.04]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-white via-white/40 to-transparent" />
 
               {/* New badge */}
               <motion.div
