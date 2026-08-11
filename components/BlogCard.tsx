@@ -24,12 +24,12 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog, isActive, onClick, onE
       transition={{ duration: 0.2 }}
       onClick={onClick}
       className={`group relative p-6 bg-white border-b border-slate-100 cursor-pointer transition-all hover:bg-slate-50/80 ${
-        isActive ? 'border-l-4 border-l-[#4c44d4] bg-slate-50/50 shadow-inner' : 'border-l-4 border-l-transparent'
+        isActive ? 'border-l-4 border-l-(--brand) bg-slate-50/50 shadow-inner' : 'border-l-4 border-l-transparent'
       }`}
     >
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
-          <span className={`${isActive ? 'text-[#4c44d4]' : 'text-slate-400'}`}>
+          <span className={`${isActive ? 'text-(--brand)' : 'text-slate-400'}`}>
             {getIcon(blog.category[0] || '')}
           </span>
           <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
@@ -39,7 +39,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog, isActive, onClick, onE
         <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">Recent</span>
       </div>
 
-      <h3 className={`text-[13px] font-black leading-tight mb-2 transition-colors ${isActive ? 'text-[#4c44d4]' : 'text-slate-900 group-hover:text-[#4c44d4]'}`}>
+      <h3 className={`text-[13px] font-black leading-tight mb-2 transition-colors ${isActive ? 'text-(--brand)' : 'text-slate-900 group-hover:text-(--brand)'}`}>
         {blog.title}
       </h3>
       
@@ -56,7 +56,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({ blog, isActive, onClick, onE
         <div className="flex items-center gap-1">
           <button 
             onClick={(e) => { e.stopPropagation(); onEdit(blog); }}
-            className="p-1.5 bg-slate-50 text-slate-400 hover:text-[#4c44d4] hover:bg-white rounded-lg border border-slate-100 transition-all opacity-0 group-hover:opacity-100"
+            className="p-1.5 bg-slate-50 text-slate-400 hover:text-(--brand) hover:bg-white rounded-lg border border-slate-100 transition-all opacity-0 group-hover:opacity-100"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
           </button>

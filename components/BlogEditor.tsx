@@ -52,6 +52,21 @@ const navItems = [
   { icon: "⚙", label: "Settings", view: "settings" as MainView },
 ];
 
+const STARTERS = [
+  {
+    title: "Why I started writing online",
+    body: "Three years ago I hit publish on my first post, convinced nobody would read it. Today that single decision has shaped my career more than anything else. Here's what I learned along the way.\n\n",
+  },
+  {
+    title: "The tools I can't live without",
+    body: "Every writer has a stack they swear by. These are the five tools I reach for every single day — and the one I'd drop in a heartbeat.\n\n",
+  },
+  {
+    title: "A beginner's guide to better habits",
+    body: "Habits are the compound interest of self-improvement. Small, boring, daily actions beat heroic one-off efforts almost every time. Here's how to start.\n\n",
+  },
+];
+
 const viewTitles: Record<Exclude<MainView, "editor">, { title: string; sub: string }> = {
   dashboard: { title: "Dashboard", sub: "Overview of your blog at a glance" },
   posts: { title: "All Posts", sub: "Every post, draft or published" },
@@ -576,6 +591,25 @@ export default function BlogEditor() {
 
             <div className="workspace">
               <section className="editor-section">
+                {/* Starter prompts — shown only on a fresh, empty new post */}
+                {!post.title.trim() && !post.content.trim() && (
+                  <div className="starter-prompts">
+                    <span className="starter-label">Stuck? Pick an opener</span>
+                    {STARTERS.map((s) => (
+                      <button
+                        key={s.title}
+                        className="starter-chip"
+                        onClick={() => {
+                          updatePost("title", s.title);
+                          updatePost("content", s.body);
+                          setToast(`Started “${s.title}”`);
+                        }}
+                      >
+                        {s.title}
+                      </button>
+                    ))}
+                  </div>
+                )}
                 <div className="title-wrapper">
                   <input
                     type="text"
@@ -1103,7 +1137,7 @@ function DashboardView({
   const totalRead = posts.reduce((sum, p) => sum + readTime(p.content), 0);
 
   const stats = [
-    { label: "Total Posts", value: total, accent: "#4c44d4" },
+    { label: "Total Posts", value: total, accent: "var(--brand)" },
     { label: "Published", value: counts.published, accent: "#10b981" },
     { label: "Drafts", value: counts.draft, accent: "#94a3b8" },
     { label: "Scheduled", value: counts.schedule, accent: "#f59e0b" },

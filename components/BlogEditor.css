@@ -15,8 +15,8 @@
   --text: #1a1a1a;
   --muted: #64748b;
   --muted-2: #94a3b8;
-  --primary: #4c44d4;
-  --primary-dark: #3b35a8;
+  --primary: var(--brand);
+  --primary-dark: var(--brand-strong);
   --primary-soft: #eef2ff;
   --danger: #ef4444;
   --danger-soft: #fef2f2;
@@ -43,9 +43,9 @@
   --text: #fafafa;
   --muted: #a1a1aa;
   --muted-2: #71717a;
-  --primary: #a78bfa;
-  --primary-dark: #c4b5fd;
-  --primary-soft: rgba(167, 139, 250, 0.15);
+  --primary: var(--brand);
+  --primary-dark: var(--brand-soft);
+  --primary-soft: color-mix(in srgb, var(--brand) 15%, transparent);
   --danger: #f87171;
   --danger-soft: rgba(248, 113, 113, 0.12);
   --success: #34d399;
@@ -152,7 +152,7 @@
 }
 
 .nav-item.active .nav-count {
-  @apply bg-[#4c44d4]/12 text-(--primary);
+  @apply bg-(--brand)/12 text-(--primary);
 }
 
 /* ============================================================
@@ -221,7 +221,7 @@
 }
 
 .post-item.active {
-  @apply border-[#4c44d4]/25 bg-(--primary-soft);
+  @apply border-(--brand)/25 bg-(--primary-soft);
 }
 
 .post-item-title {
@@ -271,7 +271,7 @@
    ============================================================ */
 
 .ai-card {
-  @apply mt-auto rounded-(--radius-sm) border border-[#4c44d4]/12 bg-(--primary-soft) p-3.5;
+  @apply mt-auto rounded-(--radius-sm) border border-(--brand)/12 bg-(--primary-soft) p-3.5;
 }
 
 .ai-card-icon {
@@ -310,7 +310,7 @@
 }
 
 .back-button:hover {
-  @apply -translate-x-0.5 border-[#4c44d4]/35 text-(--primary);
+  @apply -translate-x-0.5 border-(--brand)/35 text-(--primary);
 }
 
 .menu-toggle {
@@ -353,7 +353,7 @@
 }
 
 .profile:hover {
-  @apply border-[#4c44d4]/40;
+  @apply border-(--brand)/40;
 }
 
 .avatar {
@@ -390,7 +390,7 @@
 }
 
 .preview-button:hover {
-  @apply border-[#4c44d4]/40 text-(--primary);
+  @apply border-(--brand)/40 text-(--primary);
 }
 
 .publish-wrapper {
@@ -446,6 +446,18 @@
 .editor-section {
   @apply flex flex-col gap-5 rounded-(--radius) border border-(--border) bg-(--surface) p-6;
   box-shadow: var(--shadow-sm);
+}
+
+.starter-prompts {
+  @apply flex flex-wrap items-center gap-2 rounded-[12px] border border-(--border) bg-(--bg) p-3.5;
+}
+
+.starter-label {
+  @apply mr-1 w-full text-[10px] font-extrabold uppercase tracking-[0.18em] text-(--muted) sm:w-auto;
+}
+
+.starter-chip {
+  @apply rounded-full border border-(--border-strong) bg-(--surface) px-3.5 py-1.5 text-[12px] font-semibold text-(--text) transition-colors hover:border-(--primary) hover:text-(--primary);
 }
 
 .title-wrapper {
@@ -540,7 +552,7 @@
 }
 
 .image-upload:hover {
-  @apply border-[#4c44d4]/50 bg-(--primary-soft);
+  @apply border-(--brand)/50 bg-(--primary-soft);
 }
 
 .upload-icon {
@@ -560,7 +572,7 @@
 }
 
 .upload-button {
-  @apply rounded-full border border-[#4c44d4]/35 bg-(--primary-soft) px-4 py-[9px] text-xs font-bold text-(--primary);
+  @apply rounded-full border border-(--brand)/35 bg-(--primary-soft) px-4 py-[9px] text-xs font-bold text-(--primary);
   transition: background 0.2s ease, color 0.2s ease;
 }
 
@@ -625,7 +637,7 @@
 }
 
 .small-upload:hover {
-  @apply border-[#4c44d4]/40 text-(--primary);
+  @apply border-(--brand)/40 text-(--primary);
 }
 
 .toggle {
@@ -732,7 +744,7 @@
 }
 
 .change-image:hover {
-  @apply border-[#4c44d4]/40 text-(--primary);
+  @apply border-(--brand)/40 text-(--primary);
 }
 
 .status-option {
@@ -741,11 +753,11 @@
 }
 
 .status-option:hover {
-  @apply border-[#4c44d4]/40;
+  @apply border-(--brand)/40;
 }
 
 .status-option.selected {
-  @apply border-[#4c44d4]/50 bg-(--primary-soft);
+  @apply border-(--brand)/50 bg-(--primary-soft);
 }
 
 .radio {
@@ -776,7 +788,7 @@
 }
 
 .collapse-header:hover {
-  @apply border-[#4c44d4]/40;
+  @apply border-(--brand)/40;
 }
 
 .seo-box {
@@ -957,7 +969,7 @@
 }
 
 .preview-close:hover {
-  @apply border-[#4c44d4]/40 text-(--primary);
+  @apply border-(--brand)/40 text-(--primary);
 }
 
 /* ============================================================
@@ -1130,7 +1142,7 @@
 }
 
 .recent-edit:hover {
-  @apply border-[#4c44d4]/40 text-(--primary);
+  @apply border-(--brand)/40 text-(--primary);
 }
 
 /* ============================================================
@@ -1148,7 +1160,7 @@
 }
 
 .post-row:hover {
-  @apply -translate-y-px border-[#4c44d4]/30;
+  @apply -translate-y-px border-(--brand)/30;
 }
 
 .post-row-thumb {
@@ -1262,7 +1274,7 @@
 }
 
 .manage-chip:hover {
-  @apply border-[#4c44d4]/40;
+  @apply border-(--brand)/40;
 }
 
 .manage-chip-main {
@@ -1333,7 +1345,7 @@
 }
 
 .filter-chip:hover {
-  @apply border-[#4c44d4]/40;
+  @apply border-(--brand)/40;
 }
 
 .filter-chip.active {

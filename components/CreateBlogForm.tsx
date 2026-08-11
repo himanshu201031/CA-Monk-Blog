@@ -64,7 +64,7 @@ const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Title</label>
             <input 
               type="text"
-              className="w-full px-5 py-3.5 rounded-xl border border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#4c44d4]/10 focus:border-[#4c44d4] transition-all text-sm font-bold"
+              className="w-full px-5 py-3.5 rounded-xl border border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-(--brand)/10 focus:border-(--brand) transition-all text-sm font-bold"
               placeholder="What's the title?"
               value={formData.title}
               onChange={(e) => setFormData({...formData, title: e.target.value})}
@@ -76,7 +76,7 @@ const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Summary</label>
             <input 
               type="text"
-              className="w-full px-5 py-3.5 rounded-xl border border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#4c44d4]/10 focus:border-[#4c44d4] transition-all text-sm font-medium"
+              className="w-full px-5 py-3.5 rounded-xl border border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-(--brand)/10 focus:border-(--brand) transition-all text-sm font-medium"
               placeholder="Short description..."
               value={formData.description}
               onChange={(e) => setFormData({...formData, description: e.target.value})}
@@ -93,7 +93,7 @@ const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
               onChange={handleImageChange}
               className="absolute inset-0 w-full h-full opacity-0 z-10 cursor-pointer"
             />
-            <div className={`w-full h-full rounded-xl border-2 border-dashed transition-all flex flex-col items-center justify-center bg-slate-50 overflow-hidden ${preview ? 'border-transparent' : 'border-slate-200 group-hover:border-[#4c44d4] group-hover:bg-slate-100'}`}>
+            <div className={`w-full h-full rounded-xl border-2 border-dashed transition-all flex flex-col items-center justify-center bg-slate-50 overflow-hidden ${preview ? 'border-transparent' : 'border-slate-200 group-hover:border-(--brand) group-hover:bg-slate-100'}`}>
               {preview ? (
                 <img src={preview} className="w-full h-full object-cover" alt="Preview" />
               ) : (
@@ -110,7 +110,7 @@ const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
       <div className="space-y-1">
         <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Narrative</label>
         <textarea 
-          className="w-full px-5 py-3.5 rounded-xl border border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#4c44d4]/10 focus:border-[#4c44d4] transition-all text-sm min-h-[160px] resize-none leading-relaxed"
+          className="w-full px-5 py-3.5 rounded-xl border border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-(--brand)/10 focus:border-(--brand) transition-all text-sm min-h-[160px] resize-none leading-relaxed"
           placeholder="Write your story..."
           value={formData.content}
           onChange={(e) => setFormData({...formData, content: e.target.value})}
@@ -121,7 +121,7 @@ const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
       <button 
         type="submit"
         disabled={mutation.isPending}
-        className="w-full bg-[#4c44d4] text-white font-black py-4 rounded-xl hover:bg-[#3b35a8] transition-all disabled:opacity-50 text-xs uppercase tracking-widest shadow-xl shadow-blue-100"
+        className="w-full bg-(--brand) text-white font-black py-4 rounded-xl hover:bg-(--brand-strong) transition-all disabled:opacity-50 text-xs uppercase tracking-widest shadow-xl shadow-blue-100"
       >
         {mutation.isPending ? 'Publishing...' : 'Publish Insight'}
       </button>

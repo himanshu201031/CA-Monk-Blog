@@ -41,9 +41,9 @@ const NotFound: React.FC = () => {
   <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background px-6 py-20 text-center">
     {/* Ambient orbs */}
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-[#4c44d4]/10 blur-3xl animate-float-slow" />
-      <div className="absolute -bottom-28 -right-20 h-80 w-80 rounded-full bg-[#8363f9]/10 blur-3xl animate-float-slower" />
-      <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#4c44d4]/5 blur-3xl" />
+      <div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-(--brand)/10 blur-3xl animate-float-slow" />
+      <div className="absolute -bottom-28 -right-20 h-80 w-80 rounded-full bg-(--brand-soft)/10 blur-3xl animate-float-slower" />
+      <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-(--brand)/5 blur-3xl" />
     </div>
 
     {/* Dot grid */}
@@ -61,14 +61,14 @@ const NotFound: React.FC = () => {
       transition={{ duration: 0.7, ease: EASE }}
       className="relative flex flex-col items-center"
     >
-      <div className="text-[#4c44d4]">
+      <div className="text-(--brand)">
         <Face />
       </div>
 
-      <p className="mt-8 text-[11px] font-black uppercase tracking-[0.45em] text-[#4c44d4]">Error 404</p>
+      <p className="mt-8 text-[11px] font-black uppercase tracking-[0.45em] text-(--brand)">Error 404</p>
       <h1 className="mt-3 text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
         This page{' '}
-        <span className="text-[#4c44d4]">
+        <span className="text-(--brand)">
           wandered off
         </span>{' '}
         the map.
@@ -84,7 +84,7 @@ const NotFound: React.FC = () => {
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => navigate('/')}
-            className="group relative overflow-hidden rounded-full bg-[#4c44d4] px-6 py-2.5 text-[13px] font-semibold text-white shadow-lg shadow-[#4c44d4]/30 transition-colors hover:bg-[#3b35a8]"
+            className="group relative overflow-hidden rounded-full bg-(--brand) px-6 py-2.5 text-[13px] font-semibold text-white shadow-lg shadow-(--brand)/30 transition-colors hover:bg-(--brand-strong)"
           >
             <span className="relative z-10">Back to Home</span>
           </motion.button>

@@ -37,18 +37,18 @@ const BLOGIFY_STOPS = [
   { offset: 0.22, color: '#c7d2fe' },
   { offset: 0.4, color: '#a5b4fc' },
   { offset: 0.58, color: '#818cf8' },
-  { offset: 0.74, color: '#4c44d4' },
-  { offset: 0.88, color: '#8363f9' },
+  { offset: 0.74, color: 'var(--brand)' },
+  { offset: 0.88, color: 'var(--brand-soft)' },
   { offset: 1, color: '#c4b5fd00' },
 ];
 
 const categories = [
-  { label: 'Technology', icon: '💻' },
-  { label: 'Lifestyle', icon: '🌿' },
-  { label: 'Productivity', icon: '⚡' },
-  { label: 'Design', icon: '🎨' },
-  { label: 'Travel', icon: '✈️' },
-  { label: 'Business', icon: '📈' },
+  { label: 'Technology', icon: '💻', count: 24 },
+  { label: 'Lifestyle', icon: '🌿', count: 18 },
+  { label: 'Productivity', icon: '⚡', count: 31 },
+  { label: 'Design', icon: '🎨', count: 15 },
+  { label: 'Travel', icon: '✈️', count: 12 },
+  { label: 'Business', icon: '📈', count: 20 },
 ];
 
 const navLinks = [
@@ -131,12 +131,21 @@ const trendingNow = [
   },
 ];
 
-const marqueeItems = [
-  ...categories.map((c) => c.label),
-  'Fresh Perspectives',
-  'Expert Insights',
-  'Weekly Digest',
-  'Community Picks',
+const marqueeRow1 = categories.map((c) => ({ label: c.label, icon: c.icon }));
+const marqueeRow2 = [
+  { label: 'Fresh Perspectives', icon: '✦' },
+  { label: 'Expert Insights', icon: '✦' },
+  { label: 'Weekly Digest', icon: '✦' },
+  { label: 'Community Picks', icon: '✦' },
+  { label: 'Writers First', icon: '✦' },
+  { label: 'Ideas Worth Sharing', icon: '✦' },
+];
+
+const storyStats = [
+  { value: 12000, suffix: '+', label: 'Writers publishing' },
+  { value: 48000, suffix: '+', label: 'Stories shared' },
+  { value: 150000, suffix: '+', label: 'Minutes read' },
+  { value: 96, suffix: '', label: 'Countries reached' },
 ];
 
 /* ---------------- helpers ---------------- */
@@ -207,7 +216,7 @@ const heroWord: Variants = {
 const heroWords = [
   { text: 'Stories', className: 'text-slate-950' },
   { text: 'that', className: 'text-slate-950' },
-  { text: 'inspire', className: 'text-[#4c44d4]' },
+  { text: 'inspire', className: 'text-(--brand)' },
   { text: 'minds.', className: 'text-slate-950' },
 ];
 
@@ -269,7 +278,7 @@ const Home: React.FC = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 24, scale: 0.95 }}
               transition={{ duration: 0.3, ease: EASE }}
-              className="fixed bottom-6 left-1/2 z-[120] flex -translate-x-1/2 items-center gap-2.5 whitespace-nowrap rounded-full bg-[#4c44d4] px-5 py-3 text-[13px] font-semibold text-white shadow-[0_20px_50px_rgba(76,68,212,0.35)]"
+              className="fixed bottom-6 left-1/2 z-[120] flex -translate-x-1/2 items-center gap-2.5 whitespace-nowrap rounded-full bg-(--brand) px-5 py-3 text-[13px] font-semibold text-white shadow-[0_20px_50px] shadow-(--brand)/35"
             >
               <span className="grid h-5 w-5 place-items-center rounded-full bg-emerald-500 text-[10px] text-white">✓</span>
               You're subscribed! Check your inbox soon.
@@ -306,7 +315,7 @@ const Home: React.FC = () => {
                   <motion.div
                     whileHover={{ rotate: -10, scale: 1.08 }}
                     transition={{ duration: 0.25 }}
-                    className="relative grid h-9 w-9 place-items-center rounded-xl bg-[#4c44d4] text-white shadow-lg shadow-[#4c44d4]/30 ring-1 ring-white/20"
+                    className="relative grid h-9 w-9 place-items-center rounded-xl bg-(--brand) text-white shadow-lg shadow-(--brand)/30 ring-1 ring-white/20"
                   >
                     <svg viewBox="0 0 24 24" className="h-[17px] w-[17px]" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
                       <path d="M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z" />
@@ -317,7 +326,7 @@ const Home: React.FC = () => {
                     <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full border-2 border-white bg-emerald-400" />
                   </motion.div>
                   <div className="leading-none">
-                    <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-400 transition-colors group-hover:text-[#4c44d4]">
+                    <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-400 transition-colors group-hover:text-(--brand)">
                       Blogify
                     </p>
                     <p className="mt-0.5 hidden text-[13px] font-black tracking-tight text-slate-950 sm:block">
@@ -347,11 +356,11 @@ const Home: React.FC = () => {
                         <span className="block transition-transform duration-300 ease-out group-hover:-translate-y-full">
                           {link.label}
                         </span>
-                        <span className="absolute inset-0 block translate-y-full text-[#4c44d4] transition-transform duration-300 ease-out group-hover:translate-y-0">
+                        <span className="absolute inset-0 block translate-y-full text-(--brand) transition-transform duration-300 ease-out group-hover:translate-y-0">
                           {link.label}
                         </span>
                       </span>
-                      <span className="absolute inset-x-3 -bottom-0.5 h-px origin-left scale-x-0 bg-[#4c44d4] transition-transform duration-300 group-hover:scale-x-100" />
+                      <span className="absolute inset-x-3 -bottom-0.5 h-px origin-left scale-x-0 bg-(--brand) transition-transform duration-300 group-hover:scale-x-100" />
                     </a>
                   </Magnetic>
                 ))}
@@ -360,13 +369,13 @@ const Home: React.FC = () => {
               {/* Actions */}
               <div className="flex items-center gap-2">
 
-                <ThemeToggle className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-500 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#4c44d4]/10 hover:text-[#4c44d4]" />
+                <ThemeToggle className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-500 transition-colors hover:border-(--brand)/40 hover:bg-(--brand)/10 hover:text-(--brand)" />
                 <motion.button
                   whileHover={{ scale: 1.08, y: -2 }}
                   whileTap={{ scale: 0.92 }}
                   aria-label="Search"
                   onClick={() => navigate('/blogs?focus=1')}
-                  className="hidden h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-500 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#4c44d4]/10 hover:text-[#4c44d4] sm:grid"
+                  className="hidden h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-500 transition-colors hover:border-(--brand)/40 hover:bg-(--brand)/10 hover:text-(--brand) sm:grid"
                 >
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -377,7 +386,7 @@ const Home: React.FC = () => {
                     whileHover={{ scale: 1.04 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={subscribe}
-                    className="group relative overflow-hidden rounded-full bg-[#4c44d4] px-4 py-2 text-[13px] font-semibold text-white shadow-lg shadow-[#4c44d4]/30 transition-shadow hover:bg-[#3b35a8] hover:shadow-[#4c44d4]/45"
+                    className="group relative overflow-hidden rounded-full bg-(--brand) px-4 py-2 text-[13px] font-semibold text-white shadow-lg shadow-(--brand)/30 transition-shadow hover:bg-(--brand-strong) hover:shadow-(--brand)/45"
                   >
                     <span className="relative z-10">Subscribe</span>
                   </motion.button>
@@ -388,7 +397,7 @@ const Home: React.FC = () => {
                   onClick={() => setMenuOpen((o) => !o)}
                   aria-label="Toggle menu"
                   aria-expanded={menuOpen}
-                  className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-700 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#4c44d4]/10 hover:text-[#4c44d4] md:hidden"
+                  className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-700 transition-colors hover:border-(--brand)/40 hover:bg-(--brand)/10 hover:text-(--brand) md:hidden"
                 >
                   <div className="flex w-4 flex-col items-end gap-[5px]">
                     <motion.span animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 7 : 0 }} className="h-[1.5px] w-4 rounded-full bg-current" />
@@ -429,7 +438,7 @@ const Home: React.FC = () => {
                       className="group flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-950"
                     >
                       <span className="flex items-center gap-2.5">
-                        <span className="h-1.5 w-1.5 rounded-full bg-[#4c44d4] opacity-0 transition-opacity group-hover:opacity-100" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-(--brand) opacity-0 transition-opacity group-hover:opacity-100" />
                         {link.label}
                       </span>
                       <svg className="h-3.5 w-3.5 -translate-x-1 text-slate-300 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -442,7 +451,7 @@ const Home: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.26, duration: 0.32, ease: EASE }}
                     onClick={subscribe}
-                    className="group relative mt-1 overflow-hidden rounded-xl bg-[#4c44d4] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-[#4c44d4]/25 transition-colors hover:bg-[#3b35a8]"
+                    className="group relative mt-1 overflow-hidden rounded-xl bg-(--brand) px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-(--brand)/25 transition-colors hover:bg-(--brand-strong)"
                   >
                     Subscribe
                   </motion.button>
@@ -455,7 +464,7 @@ const Home: React.FC = () => {
           {/* Reading progress */}
           <motion.div
             style={{ scaleX }}
-            className="absolute inset-x-0 bottom-0 h-[2px] origin-left bg-[#4c44d4]"
+            className="absolute inset-x-0 bottom-0 h-[2px] origin-left bg-(--brand)"
           />
         </motion.header>
 
@@ -467,10 +476,10 @@ const Home: React.FC = () => {
               src="/hero.png"
               alt=""
               aria-hidden
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full scale-[1.05] object-cover"
             />
-            {/* Readability scrims — white in light, near-black in dark */}
-            <div className="absolute inset-0 bg-linear-to-r from-white/95 via-white/75 to-white/10 dark:from-[#09090b]/95 dark:via-[#09090b]/80 dark:to-transparent" />
+            {/* Readability scrims — kept subtle in light so the photo shows through */}
+            <div className="absolute inset-0 bg-linear-to-r from-white/75 via-white/40 to-transparent dark:from-[#09090b]/95 dark:via-[#09090b]/80 dark:to-transparent" />
             <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-background to-transparent" />
 
             <div className="relative z-10 mx-auto flex min-h-[520px] w-full max-w-[1200px] flex-col justify-center px-4 py-16 sm:min-h-[600px] sm:px-6 sm:py-24">
@@ -483,11 +492,11 @@ const Home: React.FC = () => {
 
               <motion.span
                 variants={heroItem}
-                className="inline-flex w-fit items-center gap-2 rounded-full border border-[#4c44d4]/15 bg-[#4c44d4]/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-[#4c44d4]"
+                className="inline-flex w-fit items-center gap-2 rounded-full border border-(--brand)/15 bg-(--brand)/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-(--brand)"
               >
                 <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4c44d4] opacity-60" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#4c44d4]" />
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-(--brand) opacity-60" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-(--brand)" />
                 </span>
                 Welcome to Blogify
               </motion.span>
@@ -514,7 +523,7 @@ const Home: React.FC = () => {
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.96 }}
                   onClick={() => navigate('/blogs')}
-                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-[#4c44d4] px-5 py-2.5 text-[13px] font-semibold text-white shadow-lg shadow-[#4c44d4]/25 transition-colors hover:bg-[#3b35a8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4c44d4]"
+                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-(--brand) px-5 py-2.5 text-[13px] font-semibold text-white shadow-lg shadow-(--brand)/25 transition-colors hover:bg-(--brand-strong) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--brand)"
                 >
                   Explore Articles
                   <svg className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -525,7 +534,7 @@ const Home: React.FC = () => {
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.96 }}
                   onClick={() => navigate('/blogs')}
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-[13px] font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4c44d4]"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-[13px] font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--brand)"
                 >
                   Browse Categories
                 </motion.button>
@@ -574,7 +583,7 @@ const Home: React.FC = () => {
             <motion.span
               animate={{ y: [0, 6, 0] }}
               transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-              className="text-[#4c44d4]"
+              className="text-(--brand)"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
@@ -585,14 +594,27 @@ const Home: React.FC = () => {
           {/* Content below the hero — constrained to the reading width */}
           <div className="relative mx-auto max-w-[1200px] px-4 sm:px-6">
           {/* ============ MARQUEE ============ */}
-          <Reveal y={16} className="group mt-5 overflow-hidden rounded-2xl border border-slate-200/80 bg-white py-2.5 shadow-sm [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-            <div className="animate-marquee flex w-max items-center gap-10 whitespace-nowrap group-hover:[animation-play-state:paused]">
-              {[...marqueeItems, ...marqueeItems].map((item, i) => (
-                <span key={i} className="flex items-center gap-10 text-[13px] font-bold text-slate-500">
-                  {item}
-                  <span className="text-[#4c44d4]">✦</span>
-                </span>
-              ))}
+          <Reveal y={16} className="group mt-5 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm">
+            <div className="flex flex-col overflow-hidden py-3.5 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+              {/* Row 1 — categories, drifting left */}
+              <div className="animate-marquee flex w-max items-center gap-10 whitespace-nowrap group-hover:[animation-play-state:paused]">
+                {[...marqueeRow1, ...marqueeRow1].map((item, i) => (
+                  <span key={i} className="flex items-center gap-2.5 text-[13px] font-black uppercase tracking-[0.14em] text-slate-600">
+                    <span className="text-sm leading-none">{item.icon}</span>
+                    {item.label}
+                    <span className="ml-8 text-[10px] text-(--brand)">✦</span>
+                  </span>
+                ))}
+              </div>
+              {/* Row 2 — taglines, drifting right */}
+              <div className="animate-marquee-reverse mt-3 flex w-max items-center gap-12 whitespace-nowrap group-hover:[animation-play-state:paused]">
+                {[...marqueeRow2, ...marqueeRow2].map((item, i) => (
+                  <span key={i} className="flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[0.24em] text-slate-400">
+                    <span className="text-[10px] text-(--brand)">{item.icon}</span>
+                    {item.label}
+                  </span>
+                ))}
+              </div>
             </div>
           </Reveal>
 
@@ -601,43 +623,57 @@ const Home: React.FC = () => {
           <section id="categories" className="scroll-mt-24 pt-12 sm:pt-16">
             <Reveal>
               <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm sm:p-5">
-                <div className="mb-3 flex items-center justify-between">
-                  <p className="text-[11px] font-black uppercase tracking-[0.3em] text-[#4c44d4]">Browse by topic</p>
-                  <span className="hidden text-xs font-medium text-slate-400 sm:block">6 categories</span>
+                <div className="mb-4 flex items-center justify-between">
+                  <p className="text-[11px] font-black uppercase tracking-[0.3em] text-(--brand)">Browse by topic</p>
+                  <span className="hidden text-xs font-medium text-slate-400 sm:block">6 categories · 120+ posts</span>
                 </div>
                 <motion.div
-                  variants={{ hidden: {}, show: { transition: { staggerChildren: 0.05 } } }}
+                  variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06 } } }}
                   initial="hidden"
                   whileInView="show"
-                  viewport={{ once: true, amount: 0.4 }}
-                  className="flex flex-wrap gap-2"
+                  viewport={{ once: true, amount: 0.3 }}
+                  className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6"
                 >
                   {categories.map((category) => (
                     <motion.button
                       key={category.label}
                       variants={{
-                        hidden: { opacity: 0, y: 12, scale: 0.94 },
-                        show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: EASE } },
+                        hidden: { opacity: 0, y: 14, scale: 0.95 },
+                        show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.45, ease: EASE } },
                       }}
-                      whileHover={{ y: -2, scale: 1.04 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={{ y: -3 }}
+                      whileTap={{ scale: 0.97 }}
                       onClick={() => navigate('/blogs?category=' + encodeURIComponent(category.label))}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#4c44d4]/10 hover:text-[#4c44d4]"
+                      className="group relative flex flex-col items-start gap-2 rounded-2xl border border-slate-200/80 bg-slate-50 p-4 text-left transition-colors duration-300 hover:border-(--brand)/40 hover:bg-white hover:shadow-[0_12px_28px_rgba(15,23,42,0.08)]"
                     >
-                      <span className="text-sm leading-none">{category.icon}</span>
-                      {category.label}
+                      <span className="grid h-9 w-9 place-items-center rounded-xl bg-(--brand)/10 text-base transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-110">
+                        {category.icon}
+                      </span>
+                      <span className="text-[13px] font-black text-slate-950">{category.label}</span>
+                      <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">
+                        {category.count} posts
+                      </span>
+                      <svg
+                        className="absolute right-3 top-3 h-3.5 w-3.5 -translate-x-1 text-(--brand) opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
                     </motion.button>
                   ))}
                   <motion.button
                     variants={{
-                      hidden: { opacity: 0, y: 12, scale: 0.94 },
-                      show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.4, ease: EASE } },
+                      hidden: { opacity: 0, y: 14, scale: 0.95 },
+                      show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.45, ease: EASE } },
                     }}
-                    whileHover={{ y: -2 }}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-slate-300 px-3.5 py-2 text-xs font-semibold text-slate-500 transition-colors hover:border-[#4c44d4]/50 hover:text-[#4c44d4]"
+                    whileHover={{ y: -3 }}
+                    onClick={() => navigate('/blogs')}
+                    className="group relative grid place-items-center gap-1.5 rounded-2xl border border-dashed border-slate-300 bg-transparent p-4 text-center transition-colors hover:border-(--brand)/50"
                   >
-                    <span className="text-base leading-none">⋯</span>
-                    More
+                    <span className="text-xl leading-none text-slate-400 transition-colors group-hover:text-(--brand)">⋯</span>
+                    <span className="text-[12px] font-bold text-slate-500 transition-colors group-hover:text-(--brand)">More topics</span>
                   </motion.button>
                 </motion.div>
               </div>
@@ -672,7 +708,7 @@ const Home: React.FC = () => {
                     className="h-48 sm:h-56"
                   />
                   <div className="p-5 sm:p-7">
-                    <span className="inline-flex rounded-full bg-[#4c44d4]/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#4c44d4]">
+                    <span className="inline-flex rounded-full bg-(--brand)/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-(--brand)">
                       {featuredArticles[0].category}
                     </span>
                     <h3 className="mt-3 text-xl font-black leading-snug text-slate-950 sm:text-2xl">
@@ -795,12 +831,41 @@ const Home: React.FC = () => {
               </div>
             </Reveal>
 
+            {/* Story stats strip */}
+            <motion.div
+              variants={{ hidden: {}, show: { transition: { staggerChildren: 0.07 } } }}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.3 }}
+              className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4"
+            >
+              {storyStats.map((s) => (
+                <motion.div
+                  key={s.label}
+                  variants={{
+                    hidden: { opacity: 0, y: 16 },
+                    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } },
+                  }}
+                  className="rounded-2xl border border-slate-200/70 bg-white px-4 py-5 text-center shadow-sm"
+                >
+                  <CountUp
+                    to={s.value}
+                    suffix={s.suffix}
+                    className="font-display text-2xl font-black text-slate-950 sm:text-[28px]"
+                  />
+                  <p className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
+                    {s.label}
+                  </p>
+                </motion.div>
+              ))}
+            </motion.div>
+
             <motion.div
               variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, amount: 0.2 }}
-              className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+              className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
             >
               {features.map((f) => (
                 <motion.div
@@ -812,7 +877,7 @@ const Home: React.FC = () => {
                   whileHover={{ y: -4 }}
                   className="group rounded-2xl border border-slate-200/70 bg-white p-5 shadow-sm transition-shadow hover:shadow-[0_16px_36px_rgba(15,23,42,0.1)]"
                 >
-                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#4c44d4]/10 text-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110">
+                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-(--brand)/10 text-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110">
                     {f.icon}
                   </div>
                   <h3 className="mt-3.5 text-sm font-black text-slate-950">{f.title}</h3>
@@ -842,13 +907,13 @@ const Home: React.FC = () => {
           <Parallax speed={16}>
           <section id="about" className="scroll-mt-24 pt-12 sm:pt-16">
             <Reveal y={32}>
-              <div className="relative overflow-hidden rounded-3xl border border-[#4c44d4]/15 bg-white px-6 py-8 shadow-[0_24px_60px_rgba(76,68,212,0.08)] sm:px-10 sm:py-10">
-                  <div className="pointer-events-none absolute -left-16 -top-16 h-56 w-56 rounded-full bg-[#4c44d4]/10 blur-3xl animate-float-slow" />
-                  <div className="pointer-events-none absolute -bottom-16 -right-10 h-56 w-56 rounded-full bg-[#8363f9]/10 blur-3xl animate-float-slower" />
+              <div className="relative overflow-hidden rounded-3xl border border-(--brand)/15 bg-white px-6 py-8 shadow-[0_24px_60px] shadow-(--brand)/10 sm:px-10 sm:py-10">
+                  <div className="pointer-events-none absolute -left-16 -top-16 h-56 w-56 rounded-full bg-(--brand)/10 blur-3xl animate-float-slow" />
+                  <div className="pointer-events-none absolute -bottom-16 -right-10 h-56 w-56 rounded-full bg-(--brand-soft)/10 blur-3xl animate-float-slower" />
 
                   <div className="relative grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
                     <div>
-                      <p className="text-[10px] font-black uppercase tracking-[0.35em] text-[#4c44d4]">
+                      <p className="text-[10px] font-black uppercase tracking-[0.35em] text-(--brand)">
                         Don't miss a story.
                       </p>
                       <h2 className="mt-3 text-2xl font-black leading-tight tracking-tight text-slate-950 sm:text-3xl lg:text-4xl">
@@ -870,13 +935,13 @@ const Home: React.FC = () => {
                         type="email"
                         required
                         placeholder="Enter your email address"
-                        className="min-w-0 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm text-slate-700 outline-none transition-all placeholder:text-slate-400 focus:border-[#4c44d4] focus:ring-2 focus:ring-[#4c44d4]/25"
+                        className="min-w-0 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm text-slate-700 outline-none transition-all placeholder:text-slate-400 focus:border-(--brand) focus:ring-2 focus:ring-(--brand)/25"
                       />
                       <motion.button
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.96 }}
                         type="submit"
-                        className="rounded-full bg-[#4c44d4] px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#4c44d4]/25 transition-colors hover:bg-[#3b35a8]"
+                        className="rounded-full bg-(--brand) px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-(--brand)/25 transition-colors hover:bg-(--brand-strong)"
                       >
                         Subscribe
                       </motion.button>
@@ -900,7 +965,7 @@ const Home: React.FC = () => {
           <div id="contact" className="mx-auto grid max-w-[1200px] scroll-mt-24 gap-8 px-4 py-10 sm:px-6 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
             <div className="space-y-3">
               <div className="flex items-center gap-2.5">
-                <div className="grid h-8 w-8 place-items-center rounded-xl bg-[#4c44d4] text-white">
+                <div className="grid h-8 w-8 place-items-center rounded-xl bg-(--brand) text-white">
                   <span className="text-sm font-black">B</span>
                 </div>
                 <span className="text-base font-black text-slate-950">Blogify</span>
@@ -917,7 +982,7 @@ const Home: React.FC = () => {
                   <motion.a
                     key={i}
                     href="#contact"
-                    whileHover={{ y: -3, color: '#4c44d4' }}
+                    whileHover={{ y: -3, color: 'var(--brand)' }}
                     aria-label="Social link"
                     className="grid h-8 w-8 place-items-center rounded-xl border border-slate-200 text-slate-500 transition-colors"
                   >
@@ -949,9 +1014,15 @@ const Home: React.FC = () => {
           <div className="border-t border-slate-100">
             <div className="mx-auto flex max-w-[1200px] flex-col items-center justify-between gap-2 px-4 py-5 text-center text-xs text-slate-400 sm:flex-row sm:px-6">
               <span>© 2025 Blogify. All rights reserved.</span>
-              <span className="flex items-center gap-1.5">
-                Made with <span className="text-[#4c44d4]">♥</span> for curious minds
-              </span>
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="inline-flex items-center gap-1.5 font-semibold text-slate-500 transition-colors hover:text-(--brand)"
+              >
+                Back to top
+                <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
+                </svg>
+              </button>
             </div>
           </div>
           </div>
@@ -967,7 +1038,7 @@ const Home: React.FC = () => {
               transition={{ duration: 0.3, ease: EASE }}
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               aria-label="Back to top"
-              className="fixed bottom-6 right-6 z-[150] grid h-11 w-11 place-items-center rounded-full bg-[#4c44d4] text-white shadow-xl shadow-[#4c44d4]/30 transition-colors hover:bg-[#3b35a8]"
+              className="fixed bottom-6 right-6 z-[150] grid h-11 w-11 place-items-center rounded-full bg-(--brand) text-white shadow-xl shadow-(--brand)/30 transition-colors hover:bg-(--brand-strong)"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
@@ -990,8 +1061,8 @@ const SectionHeading: React.FC<{
 }> = ({ eyebrow, title, link, href = '#' }) => (
   <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
     <div>
-      <p className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.35em] text-[#4c44d4]">
-        <span className="h-1.5 w-1.5 rounded-full bg-[#4c44d4]" />
+      <p className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.35em] text-(--brand)">
+        <span className="h-1.5 w-1.5 rounded-full bg-(--brand)" />
         {eyebrow}
       </p>
       <h2 className="mt-2 text-2xl font-black tracking-tight text-slate-950 sm:text-[28px]">{title}</h2>
@@ -1000,7 +1071,7 @@ const SectionHeading: React.FC<{
       <a
         href={href}
         onClick={scrollToId(href)}
-        className="group inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-500 transition-colors hover:text-[#4c44d4]"
+        className="group inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-500 transition-colors hover:text-(--brand)"
       >
         {link}
         <svg className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1027,7 +1098,7 @@ const FooterCol: React.FC<{ title: string; items: string[]; onClickItem?: (item:
               e.preventDefault();
               onClickItem?.(item);
             }}
-            className="inline-flex items-center gap-1.5 transition-all hover:translate-x-0.5 hover:text-[#4c44d4]"
+            className="inline-flex items-center gap-1.5 transition-all hover:translate-x-0.5 hover:text-(--brand)"
           >
             {item}
           </a>

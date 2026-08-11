@@ -53,6 +53,7 @@
   --animate-float-slow: float-slow 12s ease-in-out infinite;
   --animate-float-slower: float-slower 16s ease-in-out infinite;
   --animate-marquee: marquee 34s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 40s linear infinite;
   --animate-nf-eyes: nf-eyes 1s 0.3s forwards;
   --animate-nf-eye-lid: nf-eye-lid 4s 1.3s infinite;
   --animate-nf-pupil: nf-pupil 4s 1.3s infinite;
@@ -96,6 +97,10 @@
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
   }
+  @keyframes marquee-reverse {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
+  }
   @keyframes nf-eye-lid {
     0%, 40%, 45%, 100% { transform: translateY(0); }
     42.5% { transform: translateY(17.5px); }
@@ -121,6 +126,15 @@
     from { transform: translate(0, 0); }
     to { transform: translate(0, 22.5px); }
   }
+}
+
+/* Brand tokens — resolved per theme. Light uses the brand violet; dark
+   switches to the cursor accent colour (#7159ED) so the whole UI follows
+   the custom cursor instead of the light-mode purple. */
+:root {
+  --brand: #4c44d4;
+  --brand-strong: #3b35a8;
+  --brand-soft: #8363f9;
 }
 
 /* Class-based dark variant — drives the white↔black theme inversion. */
@@ -163,9 +177,13 @@
   --color-border: #27272a;
   --color-input: #27272a;
 
-  --color-primary: #a78bfa;
+  --brand: #7159ed;
+  --brand-strong: #8b7bf2;
+  --brand-soft: #a594f5;
+
+  --color-primary: var(--brand);
   --color-primary-foreground: #ffffff;
-  --color-ring: #a78bfa;
+  --color-ring: var(--brand);
 }
 
 @layer base {
@@ -218,6 +236,7 @@ body.uc-active * {
   .animate-float-slow,
   .animate-float-slower,
   .animate-marquee,
+  .animate-marquee-reverse,
   .animate-nf-eyes,
   .animate-nf-eye-lid,
   .animate-nf-pupil,

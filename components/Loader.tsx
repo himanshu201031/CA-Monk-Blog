@@ -47,8 +47,8 @@ const Loader: React.FC<LoaderProps> = ({ onDone, duration = 1300 }) => {
     >
       {/* Ambient orbs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-[#4c44d4]/20 blur-3xl animate-float-slow" />
-        <div className="absolute -bottom-24 -right-16 h-72 w-72 rounded-full bg-[#8363f9]/20 blur-3xl animate-float-slower" />
+        <div className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-(--brand)/20 blur-3xl animate-float-slow" />
+        <div className="absolute -bottom-24 -right-16 h-72 w-72 rounded-full bg-(--brand-soft)/20 blur-3xl animate-float-slower" />
       </div>
 
       {/* Wordmark */}
@@ -72,7 +72,7 @@ const Loader: React.FC<LoaderProps> = ({ onDone, duration = 1300 }) => {
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: EASE }}
-          className="font-display text-6xl font-black leading-none tabular-nums text-[#4c44d4] sm:text-7xl"
+          className="font-display text-6xl font-black leading-none tabular-nums text-(--brand) sm:text-7xl"
         >
           {progress}
         </motion.span>
@@ -80,7 +80,7 @@ const Loader: React.FC<LoaderProps> = ({ onDone, duration = 1300 }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="ml-1 text-3xl font-black leading-none text-[#4c44d4] sm:text-4xl"
+          className="ml-1 text-3xl font-black leading-none text-(--brand) sm:text-4xl"
         >
           %
         </motion.span>
@@ -89,7 +89,7 @@ const Loader: React.FC<LoaderProps> = ({ onDone, duration = 1300 }) => {
       {/* Glowing progress bar */}
       <div className="mt-6 h-[3px] w-52 overflow-hidden rounded-full bg-slate-200 sm:w-64">
         <div
-          className="h-full rounded-full bg-[#4c44d4] shadow-[0_0_18px_rgba(76,68,212,0.45)] transition-[width] duration-150 ease-out"
+          className="h-full rounded-full bg-(--brand) shadow-[0_0_18px] shadow-(--brand)/45 transition-[width] duration-150 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>
