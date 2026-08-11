@@ -31,7 +31,7 @@
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  background: linear-gradient(135deg, #4c44d4 0%, #3b35a8 100%);
+  background: #4c44d4;
   transform: translateY(-100%);
 }
 
@@ -59,7 +59,7 @@ html.lenis body {
   top: 0;
   left: 0;
   height: 3px;
-  background: linear-gradient(90deg, #4c44d4, #7c74eb);
+  background: #4c44d4;
   z-index: 9998;
   width: 0%;
   transition: width 0.1s linear;
@@ -157,28 +157,6 @@ html.lenis body {
   animation-play-state: paused;
 }
 
-/* ---------- Animated gradient (text + borders) ---------- */
-@keyframes gradient-x {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-.animate-gradient-x {
-  background-size: 200% 200%;
-  animation: gradient-x 6s ease infinite;
-}
-
-/* ---------- Shimmer sweep ---------- */
-@keyframes shimmer {
-  from { background-position: -200% 0; }
-  to { background-position: 200% 0; }
-}
-
-.animate-shimmer {
-  background-size: 200% 100%;
-  animation: shimmer 2.4s linear infinite;
-}
-
 /* ---------- Subtle background grid ---------- */
 .bg-grid {
   background-image:
@@ -220,9 +198,7 @@ body.uc-active * {
 
   .animate-float-slow,
   .animate-float-slower,
-  .marquee-track,
-  .animate-gradient-x,
-  .animate-shimmer {
+  .marquee-track {
     animation: none;
   }
 }
