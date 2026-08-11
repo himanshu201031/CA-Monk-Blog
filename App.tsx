@@ -8,6 +8,7 @@ import NotFound from './components/NotFound';
 import UserCursor from './components/ui/user-cursor';
 import Loader from './components/Loader';
 import { Curtain } from './animations/CurtainTransition';
+import { ThemeProvider } from './lib/theme';
 
 /**
  * CurtainView — wraps a routed page with the dark curtain wipe. There is
@@ -47,7 +48,7 @@ const App: React.FC = () => {
   const [revealed, setRevealed] = useState(false);
 
   return (
-    <>
+    <ThemeProvider>
       <UserCursor />
       {/* onExitComplete fires after the loader has fully slid away; only then
           do we let the first page's curtain sweep down and reveal it. */}
@@ -62,7 +63,7 @@ const App: React.FC = () => {
           <AnimatedRoutes playing={revealed} />
         </BrowserRouter>
       )}
-    </>
+    </ThemeProvider>
   );
 };
 

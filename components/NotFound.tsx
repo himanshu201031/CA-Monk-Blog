@@ -38,7 +38,7 @@ const Face: React.FC = () => (
 const NotFound: React.FC = () => {
   const navigate = useNavigate();
   return (
-  <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#f8f9fb] px-6 py-20 text-center">
+  <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background px-6 py-20 text-center">
     {/* Ambient orbs */}
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
       <div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-[#4c44d4]/10 blur-3xl animate-float-slow" />

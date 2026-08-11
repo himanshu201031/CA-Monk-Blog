@@ -49,7 +49,7 @@ export const Curtain = ({ playing = true }: { playing?: boolean }) => (
         initial="initial"
         animate={playing ? "animate" : "initial"}
         exit="exit"
-        className="h-full w-full border-white/10 bg-slate-900 last:border-r-0 lg:h-screen lg:w-1/5 lg:border-r"
+        className="h-full w-full border-white/10 bg-[#0f172a] last:border-r-0 lg:h-screen lg:w-1/5 lg:border-r"
       />
     ))}
   </div>

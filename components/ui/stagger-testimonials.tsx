@@ -222,6 +222,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 
 export const StaggerTestimonials: React.FC = () => {
   const [cardSize, setCardSize] = useState(365);
+  const [stageHeight, setStageHeight] = useState(600);
   const [testimonialsList, setTestimonialsList] = useState(testimonials);
   // Autoplay: paused while the pointer is over the carousel (or the user is
   // interacting with the keyboard). `tick` resets the countdown on manual nav.
@@ -263,6 +264,7 @@ export const StaggerTestimonials: React.FC = () => {
     const updateSize = () => {
       const { matches } = window.matchMedia("(min-width: 640px)");
       setCardSize(matches ? 365 : 290);
+      setStageHeight(matches ? 600 : 540);
     };
 
     updateSize();
@@ -273,7 +275,7 @@ export const StaggerTestimonials: React.FC = () => {
   return (
     <div
       className="relative w-full overflow-hidden bg-muted/30"
-      style={{ height: 600 }}
+      style={{ height: stageHeight }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}

@@ -43,7 +43,7 @@ const Loader: React.FC<LoaderProps> = ({ onDone, duration = 1300 }) => {
       aria-label="Loading"
       role="status"
       exit={{ y: "-100%", transition: { duration: 0.7, ease: EASE } }}
-      className="fixed inset-0 z-[300] flex flex-col items-center justify-center overflow-hidden bg-[#f8f9fb]"
+      className="fixed inset-0 z-[300] flex flex-col items-center justify-center overflow-hidden bg-background"
     >
       {/* Ambient orbs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
