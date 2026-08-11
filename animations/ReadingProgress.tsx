@@ -22,7 +22,7 @@ export const ReadingProgress: React.FC = () => {
 
   return (
     <div
-      className="reading-progress"
+      className="fixed left-0 top-0 z-[9998] h-[3px] bg-[#4c44d4] transition-[width] duration-100 ease-linear"
       style={{ width: `${progress}%` }}
       aria-hidden="true"
     />

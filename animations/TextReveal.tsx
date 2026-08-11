@@ -31,7 +31,7 @@ export const TextReveal: React.FC<TextRevealProps> = ({
     const el = ref.current;
     if (!el) return;
 
-    const words = el.querySelectorAll('.text-reveal-word > span');
+    const words = el.querySelectorAll('[data-reveal-word] > span');
     const ctx = gsap.context(() => {
       gsap.to(words, {
         y: 0,
@@ -51,8 +51,8 @@ export const TextReveal: React.FC<TextRevealProps> = ({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <Tag ref={ref as any} className={className} aria-label={text}>
       {words.map((word, i) => (
-        <span key={i} className="text-reveal-word mr-[0.25em]">
-          <span>{word}</span>
+        <span key={i} data-reveal-word className="mr-[0.25em] inline-block overflow-hidden align-top">
+          <span className="inline-block translate-y-[110%] will-change-transform">{word}</span>
         </span>
       ))}
     </Tag>

@@ -87,7 +87,7 @@ export const WordReveal: React.FC<WordRevealProps> = ({
             return (
               <p
                 key={segmentIndex}
-                className="max-w-3xl text-2xl font-bold leading-snug tracking-tight text-slate-900 sm:text-3xl"
+                className="mx-auto max-w-3xl text-center text-2xl font-bold leading-snug tracking-tight text-slate-900 sm:text-3xl"
               >
                 {words.map((word, i) => {
                   const currentWordIndex = segmentStartIndex + i;
