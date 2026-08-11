@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import "./BlogEditor.css";
+import { ThemeToggle } from "./ui/theme-toggle";
 import {
   DEFAULT_CATEGORIES,
   DEFAULT_IMAGE,
@@ -521,6 +522,7 @@ export default function BlogEditor() {
               <span className="save-dot" />
               {saved ? "Saved just now" : "Saving..."}
             </span>
+            <ThemeToggle className="top-icon" />
             <button className="top-icon" aria-label="Notifications">♧</button>
             <div className="profile">
               <div className="avatar">H</div>

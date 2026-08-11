@@ -16,7 +16,7 @@ import { ScrollToTop } from '../animations/ScrollToTop';
 import { Parallax, ParallaxImg } from '../animations/Parallax';
 import { Magnetic } from '../animations/Magnetic';
 import { WordReveal } from '../animations/WordReveal';
-import { Typewriter } from '../animations/Typewriter';
+import { ThemeToggle } from './ui/theme-toggle';
 import { StaggerTestimonials } from './ui/stagger-testimonials';
 import { RuixenGradientFooter } from './ui/ruixen-gradient-footer';
 import {
@@ -248,30 +248,6 @@ const Home: React.FC = () => {
   const progress = useSpring(scrollY, { stiffness: 120, damping: 30, restDelta: 0.001 });
   const scaleX = useTransform(progress, [0, 1], [0, 1]);
 
-  // Hero image parallax
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const imgY = useTransform(scrollYProgress, [0, 1], [0, 80]);
-
-  // Section depth — background orbs drift at different rates than the page.
-  const blobY1 = useTransform(scrollYProgress, [0, 1], [0, 110]);
-  const blobY2 = useTransform(scrollYProgress, [0, 1], [0, 190]);
-  const chipY1 = useTransform(scrollYProgress, [0, 1], [0, 64]);
-  const chipY2 = useTransform(scrollYProgress, [0, 1], [0, 40]);
-
-  // Hero featured-visual mouse tilt (spring-smoothed 3D lean)
-  const tiltX = useSpring(0, { stiffness: 160, damping: 18 });
-  const tiltY = useSpring(0, { stiffness: 160, damping: 18 });
-  const onTilt = (e: React.MouseEvent<HTMLDivElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    tiltY.set(((e.clientX - r.left) / r.width - 0.5) * 10);
-    tiltX.set(-((e.clientY - r.top) / r.height - 0.5) * 10);
-  };
-  const resetTilt = () => {
-    tiltX.set(0);
-    tiltY.set(0);
-  };
-
   useEffect(() => {
     if (!subscribed) return;
     const timer = setTimeout(() => setSubscribed(false), 2800);
@@ -282,7 +258,7 @@ const Home: React.FC = () => {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="min-h-screen bg-[#f8f9fb] text-slate-900 antialiased">
+      <div className="min-h-screen bg-background text-slate-900 antialiased">
         <ScrollToTop />
 
         {/* Subscribe toast */}
@@ -384,12 +360,13 @@ const Home: React.FC = () => {
               {/* Actions */}
               <div className="flex items-center gap-2">
 
+                <ThemeToggle className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-500 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#4c44d4]/10 hover:text-[#4c44d4]" />
                 <motion.button
                   whileHover={{ scale: 1.08, y: -2 }}
                   whileTap={{ scale: 0.92 }}
                   aria-label="Search"
                   onClick={() => navigate('/blogs?focus=1')}
-                  className="hidden h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-500 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#eef2ff] hover:text-[#4c44d4] sm:grid"
+                  className="hidden h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-500 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#4c44d4]/10 hover:text-[#4c44d4] sm:grid"
                 >
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -411,7 +388,7 @@ const Home: React.FC = () => {
                   onClick={() => setMenuOpen((o) => !o)}
                   aria-label="Toggle menu"
                   aria-expanded={menuOpen}
-                  className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-700 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#eef2ff] hover:text-[#4c44d4] md:hidden"
+                  className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-white/70 text-slate-700 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#4c44d4]/10 hover:text-[#4c44d4] md:hidden"
                 >
                   <div className="flex w-4 flex-col items-end gap-[5px]">
                     <motion.span animate={{ rotate: menuOpen ? 45 : 0, y: menuOpen ? 7 : 0 }} className="h-[1.5px] w-4 rounded-full bg-current" />
@@ -483,30 +460,30 @@ const Home: React.FC = () => {
         </motion.header>
 
         {/* ============ HERO ============ */}
-        <main id="home" className="relative mx-auto max-w-[1200px] scroll-mt-24 px-4 sm:px-6">            <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-              <motion.div style={{ y: blobY1 }}>
-                <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#4c44d4]/10 blur-3xl animate-float-slow" />
-              </motion.div>
-              <motion.div style={{ y: blobY2 }}>
-                <div className="absolute -right-20 top-40 h-64 w-64 rounded-full bg-[#8363f9]/10 blur-3xl animate-float-slower" />
-              </motion.div>
-              <div className="absolute -right-16 top-8 h-64 w-64 rounded-full bg-[#8363f9]/20 blur-3xl" />
-              <div className="absolute -left-16 top-72 h-56 w-56 rounded-full bg-[#4c44d4]/15 blur-3xl" />
-            </div>
+        <main id="home" className="relative scroll-mt-24">
+          {/* Full-bleed background-image hero */}
+          <section className="relative overflow-hidden">
+            <img
+              src="/hero.png"
+              alt=""
+              aria-hidden
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            {/* Readability scrims — white in light, near-black in dark */}
+            <div className="absolute inset-0 bg-linear-to-r from-white/95 via-white/75 to-white/10 dark:from-[#09090b]/95 dark:via-[#09090b]/80 dark:to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-background to-transparent" />
 
-          {/* Hero grid */}
-          <section className="relative grid items-stretch gap-5 pt-10 sm:pt-14 lg:grid-cols-[1.1fr_0.9fr]">
-            {/* Copy */}
-            <motion.div
-              variants={heroContainer}
-              initial="hidden"
-              animate="show"
-              className="relative flex flex-col justify-center px-6 py-8 sm:px-8 sm:py-10"
-            >
+            <div className="relative z-10 mx-auto flex min-h-[520px] w-full max-w-[1200px] flex-col justify-center px-4 py-16 sm:min-h-[600px] sm:px-6 sm:py-24">
+              <motion.div
+                variants={heroContainer}
+                initial="hidden"
+                animate="show"
+                className="max-w-2xl"
+              >
 
               <motion.span
                 variants={heroItem}
-                className="inline-flex w-fit items-center gap-2 rounded-full border border-[#4c44d4]/15 bg-[#eef2ff] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-[#4c44d4]"
+                className="inline-flex w-fit items-center gap-2 rounded-full border border-[#4c44d4]/15 bg-[#4c44d4]/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-[#4c44d4]"
               >
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4c44d4] opacity-60" />
@@ -515,7 +492,7 @@ const Home: React.FC = () => {
                 Welcome to Blogify
               </motion.span>
 
-              <h2 className="mt-5 text-[34px] font-black leading-[1.08] tracking-tight sm:text-4xl lg:text-[44px]">
+              <h2 className="mt-5 text-4xl font-black leading-[1.06] tracking-tight sm:text-5xl lg:text-[56px]">
                 <span className="inline-flex flex-wrap gap-x-[0.28em]">
                   {heroWords.map((word, i) => (
                     <span key={i} className="inline-flex overflow-hidden pb-1">
@@ -584,100 +561,7 @@ const Home: React.FC = () => {
                 </div>
               </motion.div>
             </motion.div>
-
-            {/* Featured visual — a live article drafting in Blogify's own reading
-                view. The product, not a stock photo: this is the signature. */}
-            <motion.div
-              ref={heroRef}
-              initial={{ opacity: 0, scale: 0.96, y: 24 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
-              onMouseMove={onTilt}
-              onMouseLeave={resetTilt}
-              style={{ rotateX: tiltX, rotateY: tiltY, transformPerspective: 900 }}
-              className="group relative flex min-h-[320px] flex-col overflow-hidden rounded-3xl border border-slate-200/70 bg-white shadow-[0_24px_60px_rgba(15,23,42,0.12)] sm:min-h-[400px]"
-            >
-              {/* Decorative depth layer (drifts on scroll) */}
-              <motion.div style={{ y: imgY }} className="pointer-events-none absolute inset-0">
-                <div className="absolute inset-0 opacity-70 [background-image:radial-gradient(circle,rgba(76,68,212,0.10)_1px,transparent_1px)] [background-size:22px_22px]" />
-                <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[#4c44d4]/[0.07] blur-3xl" />
-                <div className="absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-[#8363f9]/10 blur-3xl" />
-              </motion.div>
-
-              {/* Wordmark bar */}
-              <div className="relative flex items-center justify-between border-b border-slate-100 px-5 py-3 sm:px-6">
-                <div className="flex items-center gap-2">
-                  <span className="grid h-6 w-6 place-items-center rounded-lg bg-[#4c44d4] text-[10px] text-white">✦</span>
-                  <span className="text-[12px] font-black tracking-tight text-slate-950">Blogify</span>
-                </div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Issue 048</span>
-              </div>
-
-              {/* Article body */}
-              <div className="relative flex flex-1 flex-col justify-center px-5 py-6 sm:px-6">
-                <div className="flex items-center gap-2">
-                  <span className="rounded-full bg-[#eef2ff] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.2em] text-[#4c44d4]">
-                    Writing
-                  </span>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">4 min read</span>
-                </div>
-                <h3 className="mt-3 text-[22px] font-black leading-[1.15] tracking-tight text-slate-950 sm:text-[26px]">
-                  Write first. <span className="text-[#4c44d4]">Polish later.</span>
-                </h3>
-                <div className="mt-3 flex items-center gap-2.5">
-                  <img
-                    src="https://i.pravatar.cc/40?img=47"
-                    alt="Maya Chen"
-                    className="h-7 w-7 rounded-full border-2 border-white shadow-sm"
-                  />
-                  <span className="text-[11px] font-semibold text-slate-500">
-                    Maya Chen <span className="text-slate-300">·</span>{' '}
-                    <span className="text-slate-400">Writer</span>
-                  </span>
-                </div>
-                <Typewriter
-                  text="Ideas don't need a perfect first draft — they need a door: a blank page you're willing to open."
-                  delay={1400}
-                  className="mt-4 max-w-sm text-[13px] leading-6 text-slate-600"
-                />
-              </div>
-
-              {/* Reading progress — the story is 62% drafted */}
-              <div className="relative h-[3px] w-full bg-slate-100">
-                <motion.div
-                  initial={{ width: '0%' }}
-                  animate={{ width: '62%' }}
-                  transition={{ delay: 1.6, duration: 2.2, ease: EASE }}
-                  className="h-full bg-[#4c44d4]"
-                />
-              </div>
-
-              {/* Floating chips */}
-              <motion.div style={{ y: chipY1 }} className="absolute left-4 top-4">
-                <motion.div
-                  initial={{ opacity: 0, y: -12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.5, ease: EASE }}
-                  className="flex items-center gap-1.5 rounded-full border border-slate-200/80 bg-white/85 px-3 py-1.5 text-[11px] font-bold text-slate-800 backdrop-blur-md"
-                >
-                  <span className="relative flex h-1.5 w-1.5">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4c44d4] opacity-60" />
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#4c44d4]" />
-                  </span>
-                  Drafting live
-                </motion.div>
-              </motion.div>
-              <motion.div style={{ y: chipY2 }} className="absolute bottom-4 right-4">
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.75, duration: 0.5, ease: EASE }}
-                  className="flex items-center gap-1.5 rounded-full border border-slate-200/80 bg-white/85 px-3 py-1.5 text-[11px] font-bold text-slate-800 backdrop-blur-md"
-                >
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" /> Saved automatically
-                </motion.div>
-              </motion.div>
-            </motion.div>
+            </div>
           </section>
 
           {/* Scroll hint */}
@@ -698,8 +582,10 @@ const Home: React.FC = () => {
             </motion.span>
           </motion.div>
 
+          {/* Content below the hero — constrained to the reading width */}
+          <div className="relative mx-auto max-w-[1200px] px-4 sm:px-6">
           {/* ============ MARQUEE ============ */}
-          <Reveal y={16} className="group marquee mt-5 overflow-hidden rounded-2xl border border-slate-200/80 bg-white py-2.5 shadow-sm [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+          <Reveal y={16} className="group mt-5 overflow-hidden rounded-2xl border border-slate-200/80 bg-white py-2.5 shadow-sm [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
             <div className="animate-marquee flex w-max items-center gap-10 whitespace-nowrap group-hover:[animation-play-state:paused]">
               {[...marqueeItems, ...marqueeItems].map((item, i) => (
                 <span key={i} className="flex items-center gap-10 text-[13px] font-bold text-slate-500">
@@ -736,7 +622,7 @@ const Home: React.FC = () => {
                       whileHover={{ y: -2, scale: 1.04 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => navigate('/blogs?category=' + encodeURIComponent(category.label))}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#eef2ff] hover:text-[#4c44d4]"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-[#4c44d4]/40 hover:bg-[#4c44d4]/10 hover:text-[#4c44d4]"
                     >
                       <span className="text-sm leading-none">{category.icon}</span>
                       {category.label}
@@ -786,7 +672,7 @@ const Home: React.FC = () => {
                     className="h-48 sm:h-56"
                   />
                   <div className="p-5 sm:p-7">
-                    <span className="inline-flex rounded-full bg-[#eef2ff] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#4c44d4]">
+                    <span className="inline-flex rounded-full bg-[#4c44d4]/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#4c44d4]">
                       {featuredArticles[0].category}
                     </span>
                     <h3 className="mt-3 text-xl font-black leading-snug text-slate-950 sm:text-2xl">
@@ -1000,6 +886,7 @@ const Home: React.FC = () => {
             </Reveal>
           </section>
           </Parallax>
+          </div>
         </main>
 
         {/* ============ FOOTER ============ */}
