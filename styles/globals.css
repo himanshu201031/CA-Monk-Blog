@@ -123,9 +123,50 @@
   }
 }
 
-/* Class-based dark variant — declared for shadcn compatibility; the project
-   ships light-only, so nothing applies it today. */
+/* Class-based dark variant — drives the white↔black theme inversion. */
 @custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Dark theme — the requested inversion, tuned to the near-black zinc palette
+ * used by v0 / shadcn (`#09090b` background, `#18181b` surfaces, `#27272a`
+ * borders). Tailwind v4 compiles color utilities to `var(--color-*)`, so
+ * redefining the palette under `.dark` flips every bg-white / text-slate-* /
+ * border-slate-* class across the app at once.
+ */
+.dark {
+  --color-white: #18181b;
+
+  --color-slate-50: #18181b;
+  --color-slate-100: #1f1f22;
+  --color-slate-200: #27272a;
+  --color-slate-300: #3f3f46;
+  --color-slate-400: #52525b;
+  --color-slate-500: #71717a;
+  --color-slate-600: #a1a1aa;
+  --color-slate-700: #d4d4d8;
+  --color-slate-800: #e4e4e7;
+  --color-slate-900: #f4f4f5;
+  --color-slate-950: #fafafa;
+
+  --color-background: #09090b;
+  --color-foreground: #fafafa;
+  --color-card: #18181b;
+  --color-card-foreground: #fafafa;
+  --color-popover: #18181b;
+  --color-popover-foreground: #fafafa;
+  --color-muted: #18181b;
+  --color-muted-foreground: #a1a1aa;
+  --color-secondary: #27272a;
+  --color-secondary-foreground: #fafafa;
+  --color-accent: #27272a;
+  --color-accent-foreground: #fafafa;
+  --color-border: #27272a;
+  --color-input: #27272a;
+
+  --color-primary: #a78bfa;
+  --color-primary-foreground: #ffffff;
+  --color-ring: #a78bfa;
+}
 
 @layer base {
   * {
